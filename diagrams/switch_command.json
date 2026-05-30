@@ -1,0 +1,7 @@
+{ "reg": [
+  {"name": "Dir", "bits": 1, "attr": "0=Red, 1=Green"},
+  {"name": "Out", "bits": 2, "attr": "Decoder Output 0..3"},
+  {"name": "Pwr", "bits": 1, "attr": "0=Off, 1=On"},
+  {"name": "Sec", "bits": 2, "attr": "Section Address 0..3"},
+  {"name": "Unused", "bits": 2, "attr": "Always 0"}
+], "config": {"bits": 8, "lanes": 1}}
