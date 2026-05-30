@@ -31,7 +31,7 @@ Nach dem Einschalten oder einem RESET müssen Geräte auf der rechten Seite (Con
 2. Das Gerät empfängt seine Adresse über I2C, quittiert diese und zieht b12 für das nächste Gerät in der Kette auf LOW.
 3. Dieser Prozess setzt sich fort, bis alle Geräte adressiert sind.
 
-![Adressierungs-Sequenz](diagrams/addressing_sequence.puml)
+![Adressierungs-Sequenz](https://kroki.io/plantuml/svg/eNp90bEKgzAQBuA9T3G4lg65bA5FSZbSQgsinVOTIWCtaPT5a6opaaqdAvf_3BeSrLeys8OjJu10msq0srGQcN3YTtZQNsYmIHvg5XdB6NFUGug7FHQ1xDnE1ZDNISOEl7A_TEAK16Gu4U4RzpfbMhY0hSNyKNw1YQe5Up3ue0hoQmRlzSitdr6gvl3YZ6d9b5m75W5Lzk--iRGndLjO67ihY6gjEejbkY4_-txkf3T86GxDZ6HOiGC-Heks1kNmevlMN8p9_QvzcZM1)
 
 ### Geräte-Identifikatoren
 Die Identifikation des Befehlstyps erfolgt über die Bits 5, 6 und 7 der Geräteadresse. Die eigentliche Geräteadresse (0-15) liegt in den Bits 1-4. Bit 0 ist meist 0.
@@ -44,14 +44,14 @@ Die Identifikation des Befehlstyps erfolgt über die Bits 5, 6 und 7 der Geräte
 | Zusatzfunktionen (f1-f4) | 0 | 1 | 0 | `010X XXX0` |
 
 ### Adress-Byte Struktur
-![Adress-Byte](diagrams/addressing_bytes.json)
+![Adress-Byte](https://kroki.io/wavedrom/svg/eNqrVlAqSk1XslKI5lJQqFbKS8xNBXKUDJR0FJSSMkuKgRxDIDOxpKQIJB6UWpxaVJaaolSrg6LeMSWlKLW4WEHDJ9hJT8832EkTyQATJANcUssyk1MVYOoN9PQMTdEN83RB0myMpNnAwEDBFqY3My9dqZYrFiidnJ-XlgnyQzVMkwVQNCcxLxXs_NpaLgA8tz9J)
 
 ## Protokoll-Spezifikation und Befehlssätze
 
 ### Kommunikationsfluss
 Befehle werden in Paketen von 3 bis 4 Bytes übertragen. Da es sich um ein Multi-Master-System handelt, übernimmt das sendende Gerät temporär die Master-Rolle.
 
-![Kommunikationsfluss](diagrams/communication_flow.puml)
+![Kommunikationsfluss](https://kroki.io/plantuml/svg/eNp9klFLwzAUhd_zKy57amEO1D31Qba1gsMNh6H4HNPbLpglJb2d7N9701VxIntKuDnf6elJFh2pQP3BipZXo02rHMFEoqswQCKtOiKoDraqIwzpJO7lpTZHR0FZKJ0hSM7CQRbZM5GXQjhPCP7IZ3LKgwzWlUWQpHicyHwzBVks4ck0-1RIuHkAmcGut3YYb17eWBSjjofRYHVi9DaDV-QohlPAsqoCdh0keZmKvBxdlvnzH-gug_EPf4gCj0bjVeo-g0KRggRnzQwK1P7b4So2v8Bki1j9p-e9JN_CylCM4_v3oR6e1J47OzmdihGL1rvgdQy-dh2FXpPx7pep_nD-02LV4CH2smWlarjn-RCpS8-3EbhsAl8Pho967yF-iW-kj761FwsuKb6NL4gFpQI=)
 
 ### Lokomotivbefehle (Standard H0-Modus)
 Wird verwendet für Standard-Motorola-Decoder (MM1).
@@ -59,23 +59,23 @@ Wird verwendet für Standard-Motorola-Decoder (MM1).
 * **Paketlänge:** 4 Bytes (Empfänger, Sender, Decoder-Adresse, Datenbyte)
 * **Adressbereich:** 00 bis 79 (Adresse 80 wird als 00 übertragen)
 
-![Lokbefehl H0](diagrams/loco_command_h0.json)
+![Lokbefehl H0](https://kroki.io/wavedrom/svg/eNpdj8sKwjAQRff9iiErCyE2PkCELCzSlYpYd-Ii1rEGNaltKkjpv5sWhOhuXvfcOw2QEnMyh0MA0BAtH-gakhaI5-HWVDBYpTFj6zQOCQVyUrZy-4krpbVldxqJ1JqCAhdLVVIYMcanoteTlv5AE4_APUJS68wqo52Xyq82_Nft3wV60rFvHkVih88aK-sScC42mEurXgiL7Eba4OhuM6Mvqnux-RJmbnqXGvsgbRt8AHspSKQ=)
 
 ### Lokomotivbefehle (Erweitertes Motorola-Format / MM2)
 Unterstützt absolute Fahrtrichtung und erzwungene Adressübernahme.
 
-![Lokbefehl MM2](diagrams/loco_command_ext.json)
+![Lokbefehl MM2](https://kroki.io/wavedrom/svg/eNpdkE2LwjAQhu_9FUNOLYSaqAuLkEOL9KSybPcgyB5iOtagJlqzyFL63526LFRP8_28L9MCa7BmM9hEAC1z-oRUsPKMWI0-_BXiRZmn6bLME8aBbW240nxKqQ6h6VeFmqOujt4cOEg1tw2HcZrKN_VgsI4_gYsBRQ4oxY8zwXpHerbeh-T17uv3jIPTydCAkOoTL6Qu1oosZ-YA8XomVK7_PBW3KqEohVphnfU9QXnhG4Osi74JZbzb2f4L7b_AO3WP2uHDZ9dFd-YyUWM=)
 
 ### Zusatzfunktionen (f1 bis f4)
 Befehle zur Steuerung der Sonderfunktionen.
 
-![Funktionsbefehl](diagrams/function_command.json)
+![Funktionsbefehl](https://kroki.io/wavedrom/svg/eNqrVlAqSk1XslKI5lJQqFbKS8xNBXKU0gyVdBSUkjJLioE8w1odVEkjfJLG-CRN8EiG5pUWp6YgKTABMhNLSopAko455YmVxQoGSrVcsUDh5Py8tEyQs6thii2AojmJeakQk2u5AALGOdw=)
 
 ### Magnetartikelbefehle (Weichen/Signale)
 * **Paketlänge:** 3 Bytes
 * **Datenbyte:** Enthält Ausgangsnummer (Bit 1-2), Richtung (Bit 0), Power (Bit 3) und Sektionsadresse (Bit 4-5).
 
-![Magnetartikelbefehl](diagrams/switch_command.json)
+![Magnetartikelbefehl](https://kroki.io/wavedrom/svg/eNp1kM0KgkAQgO8-xTBnEa1LBB4EoeNG0Sk6bO4YC7rG7oqE7Ls3BoH9eJu_b75hRkBLN9zCOQIY0ciWOMFSW4wBr9o7TjMOpfd26qT5gVQMWb6zRAZD_MGJ3s-41YwrqeoUWeCJe-8hTZL1N7wflqWiriep-DEeqVowcsfrzkChlCXn_ipPpnekFhYUzSAfzGGILlyuOlPr6VXje3jD1UYaep0bQvQEMkhb2w==)
 
 ## Systemverhalten und Spezialfunktionen
 
