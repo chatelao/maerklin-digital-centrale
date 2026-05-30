@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=ISO-8859-1">
+  <title>bogobit - the M\xe4rklin 66031 DELTA decoder</title>
+  <meta name="author" CONTENT="Siegfried Grob, bogobit">
+  <meta name="description" content="Infos \xfcber die M\xe4rklin Decoder der fx (MM) Generation">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/favicon16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="/favicon120.png" sizes="120x120">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <link rel="stylesheet" type="text/css" media="print" href="/printer.css">
+</head>
+
+<body>
+    <div class="header">
+        <img class="headerlogo" src="/00/bogobitbanner.png" width="776" height="80" border="0" alt="bogobit Logo" usemap="#logo">
+        <map name="logo">
+          <area shape="rect" coords="10,5,344,74" href="https://www.bogobit.de/" alt="bogobit Logo" title="zur bogobit Homepage">
+        </map>
+
+    </div>
+
+<!-- ==============================================   -->
+
+    <div class="menubar">
+        <div class="tabmenu">
+            <ul>
+                <li                > <a href="/shop" title="place your order in the bogobit shop">Shop</a></li>
+                <li                > <a href="/" title="bogobit products">Products</a></li>
+                <li class="current"> <a href="/blog" title="collection of information on model railway topics">Archive</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+<!-- ==============================================   -->
+
+    <div class="navigation">
+
+          <div class="boxmenu">
+            <div class="caption">
+                <a name="-">obsolete bogobit products</a>
+            </div>
+            <ul>
+                <li class="normalitem"><a href="/bremsmodul/classicABC" title="bogobit Brake Module Classic ABC" >bogobit Brake Module Classic ABC</a></li>
+                <li class="normalitem"><a href="/sensi" title="touch sensor control of Hobby / my-world daylight signals" >SenSi - signal touch dimmer</a></li>
+                <li class="normalitem"><a href="/sidemux" title="Multiplex-Signals simply connected" >SiDemux Multiplex Controlbox</a></li>
+            </ul>
+          </div>
+          <div class="boxmenu">
+            <div class="caption">
+                <a name="digitaltechnik">Current Digital Technology</a>
+            </div>
+            <ul>
+                <li class="normalitem"><a href="/ms2" title="mobile station 60652 CV programming" >MS2 CV programming</a></li>
+                <li class="normalitem"><a href="/decoder/60831" title="turnout decoder m83, 60831" >turnout decoder m83</a></li>
+            </ul>
+          </div>
+          <div class="boxmenu">
+            <div class="caption">
+                <a name="accessories">Accessories</a>
+            </div>
+            <ul>
+                <li class="normalitem"><a href="/relaissockel" title="socket for relays and ICs" >relay socket</a></li>
+            </ul>
+          </div>
+          <div class="boxmenu">
+            <div class="caption">
+                <a name="tools">Tools</a>
+            </div>
+            <ul>
+                <li class="normalitem"><a href="/track" title="in PDF format, for Z-, M-, C-, K- und 1-Track" >M&auml;rklin Track length tables</a></li>
+                <li class="normalitem"><a href="/hangover" title="a car's overhang in a curve" >Curve overhang</a></li>
+            </ul>
+          </div>
+          <div class="boxmenu">
+            <div class="caption">
+                <a name="LEDs">LEDs</a>
+            </div>
+            <ul>
+                <li class="normalitem"><a href="/signalled" title="LEDs for daylight signals" >LEDs for daylight signals</a></li>
+            </ul>
+          </div>
+          <div class="boxmenu activebox">
+            <div class="caption activecaption">
+                <a name="digitaltechnik">Legacy Digital Technology</a>
+            </div>
+            <ul>
+                <li class="normalitem"><a href="/mosta" title="mobile station 60652" >Mobile Station MS1</a></li>
+                <li class="normalitem"><a href="/sound" title="1st generation M&auml;rklin/Motorola sound modules" >old M&auml;rklin sound modules</a></li>
+            </ul>
+        </div>
+    </div>
+
+<!-- ==============================================   -->
+
+  <div class="Inhalt">
+
+<!-- ################################################################## -->
+
+  <h1>
+	The m\xe4rklin 66031 Delta Decoder
+  </h1>
+
+
+<p> The 66031 was the m\xe4rklin DELTA decoder offered from 1997 to 2002. Even
+though in 2001 m\xe4rklin has still been building delta locos (e.g. the class 151 from
+the 29645 set) with older 6603 delta decoders that have a 701.17 chip.
+Here I present the schematic of my 66031 delta decoder.
+
+
+<h2>top side of PCB</h2>
+<img src="ma66031top.jpg" border=3 width=543 height=256 alt="top side of 66031
+pcb, 23kB">
+
+<h2>bottom side of PCB</h2>
+<img src="ma66031bottom.jpg" border=3 width=547 height=260 alt="bottom side of 66031
+pcb, 19kB">
+
+<h2>schematic</h2>
+<p>
+<A HREF="66031.pdf"><img src="ma66031-075.gif" border=0 width=853 height=542
+alt="schematic of 66031, 25kB"></a>
+<br>
+The schematic is also available as <a href="66031.pdf">PDF-File</a>.
+
+<p>The component placement plan:
+<br>
+<img src="ma66031best.jpg" border=3 width=423 height=242 alt="placement 66031,
+28kB">
+
+
+<p>
+
+Some components are labelled X?, these are parts with reserved space on the PCB
+but which are not actually placed on the PCB. In the placement plan these are
+the red boxes.
+
+Thanks to <a href="mailto:AKohout@Telebel.De.invalid">Andreas Kohout</a>, I got
+information on these components. On his decoder the IC1 is a 701.21A
+(mine is a 'B'), and the replacement number of the whole board is 602 004.
+The missing components are as follows:
+
+<table>
+<tr><td>X1</td><td>resistor: 150 k</td></tr>
+<tr><td>X2</td><td>resistor: 150 k</td></tr>
+<tr><td>X3</td><td>resistor: 27 k</td></tr>
+<tr><td>X4</td><td>resistor: 56 k</td></tr>
+<tr><td>X5</td><td>capacitor</td></tr>
+<tr><td>X6</td><td>zener diode: 3.9 V</td></tr>
+<tr><td>X7</td><td>zener diode: 3.9 V</td></tr>
+<tr><td>X8</td><td>resistor: 10 k</td></tr>
+<tr><td>X9</td><td>resistor: 100 k</td></tr>
+<tr><td>X10</td><td>dual P-channel MOSFET: 9948, e. g. Fairchild NDS9948</td></tr>
+<tr><td>X11</td><td>same electrolythic capacitor as C2: 10 uF, 10 or 16 V</td></tr>
+</table>
+
+<p> If the MOSFET X10 is placed, the Solderbridge (to the right of X9) on the
+PCB is left open, of course. The purpose of the additional circuitry seems to
+be to apply positive voltage to the black and orange cables only if the supply
+voltage (across C1) is high enough. In this case I would expect the threshold
+at  2.5 V (X10 drain-source voltage, also across X9) + 3.9 V (X6) + 0.25 V
+(across X8), which makes a total of about 6.6 V of minimum supply voltage.
+However, I wonder about the reason for this protection circuitry. Maybe IC1 is
+faulty at low supply voltages and outputs erratic pulses on the motor or light
+pins, and to avoid damage, positive voltage output is cut-off.
+
+<p>
+Another schematic of a 66031, which slightly differs from mine above, can
+be found on the website of Dr. Michael K\xf6nig, see
+<a href="http://home.arcor.de/dr.koenig/digital/deltadig.htm">there in the 3rd
+paragraph</a>.
+
+
+<h2>Comparison to a 6603</h2>
+<p>
+<ul>
+  <li>the function output (white) is intended for TELEX and is activated by
+	repeated direction reversals similar to analog locos .
+  <li>the rectified DC voltage is now available for flicker-free lighting and supply for TELEX or other function
+(the orange cables).
+  <li>internal ground voltage is available for additional electronics
+  <li>internal +5V voltage is available via a 470 Ohm resistor
+  <li>motor and function outputs are overload and short-circuit protected
+  <li>the decoder understands the <a href="http://home.arcor.de/dr.koenig/digital/motorola.htm">new Motorola protocol</a>
+  <li>the decoder has 27 speed steps internally
+</ul>
+
+<!-- ################################################################## -->
+
+  </div>
+
+  <div class="Footer">
+    <img src="/00/footerline.png" width="774" height="3" border="0" alt="Trennlinie">
+    <p>bogobit &middot;
+    2002-02-06
+
+    <div class="Footermenu">
+      <span class="Footermenu2">
+          <a href="/kontakt">Kontakt</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/impressum">Impressum</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/agb">Allgemeine Gesch&auml;ftsbedingungen</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/widerrufsbelehrung">Widerrufsbelehrung</a>
+          &nbsp; &middot; &nbsp;
+          <a href="/datenschutz">Datenschutzerkl&auml;rung</a>
+      </span>
+    </div>
+    <br>
+
+
+
+
+
+  </div>
+</body>
+</html>

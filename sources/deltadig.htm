@@ -1,0 +1,146 @@
+<HTML>
+<HEAD><TITLE>Dr. K\xf6nig\xb4s M\xe4rklin-Digital-Page: Umbau des Delta-Dekoders | von Dr. Michael K&ouml;nig (Dr. K\xf6nig - Dr. Koenig) | Modelleisenbahn - M&auml;rklin (M\xe4rklin - Maerklin) - Digital</TITLE></HEAD>
+<BODY BACKGROUND="back3.gif">
+<!--hr-->
+<FONT SIZE=4>
+<center><IMG SRC="bahn7.gif" align=middle BORDER=0></A></center><br>
+<center><h3><IMG SRC="mk2.gif" ALT="Dr. K&ouml;nig\xb4s M&auml;rklin-Digital-Page" WIDTH=376 HEIGHT=32></h3></center>
+<p>
+<center><IMG SRC="bahn8.gif" BORDER=0></A></center><br>
+<center><h2><FONT  SIZE=+3>Umbau des Delta-Dekoders</FONT></h2></center>
+<center><IMG SRC="deko2.gif" border=0 WIDTH=160 HEIGHT=97></center>
+<p>
+<center><IMG SRC="baustell.gif" WIDTH=80 HEIGHT=80 ALIGN=middle></center>
+<p>
+<H2><FONT  SIZE=+3>Schaltpl&auml;ne der Delta-Dekoder</FONT></H2>
+<A HREF="delta.zip"><IMG SRC="delta.gif" WIDTH=318 HEIGHT=227 ALIGN=right></A>
+Zun&auml;chst finden Sie hier die Schaltpl&auml;ne der mir bekannten bzw. mitgeteilten universellen Delta-Dekoders (ich nenne sie V1, V2 , V4 und V5) sowie anderer Lok-spezifischer Delta-Dekoder mit dem Chip 701.17b. Sie k&ouml;nnen sie sich als ZIP-File downloaden und in Ruhe studieren. Zu diesem Zweck klicken Sie bitte die verkleinerte Abbildung an.
+<p>
+Bei einigen Details wissen wir leider trotz anstrengenden Gr&uuml;belns nicht weiter. Wer die Typen bzw. Werte der betreffenden Bauteile wei&szlig;, der m&ouml;ge sich bitte melden. Die Funktion der Beschaltung von Pin 5 des 701.17b beim V1 hat <A HREF="http://microwave.emi.dtu.dk">Bo Braendstrup</A> aufgekl&auml;rt, dem ich an dieser Stelle f&uuml;r den Hinweis danke: Durch die Z-Diode und die Widerst&auml;nde wird im normalen Wechselstrombetrieb (DIP-Schalter auf "0000") der &Uuml;berspannungsimpuls f&uuml;r die Fahrtrichtungsumschaltung detektiert. Im Normalfall liegt an Pin 5 eine Spannung von 0 V; w&auml;hrend der Dauer des Umschaltspannung steigt diese auf ca. 5 V an, so da&szlig zum einen die Fahrtrichtungsumschaltung bewirkt wird und zum anderen die Ausg&auml;nge Pin 9 und Pin 10 deaktiviert werden. Die entsprechenden Schaltung bei den der anderen Dekoder-Versionen funktionieren &auml;hnlich, wie <A HREF="MAILTO:Martin.Rothschink@Kirchheim.Netsurf.de">Martin Rothschink</A> mir mitgeteilt hat, f&uuml;r dessen Mitwirkung ich an dieser Stelle gleichfalls danke. Er hat ferner darauf hingewiesen, da&szlig; die entsprechend Beschaltung an den Dekodern V1 und V4 weniger sicher ist als bei den Dekodern V2 und V3, da die Gefahr besteht, da&szlig; der 701.17b mit einer Spannung konfrontiert wird, die seine Versorgungsspannung &uuml;bersteigt - was dem Chip wahrscheinlich nicht unbedingt zutr&auml;glich sein mu&szlig;. <A HREF="MAILTO:roehrig@gem.uni-hannover.d400.de">Manfred R&ouml;hrig</A> hat &uuml;ber <A HREF="http://rr-vs.informatik.uni-ulm.de:80/RR/Maedig/Maedig.html">Dr. Konrad Froitzheim</A> herausgefunden, da&szlig; der Quarz ein normaler Uhrenquarz von 32 kHz ist. Auch an diese beiden vielen Dank. <A HREF="MAILTO:salters@natlab.research.philips.com">Roelof Salters</A> schl&auml;gt vor, die Basiswiderst&auml;nde der Funktions-Transistoren deutlich zur verringern (4k7 gegen 5V, 10k gegen die Versorgungsspannung), da ansonsten bei gr&ouml;&szlig;eren Laststr&ouml;men die Verlustleistung an diesen zu gro&szlig; werden kann. <A HREF="MAILTO:KSegebre@t-online.de">K. Segebrecht</a> hat mich freundlicherweise auf einen Fehler im Schaltplan des Dekoder Nr.66415 (deltneu3.bmp) aufmerksam gemacht.
+<p>
+Au&szlig;erdem kann ich mit dem Schaltplan des <A HREF="66031.zip">Delta-TELEX-Dekoders Nr.66031</A> dienen. Hierbei gibt es nicht viel zu erkl&auml;ren; der Spezial-Chip 701.21 managt alles. Ich habe auch keinen Weg gefunden, hier die Sonderfunktion zu aktivieren. Eingehende Untersuchungen haben erbracht, da&szlig; M&auml;rklin die ICs 701.21(A/B) offenbar mit und ohne Sonderfunktion fertigen l&auml;&szlig;t.<br>
+<A HREF="MAILTO:s.grob@bigfoot.de">Siegfried Grob</a> hat eine andere Ausf&uuml;hrung des 66031 analysiert; dessen <A
+HREF="http://www.bogobit.de/66031/index.html">Schaltung sowie Platine</A> sieht deutlich anders aus. Er hat die zus&auml;tzlich vorhandene Schaltung auch analysiert und versucht, eine Erkl&auml;rung hierf&uuml;r zu finden. Wie vieles bei M&auml;rklin ist auch dies etwas r&auml;tselhaft.
+<p>
+Ebenfalls ohne weitere Erkl&auml;rung ist die <A HREF="http://home.t-online.de/home/c.j.schroeder/m66032.gif">Schaltung des 66032-Dekoders</A>, die wir <A HREF="MAILTO:C.J.Schroeder@t-online.de">Dipl.-Ing C. Joachim Schr&ouml;der</a> zu verdanken haben. Auch hier ist ein Chip - der 701.43A - die zentrale und im wesentlichen allein ma&szlig;geblich Instanz; die Funktion der Motortreiber (IRF7103) und der Treiber f&uuml;r Licht und TELEX (BST52) ist offenkundig.
+<p>
+<A NAME="funktion"></A><H2><FONT  SIZE=+3>Delta-Dekoder mit Sonderfunktionsausgang</FONT></H2>
+Die &Uuml;berschrift ist etwas irref&uuml;hrend - denn es gibt nicht "den" einen Delta-Dekoder. Es gibt verschiedene Generationen - erkennbar an dem verwendeten IC - der Delta-Dekoder in verschiedenen Versionen. Bekannt sind Delta-Dekoder folgender Generationen entsprechend der verwendeten ICs:
+<p>
+I - 701.13<br>
+II - 701.17(b)<br>
+III - 701.21A/B<br>
+IV - 701.43
+<p>
+Der <A HREF="#ddi+ii">Umbau der Delta-Dekoder I und II</A> (701.13 oder 701.17(b)) ist elektrisch identisch; lediglich unterschiedliche Platinenlayouts erfordern ein ggfs. abweichendes Vorgehen.<br>
+Ein - so einfacher - <A HREF="#ddiii">Umbau des Delta-Dekoders III (701.21A/B)</A> wie bei den Typen I und II ist leider nicht m&ouml;glich. In seinem IC 701.21A ist der Funktiondsausgang chargenabh&auml;ngig aktiviert oder deaktiviert. Es gibt zwar ICs 701.21A/B mit aktiviertem Funktionsausgang in anderen Dekodern - diese werden aber &uuml;blicherweise nicht in Delta-Dekodern verbaut. Dennoch habe ich eine M&ouml;glichkeit entwickelt, wie man diesen Dekoder - wenn man ihn nun schon einmal hat, nicht wegwerfen will oder nicht anderweitig verwenden oder verkaufen kann - mit der Extra-Funktion (und ein paar Gimmicks mehr) ausstatten kann.<br>
+Der <A HREF="#ddiv">Umbau des Delta-Dekoders der "IV. Generation" </A> (701.43) - bei dem man sich etwas schwer tut, ihn vorbehaltlos als "Delta-Dekoder" zu bezeichnen - wiederum ist recht einfach m&ouml;glich. Aus Zeitgr&uuml;nden komme ich aber vorerst nicht dazu, dies zu beschreiben.
+<p>
+<center><IMG SRC="bahn8.gif" width=40% BORDER=0></A></center>
+<p>
+<A NAME="ddi+ii"></A>
+</A><H2><FONT  SIZE=+3>Sonderfunktion f&uuml;r Delta-Dekoder I und II</FONT></H2>
+<IMG SRC="http://www.miba.de/spezial/spezial/37/sp3766m.jpg" WIDTH=340 HEIGHT=195 HSPACE=5 VSPACE=5 ALIGN=left>An <A HREF="http://www.marklin.com/subdir/digital/delta-function.html">anderer Stelle</A> ist beschrieben, wie der "ganz" alte Delta-Dekoder - erkennbar an dem Fehlen der DIP-Schalter und der Einstellung der Adressen mittels L&ouml;tbr&uuml;cken - um den Funktionsausgang erweitert werden kann. Hier beschreibe ich den Umbau der Delta-Dekoder Nr. 6603, die fast ausschlie&szlig;lich das IC 701.17 onboard haben.  Bei seinem Nachfolger, dem Delta-Dekoder 66031 mit dem 701.21 onboard, ist dies, wie oben erw&auml;hnt, so leider nicht m&ouml;glich.
+<p>
+Mittlerweile habe ich auch herausgefunden, wie die vier Extra-Funktionen, die bei Verwendung des <a href="motoueb.htm">neuen Protokolls</a> m&ouml;glich sind, aktiviert werden. Dieses ist <A HREF="#4ef">unten</A> n&auml;her beschrieben.
+<p>
+<h3><FONT  SIZE=+2>F&uuml;r wen</FONT></h3>
+<p>
+Da ich nur Dekoder mit den Chips 701.17(b) und 701.13 besitze, kann ich nur den Umbau dieser Dekoder beschreiben. Ob sich &auml;ltere Dekoder ebenfalls umbauen lassen, vermag ich nicht zu beurteilen. Ferner bezieht sich diese Beschreibung auf die normalen Delta-Dekoder; spezielle - besonders kleine - Delta-Dekoder m&ouml;gen eine andere Platine besitzen.
+<p>
+<A NAME="funktion"></A><h3><FONT  SIZE=+2>Funktion</FONT></h3>
+<p>
+Der 701.13/701.17(b) verf&uuml;gt &uuml;ber die richtungsabh&auml;ngige Sonderfunktion, mit der normalerweise das Licht gesteuert wird. Bei dem Digital- und dem 6090-Dekoder sind die entsprechenden Ausg&auml;nge der Chips beschaltet. Bei fast allen Delta-Dekodern befinden sich zwar alle hierf&uuml;r erforderlichen Bauteile auf der Platine. M&auml;rklin hat diese Sonderfunktionsausg&auml;nge aber nicht beschaltet, sondern die f&uuml;r die Funktion zust&auml;ndigen Treibertransistoren absichtlich nur an den Motor-Ausgang geschaltet. Damit soll den Kunden offenbar ein Anreiz gegeben werden, die mitbezahlten Delta-Dekoder wegzuwerfen und wesentliche teurere Digital- oder 6090-Dekoder zu kaufen. Als Kehrseite dieser kundenunfreundlichen Politik ist der Umbau der Delta-Dekoder auch recht einfach - auch wenn sich M&auml;rklin bei den neuen Serien bem&uuml;ht hat, diese durch &Auml;nderung des Platinenlayouts zu erschweren. Der nachfolgend beschriebene Umbau ist auch in <A HREF="http://www.miba.de/spezial/spezial/37/66.htm">MIBA Spezial 37</A> erl&auml;utert.
+<p>
+<A NAME="deltafertig"></A><IMG SRC="delta3.jpg" WIDTH=343 HEIGHT=202 ALIGN=left hspace=10>Somit beschr&auml;nken sich die &Auml;nderungen darauf, die Verbindung der Treibertransistoren zu den Motorausg&auml;ngen aufzutrennen und eine Verbindung zu den Sonderfunktionsausg&auml;ngen herzustellen sowie das Anl&ouml;ten von zwei Lastwiderst&auml;nden. Die Ausg&auml;nge des 701.13/701.17(b) sind n&auml;mlich vom Typ "open collector", so da&szlig; sie &uuml;ber einen Lastwiderstand an die positive Versorgungsspannung gelegt werden m&uuml;ssen. Diese &Auml;nderungen sind aus den Schaltpl&auml;nen ersichtlich. Soll an die Ausg&auml;nge der <A HREF="telexsf.htm">Licht/TELEX-Zusatz</A> angeschlossen werden, so m&uuml;ssen diese Lastwiderst&auml;nde aber einen Wert von 4k7 haben.<br>
+Die dort ebenfalls eingezeichnete &Auml;nderung an der Beleuchtung (Betriebsspannung statt Schienen-Masse/Lok-Chassis) ist <STRONG>nicht</STRONG> erforderlich, um den Delta-Dekoder mit der Zusatzfunktion auszur&uuml;sten; Sie k&ouml;nnen den gemeinsamen Anschlu&szlig; an dem Geh&auml;use (braunes Kabel) lassen. Die vorgeschlagene &Auml;nderung hat aber den Vorteil, da&szlig; das Licht gleichm&auml;&szlig;ig brennt und nicht mehr flackert. Wichtig ist allerdings, da&szlig; kein Pol der Lampenfassung mit dem Lok-Chassis verbunden ist. Dies ist bei den neueren Loks mit den kleinen Steckl&auml;mpchen meist der Fall. Bei &auml;lteren Loks m&uuml;ssen Sie die Fassung unbedingt vom Geh&auml;use isolieren. <br>
+Das nebenstehende Bild zeigt das Ergebnis dieser Operation.
+<p>
+<h3><FONT  SIZE=+2>Wie</FONT></h3>
+<p>
+<IMG SRC="delta2.jpg" WIDTH=373 HEIGHT=205 align=left hspace=10>Aus der nebenstehen Abbildung sind die f&uuml;r die anstehende Operation relevanten &Ouml;rtlichkeiten erkennbar, n&auml;mlich die Sonderfunktionsaug&auml;nge Pin 6 und 7, die ggfs. zu entfernenden 680-Ohm-Widerst&auml;nde sowie die Kathode der Z-Diode, von der die f&uuml;r die Lastwiderst&auml;nde erforderlichen 5V abgegriffen werden k&ouml;nnen. Die neueren Dekoder haben aber ein etwas abweichendes Layout.
+<p>
+Es d&uuml;rfte zwar selbstverst&auml;ndlich sein, aber ich m&ouml;chte dennoch ausdr&uuml;cklich darauf hinweisen, da&szlig; man sich nur mit einem geh&ouml;rigen Ma&szlig; von L&ouml;terfahrung an dieser Operation wagen und den 100W-L&ouml;tkolben hierbei im Schrank lassen sollte. Empfehlenswert ist ein 8W-L&ouml;tkolben mit sehr d&uuml;nner Spitze, eine ruhige Hand und scharfe, am besten lupenbewehrte Augen. Bedenden Sie unbedingt, da&szlig; Sie bei einer Besch&auml;digung des 701.13/701.17(b) den Dekoder wegwerfen oder nur noch als Ersatzteildepot verwenden k&ouml;nnen, denn die kundenfreundliche Politik von M&auml;rklin sorgt daf&uuml;r, da&szlig; Sie nur fabrikneue Waren erhalten und nicht in die Verlegenheit kommen, einen 701.13/701.17b(b) ausl&ouml;ten und ersetzen zu m&uuml;ssen: Sie bekommen Ersatz weder f&uuml;r Geld noch f&uuml;r gute Worte. Ich spreche aus eigener, leidvoller Erfahrung. Sie l&ouml;ten auf eigene Gefahr - f&uuml;r Sch&auml;den bin ich nicht verantwortlich.
+<p>
+<IMG SRC="delta1.jpg" WIDTH=359 HEIGHT=205 HSPACE=10 ALIGN=left>Als erstes m&uuml;ssen Sie den Quartz links vom 701.13/701.17(b) nebst Plastik-Masse von der Platine l&ouml;sen und vorsichtig nach oben/hinten biegen.<br>
+Danach m&uuml;ssen Sie entweder die beiden 680-Ohm-Widerst&auml;nden abl&ouml;ten oder deren Verbindung zu den Motorausg&auml;ngen des 701.13/701.17(b) - Pins 9 und 10 auf der rechten Seite unten - unterbrechen. Auf den Bildern sind die Widerst&auml;nde belassen worden und die Verbindungen unterbrochen. Bei den neueren Dekodern mit dem ZDS1000 als Motortreiber haben Sie keine andere Wahl als die beiden Widerst&auml;nde abzul&ouml;ten.<br>
+Bei diesen neuen Dekoder m&uuml;ssen Sie auch die Verbindungen von Pin 6 und 7 zu Pin 8 mit einem scharfen Messer oder Skalpell beseitigen. Diese sollen offenbar die hier beschriebene Erweiterung erschweren. Oder aber Sie l&ouml;ten die Pins 6 und 7 ab und biegen sie vorsichtig etwas nach oben; es empfiehlt sich dann, etwas Isolierband zwischen Pins und Platine zu kleben.<br>
+Jetzt verbinden Sie Pins 6 und 7 mit den rechten (freigewordenen) Pads der 680-Ohm-Widerst&auml;nde bzw. den Basis-Anschl&uuml;ssen der beiden Transistoren, die meist die Aufschrift "C6" tragen, oder den mit diesen verbunden linken Pads der Widerst&auml;nde, wenn Sie diese entfernt haben. Bei den neueren Dekodern ist Pin 6 mit dem Basis-Anschlu&szlig; des rechten Transistors zu verbinden. Ich benutze hierf&uuml;r d&uuml;nne CuLa-Draht. Sie k&ouml;nnen aber jeden anderen isolierten d&uuml;nnen Draht verwenden. Die nebenstehende Abbildung zeigt diesen Zustand der Operation.<br>
+Zum Finale l&ouml;ten Sie zwei Widerst&auml;nde mit einem Wert von 10k (<A HREF="#deltafertig">oder 4k7</A>) auf der einen Seite an Pins 6 und 7 des 701.13/701.17(b) oder die damit verbundenen Pads der 680-Ohm-Widerst&auml;nde und mit der anderen Seite an die Kathode der Z-Diode. Da der Platz nicht eben &uuml;ppig bemessen ist, sollten Sie sehr kleine Widerst&auml;nde (1/10 W) verwenden. Die im dem <A HREF="#deltafertig">obigen Bild</A> erkennbaren 1/4W-Widerst&auml;nden sind schon etwas zu gro&szlig;. Wenn Sie die 680-Ohm-Widerst&auml;nde entfernt haben, k&ouml;nnen Sie die 10k-Widerst&auml;nde (<A HREF="#deltafertig">oder 4k7</A>) auch direkt auf die freigewordenen und mit den Basisanschl&uuml;ssen der Transistoren verbundenen Pads l&ouml;ten.
+<p>
+Kontrollieren Sie sorgf&auml;ltig, da&szlig; Sie alle und nur die erforderlichen Verbindungen vorgenommen haben und keinerlei L&ouml;tbr&uuml;cken entstanden sind. Dann biegen Sie den Quartz wieder zur&uuml;ck und verdrahten die L&auml;mchen ggfs. zus&auml;tzlich wie oben beschrieben und in den Schaltpl&auml;nen separat markiert. Erforderlich f&uuml;r das Nachr&uuml;sten der Sondernfunktion ist dies aber nicht.
+<p>
+<center><IMG SRC="bahn8.gif" width=40% BORDER=0></A></center>
+<p>
+<A NAME="ddiii"></A>
+</A><H2><FONT  SIZE=+3>Sonderfunktion f&uuml;r Delta-Dekoder III</FONT></H2>
+<IMG SRC="http://www.miba.de/miba/01/12/1201036m.jpg" WIDTH=340 HEIGHT=235 HSPACE=5 VSPACE=5 ALIGN=left>Der Umbau des Delta-Dekoders der 3. Generation - erkennbar an dem IC 701.21A/B onboard - ist leider deutlich aufwendiger als bei den <A HREF="#ddi+ii">alten Delta-Dekodern</A> mit dem 701.13 oder 701.17(b). Genau genommen erfordert er den zus&auml;tzlichen Bau eines speziellen "Sonderfunktions-Dekoders", der jedoch dank der SMD-Technik so klein aufgebaut werden kann, da&szlig; er bequem auf den Delta-Dekoder geklebt werden kann. <br>
+Neben der Sonderfunktion bietet er die M&ouml;glichkeit, zugleich mit z.B. dem Licht eine TELEX-Kupplung wie <A HREF="telexsf.htm">anderweitig beschrieben</A> anzusteuern, so da&szlig; er auch f&uuml;r die neue ferngesteuerte Kupplung von ROCO verwendbar ist. Au&szlig;erdem ist eine weitere Zusatzfunktion wie ein Flip-Flop &uuml;ber die normale Sonderfunktion zu schalten - die ma&szlig;geblichen Bauteile daf&uuml;r sind ohnehin vorhanden, so d&szlig;a man dieses Gimmick "mitnehmen" kann.
+<p>
+Aus Zeitgr&uuml;nden mu&szlig; ich mich gegenw&auml;rtig aber darauf beschr&auml;nken, im &uuml;brigen auf meine entsprechende Bauanleitung in <A HREF="http://www.miba.de/miba/01/12/36.htm">MIBA 12/01 S.36</A> zu verweisen. Um einen Eindruck zu gewinnen, gibt hier aber den <A HREF="66031add.gif">Schaltplan</A> dieses add-on sowie den <A HREF="66031b.gif">Best&uuml;ckungsplan</A> dessen Platine.
+<p>
+Wegen Platine und ggfs. Bauteile kann man beim <A HREF="service.htm">Service</A> anfragen.
+<p>
+<center><IMG SRC="bahn8.gif" width=40% BORDER=0></A></center>
+<p>
+<A NAME="ddiv"></A>
+<H2><FONT  SIZE=+3>Sonderfunktion f&uuml;r Delta-Dekoder IV</FONT></H2>
+<!--IMG SRC="http://www.miba.de/miba/02/02/0202034m.jpg" WIDTH=400 HEIGHT=326 HSPACE=5 VSPACE=5 ALIGN=left--><br>
+<center>Demn&auml;chst in diesem Theater ...</a></center>
+<p>
+<center><IMG SRC="bahn8.gif" width=60% BORDER=0></A></center>
+<p>
+<A NAME="adressen"></A><H2><FONT  SIZE=+3>Delta-Dekoder mit mehr Adressen</FONT></H2>
+<p>
+<center>Dieses Thema ist leider noch immer in Vorbereitung.</center>
+<p>
+<center><IMG SRC="bahn8.gif" width=60% BORDER=0></A></center>
+<P>
+<A NAME="4ef"></A><H2><FONT  SIZE=+3>Vier Extra-Funktionen f&uuml;r Dekoder mit dem 701.17(b) </font><br><font size=+1>am Beispiel des Delta-Dekoders</font></H2>
+<IMG SRC="http://www.miba.de/miba/02/02/0202034m.jpg" WIDTH=400 HEIGHT=326 HSPACE=5 VSPACE=5 ALIGN=left>Bekanntlich bietet das <a href="motoueb.htm">neue Datenformat</a> nicht nur die definitive Kontrolle der Richtung sondern auch bis zu vier weitere Funktionen, die als Extra-Funktionen bezeichnet werden. M&auml;rklin hat dieses auch f&uuml;r H0 m&ouml;gliche Feature bislang verschwiegen; auf auf eine direkte Anfrage erhielt ich den Bescheid, da&szlig; in absehbarer Zeit nicht an eine Nutzung in H0 und entsprechende Dekoder gedacht sei. Etwa ein halbes Jahr sp&auml;ter hat M&auml;rklin aber die ersten H0-Loks mit derartigen Dekodern inseriert - ein weiteres Beispiel f&uuml;r die kundenunfreundliche Desinformationspolitik der Firma M&auml;rklin.
+<p>
+<h3><FONT  SIZE=+2>F&uuml;r wen</FONT></h3>
+<p>
+Das neue Datenformat wird nur von neueren Dekodern ab den Chips 701.17 bzw. 701.17b ausgewertet, d.h. ein Umbau der Dekoder mit dem Ziel, die Extra-Funktionen zu nutzen, ist mit den &auml;lteren Dekodern - z.B. denen mit dem 701.13 - nicht m&ouml;glich.<br>
+Der Umbau erfordert etwas diffizile L&ouml;tarbeit am 701.17(b); da dieser recht empfindlich ist, leicht auf der Strecke bleiben kann und M&auml;rklin sich nach wie vor weigert, diese Chips als Ersatzteil einzeln zu liefern, sollte man sich das Risiko vor Augen f&uuml;hren.<br>
+Der Umbau besteht darin, vier Pins des Chips abzul&ouml;ten oder/und neu zu verdrahten. Je nach Dekodertyp ist dies mehr oder weniger Arbeit. Au&szlig;erdem ist ein weiteres IC sowie ein oder zwei Transistoren nebst Widerst&auml;nden anzuschlie&szlig;en.
+<p>
+<h3><FONT  SIZE=+2>Funktion</FONT></h3>
+<p>
+<IMG SRC="extrafn1.gif" WIDTH=250 HEIGHT=271 ALIGN=right>Das Prinzip der Auswertung der vier Extrafunktionen beruht darauf, da&szlig; u.a. diese entsprechenden Daten vom 701.17(b) seriell in ein Schieberegister &uuml;bertragen und an dessen Ausg&auml;ngen zur Verf&uuml;gung gestellt werden. Im "Vollausbau", d.h. zu Benutzung von allen vier Extra-Funktionen EF1 bis EF4, sind zwei CMOS-Schieberegister vom Typ 4094 erforderlich. In H0 werden aber normalerweise zwei Extrafunktionen v&ouml;llig gen&uuml;gen, so da&szlig; man mit einem 4094 auskommt. <br>
+Die Ansteuerung des 4094, also die - Bereitstellung der Daten-, Takt- und Strobe-Signale - erfolgt &uuml;ber die Pins 4, 6 und 7 des 701.17(b). Allerdings k&ouml;nnen hierdurch die Sonderfunktionen (Licht) nicht mehr &uuml;ber Pins 6 und 7 des 701.17(b) gesteuert werden. Dies ist aber nicht besonder schlimm, da diese Funktion nun auch &uuml;ber das Schiebregister gesteuert wird. Bei einer ggfs. <A HREF="#funktion">bereits vorhandenen Ausgangsschaltung</A> oder einem der seltenen 6090-Dekoder mit dem 701.17 erfordert dies aber eine Neuverdrahtung der Ausgangstreiber. Die nebenstehende Abbildung zeigt die Zuordnung der Pins des 701.17(b) zu den Anschl&uuml;ssen der 4094 sowie deren Ausg&auml;nge, soweit sie hier von Interesse sind.
+<p>
+<h3><FONT  SIZE=+2>Wie</FONT></h3>
+<p>
+<A HREF="deltexfu.zip"><IMG SRC="deltexfu.gif" WIDTH=300 HEIGHT=248 align=left hspace=10></A>F&uuml;r diese Erweiterung mu&szlig; Pins 3, 4 und 5 von der Platine abgel&ouml;tet werden. Je nach Dekodertyp kann dies auch bei Pins 6 und 7 erforderlich sein oder deren Anschlu&szlig; gegen Masse mu&szlig; aufgehoben werden (bei Pin 3 ist dies meist nicht m&ouml;glich, da die Masse-Verbindung meist unter dem Chip liegt). Pin 3 bleibt frei; Pin 5 wird &uuml;ber einen Widerstand 270k an Schienen-Masse bzw. Lok-Chassis (braunes Kabel) gelegt. Pins 4, 6 und 7 werden wie aus der Abbildung ersichtlich mit dem 4094 verbunden.<br>
+In dieser Schaltung verliert der 4094 zugunsten des "Ged&auml;chtnisses" des 701.17/b) bei einem Spannungsausfall seinen Inhalt - dieser wird jedoch einige Sekunden (die Zeit ist abh&auml;ngig von dem Steuerger&auml;t) nach erneuter Spannungszufuhr durch den 701.17(b) wieder hergestellt. Je nach angeschlossener Last m&uuml;ssen die Basiswiderst&auml;nde der an den 4094 angeschlossenen Transistoren auf 10k verringert oder aber Darlington-Tranistoren oder FETs eingesetzt werden.<br>
+Einen Nachteil dieser Erweiterung m&ouml;chte ich aber hervorheben: Danach ist kein Betrieb im Analog-Modus mehr m&ouml;glich, da der 24V-Umschaltimpuls nicht mehr erkannt wird.<br>
+Die nebenstehende verkleinerte Abbildung zeigt die erforderlichen &Auml;nderungen am Beispiel des Schlepptender-spezifischen Delta-Dekoders, der sich hierf&uuml;r besonder gut eignet, weil einige Null-Ohm-Widerst&auml;nde als Br&uuml;cken vorhanden sind und leicht entfernt werden k&ouml;nnen. Au&szlig;erdem bietet der Tender gen&uuml;gend Platz f&uuml;r die aus herk&ouml;mmlichen Bauteilen aufgebaute Zusatzschaltung. <br>
+Alternativ kann die Spannungsversorgung auch am Puffer-Elko, also an der Anode der Z-Diode bzw. der Kathode der Puffer-Diode abgegriffen werden. Dadurch verliert der 4094 bei einem Spannungsausfall zwar nicht seinen Inhalt, allerdings wird dadurch die Zeitdauer des "Ged&auml;chtnisses" des Dekoders beeinflu&szlig;t<br>
+Eine weitere Variante schl&auml;gt <A HREF="MAILTO:peter.troester@t-online.de">Peter Tr&ouml;ster</A> vor: Der OE-Eingang des 4094 wird nicht an die Spannungversorgung (Pin 15) gelegt sondern &uuml;ber einen Widerstand von ca. 220k an die Kathode der Z-Diode bzw. die Anoder der Puffer- Diode geschaltet, also wie aus dem Schaltplan (ohne Widerstand) ersichtlich. Dadurch werden die Ausg&auml;nge des 4094 bei einem Spannungsausfall ausgeschaltet, sein Inhalt wird hierdurch jedoch nicht ber&uuml;hrt.<br>
+Die eingezeichneten und mit "*" markierten Dioden stellen nur einen Vorschlag dar, wie m&ouml;glicherweise die Kompatibilit&auml;t zum Analog-Betrieb hergestellt werden kann. Ich habe diese Beschaltung <STRONG>nicht</STRONG> ausprobiert; sie ist ein Resultat der Analyse der normalen 24V-Detektor-Schaltung sowie des 6095-Dekoders. Sie m&uuml;&szlig;te funktionieren. Da ich aber eine Zerst&ouml;rung des 701.17/b) nicht ausschlie&szlig;en kann und mir der Analog-Betrieb nicht besonders am Herzen liegt, warte ich auf einen mutigen Auch-Analog-Fahrer, der einen Dekoder riskiert.<br>
+Sie k&ouml;nnen den Schaltplan als ZIP-File downloaden und in Ruhe studieren. Zu diesem Zweck klicken Sie bitte die verkleinerte Abbildung an. Voraussetzung ist allerdings, da&szlig; Ihr Browser ZIP-Files als Datei speichert bzw. anfragt, was er mit dem File machen soll. Dies l&auml;&szlig;t sich bei allen g&auml;ngigen Browsern einstellen - z.B. beim Netscape-Navigator unter "Options / GeneralPreferences / Helpers".<br>
+<A HREF="http://www.pallund.dk/convert.htm#c">Kenneth Pallund</A> bietet auf Grundlage dieser Erl&auml;uterungen ebenfalls eine Beschreibung des Umbaus an.
+<p>
+<IMG SRC="deltaef1.gif" WIDTH=189 HEIGHT=115 align=left hspace=10><IMG SRC="deltaef2.gif" WIDTH=113 HEIGHT=90 align=right hspace=10>Wegen Platine und ggfs. Bauteile kann man beim <A HREF="service.htm">Service</A> anfragen. Dieser Beitrag ist in &auml;hnlicher Form auch in <A HREF="http://www.miba.de/miba/02/02/34.htm">MIBA 2/02 S.34</A> erschienen.
+<p>
+Ich m&ouml;chte an dieser Stelle <A HREF="http://microwave.emi.dtu.dk">Bo Braendstrup</A> und auch <A HREF="http://rr-vs.informatik.uni-ulm.de:80/RR/Maedig/Maedig.html">Dr. Konrad Froitzheim</A> f&uuml;r die geleistete freundliche Unterst&uuml;tzung danken.
+<p>
+<center><IMG SRC="bahn8.gif" width=60% BORDER=0></A></center>
+<p>
+<center><A HREF="digital.htm"><I>Homepage</I></A> | <A href="edeltadi.htm"> <IMG SRC="uk-flag.gif" align=top height=20 width=40 ALT="Deutsch"></a></center>
+<P>
+<center><IMG SRC="bahn6.gif" BORDER=0></A></center>
+<P>
+</BODY>
+<P>
+<FONT SIZE=3>
+<address>
+<center>&copy; 1996-2003 by Dr. M. Michael K&ouml;nig | Antoniter-Weg 11 | 65843 Sulzbach/Ts. |
+<A HREF="homepag.htm#kontakt">Kontakt</A> |
+Stand: 4.2.2003</center>
+<P>
+</address>
+<FONT SIZE=2>
+<A HREF="http://www.drkoenig.de/digital/deltadig.htm">Revisit this page</A>
+</HTML>

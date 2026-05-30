@@ -1,0 +1,776 @@
+<HTML>
+<HEAD><TITLE>Dr. K&ouml;nig\xb4s M&auml;rklin-Digital-Page: Daten&uuml;bertragung auf dem I2C-Bus | von Walter Fiedler | Modelleisenbahn -
+M&auml;rklin (M\xe4rklin - Maerklin) - Digital</TITLE></HEAD>
+<BODY BACKGROUND="back3.gif">
+<!--hr-->
+<FONT SIZE=4>
+<center><IMG SRC="bahn7.gif" align=middle BORDER=0></center><br>
+<center><h3><IMG SRC="mk2.gif" ALT="Dr. K&ouml;nig\xb4s M&auml;rklin-Digital-Page" WIDTH=376 HEIGHT=32></h3></center>
+<p>
+<center><IMG SRC="bahn8.gif" BORDER=0></center><br>
+<center><h2><FONT SIZE=+3>Daten&uuml;bertragung auf dem I2C-Bus
+</FONT></h2></center>
+<p>
+<HR>
+<p>
+<i>Die vorliegende Dokumentation stammt von Herrn Walter Fiedler, Th&uuml;ringer Stra&szlig;e 22, 63329 Egelsbach. Da er keinen Internet-Zugang besitzt, hat er diese Form der Ver&ouml;ffentlichung gew&auml;hlt.<br>
+Zu dieser Dokumentation kann ich leider nichts sagen; etwaige Fragen und Anmerkungen richten Sie daher bitte direkt an Herrn Fiedler. Mein Beitrag ersch&ouml;pft sich der WWW-gerechten Aufbereitung und Darstellung; am Inhalt habe ich nichts ge&auml;ndert; das Original gibt es auch als <A HREF="i2c.zip">download</A>. Aus diesem Grund mu&szlig; ich auch jede Verantwortung f&uuml;r den Inhalt dieser Dokumentation ablehnen.</i>
+<p>
+<hr>
+<A NAME="Contents"></A>
+<H3><U>Inhalt</U> </H3>
+<UL>
+<li> <A HREF="#einl">Einleitung</A><BR>
+<li> <A HREF="#i2c">Der I2C-Bus</A><BR>
+<li> <A HREF="#kenn">Ger&auml;te-Kennungen beim M&auml;rklin Digital-System</A><BR>
+<li> <A HREF="#adress">Adressierung der Steuerpulte</A><BR>
+<li> <A HREF="#steuer">Initialisierung der Steuerpulte</A><BR>
+<li> <A HREF="#lokho">Steuerung von Lokomotiven im H0-Modus</A><BR>
+<li> <A HREF="#lokmot">Steuerung von Lokomotiven bei erweitertem Motorola-Format</A><BR>
+<li> <A HREF="#funkt">&Uuml;bertragung von Funktionsbefehlen</A><BR>
+<li> <A HREF="#weich">&Uuml;bertragung von Weichenstellbefehlen</A><BR>
+<li> <A HREF="#interf">Betrieb mit Interface (6050 bzw. 6051)</A><BR>
+<li> <A HREF="#kummu">Unterschiede im Kommunikationsablauf zwischen Central Unit (6020) und Control Unit (6021)</A><BR>
+<li> <A HREF="#nidok">Nicht dokumentierte Funktionen der Control Unit (6021)</A><BR>
+<li> - <A HREF="#daten">Daten l&ouml;schen</A><BR>
+<li> - <A HREF="#80adr">Alle 80 Adressen in Refresh-Zyklus aufnehmen</A><BR>
+<li> - <A HREF="#versi">Versionstest</A><BR>
+<li> - <A HREF="#betr">Herstellen des letzten Betriebszustandes</A><br>
+<p>
+</ul>
+<p>
+<H3><A NAME="einl"><U>Einleitung</U></A></H3>
+In diesem Dokument wird der Datenaustausch der M&auml;rklin Digital-Eingabe-Ger&auml;te &uuml;ber den in den
+seitlichen Steckverbindern integrierten I2C-Bus beschrieben. Dabei werden, wie ich hoffe, alle nur
+erdenklichen M&ouml;glichkeiten von Schalt- bzw. Steuerungs-Kommandos in den unterschiedlichsten Betriebs-
+Situationen des Digital-Systems ber&uuml;cksichtigt.<BR>
+Alle Angaben &uuml;ber das Befehls-Format beziehen sich auf den Betrieb des Digital-Systems zusammen mit
+der Control Unit (6021) als Zentrale. Wenn diese Angaben im Vergleich zur Central Unit (6020)
+unterschiedlich aussehen, wird dies entsprechend beschrieben. Ansonsten ist noch das Kapitel
+"Unterschiede im Kommunikationsablauf zwischen Central Unit (6020) und Control Unit (6021)" zu
+beachten.<BR>
+Diese Informationen wurden mit Hilfe einer zus&auml;tzlich an den I2C-Bus angeschlossenen selbstgebauten
+elektronischen Schaltung mit Z&auml;hlern und Schieberegistern gewonnen. Da keine speziellen Messger&auml;te wie
+Oszilloskop oder &Auml;hnlichem verwendet wurden, kann keine Aussage &uuml;ber das jeweilige zeitliche Verhalten
+wie etwa Taktfrequenz oder &Auml;hnlichem getroffen werden.
+<P>
+Hinweis:<BR>
+An einigen Stellen wird in diesem Dokument &uuml;ber die Fahrtrichtung geschrieben. Dabei ist zu beachten,
+da&szlig; nur neuere Delta- oder Digital-Decoder (mit ICs vom Typ 701.17, 701.21 und 701.22) diese absolute
+Fahrtrichtungs-Information interpretieren k&ouml;nnen. Alle &auml;lteren Decoder (mit ICs vom Typ ZyMOS und
+701.13) "verstehen" diese absolute Fahrtrichtungs-Information nicht, sondern &auml;ndern die Fahrtrichtung nur
+durch die Umschalt-"Fahrstufe" "1". Daher kann es bei diesen &auml;lteren Decodern vorkommen, da&szlig; die in den
+Steuerger&auml;ten Control 80f (6036) und Infra Control 80f (6070) angezeigte Fahrtrichtung nicht mit der
+tats&auml;chlichen Fahrtrichtung &uuml;bereinstimmt.
+<P>
+Gem&auml;&szlig; der Redensart "Irren ist menschlich" kann ich selbstverst&auml;ndlich keine Haftung bzw. Verantwortung
+f&uuml;r irgendwelche Sch&auml;den &uuml;bernehmen, die durch die Benutzung dieser Informationen entstehen
+k&ouml;nnten.<BR>
+<p>
+<H3><A NAME="i2c"><U>Der I2C-Bus</U></A></H3>
+Der I2C-Bus stellt eine bidirektionale, serielle &Uuml;bertragungseinrichtung zwischen einem oder mehreren
+sogenannten Master-System(en) und einem oder mehreren Slave-System(en) dar. M&auml;rklin digital verwendet
+ein sogenanntes "Multi-Master-System", d.h., da&szlig; verschiedene Ger&auml;te (z.B. das Control 80f (6036))
+zwischen dem Senden von Schalt- bzw. Steuerbefehlen und dem Empfang der dazugeh&ouml;rigen
+Best&auml;tigungsmeldung vom Slave-Betrieb auf Master-Betrieb umschalten.
+<p>
+Hinweis:<BR>
+Bei den Beispielen f&uuml;r Schalt- bzw. Steuer-Anforderungen sind teilweise zwei Stoppbits angegeben. Dies
+sind aber genaugenommen nicht zwei Stoppbits, sondern ein "scheinbares" Bit, das durch das Umschalten
+eines Ger&auml;tes vom Slave-Betrieb auf den Master-Betrieb ensteht und ein "normales" Stoppbit. Es ist im
+Einzelnen auch zu pr&uuml;fen, ob sich ein bestimmtes Ger&auml;t tats&auml;chlich auf einen anderen Betriebsmodus
+umstellt. Das ist beispielsweise beim Control 80 (6035) nicht der Fall.
+<p>
+Hardwareseitig besteht der I2C-Bus aus zwei Leitungen:
+<UL>
+<LI> SCLK, Seriell Clock = Taktleitung (wird von Master bedient)<BR>
+<LI> SDA, Seriell Data = Serielle Datenleitung (bidirektional).<BR>
+</UL>
+Diese beiden Leitungen sind bei den M&auml;rklin-Digitalger&auml;ten, die rechts an die Zentraleinheit angeschlossen
+werden, also Control 80 (6035), Control 80f (6036), Infra Control 80f (6070) sowie dem Interface (6050 bzw.
+6051) jeweils an den Steckerleisten auf Pin b4 (SCLK) bzw. auf Pin b2 (SDA); bei den Digital-Ger&auml;ten, die
+links an die Zentraleinheit angeschlossen werden, also Keyboard (6040), Switchboard (6041) bzw. dem
+Switchboard 2000 der Firma SES und dem Memory (6043) jeweils an den Steckerleisten auf Pin b14
+(SCLK) bzw. auf Pin b16 (SDA) herausgef&uuml;hrt.
+<p>
+Allgemein gilt beim I2C-Bus:
+<UL>
+<LI> Im Ruhezustand f&uuml;hren beide Leitungen High-Potential.<BR>
+<LI> Nur wenn die Taktleitung SCLK Low-Potential f&uuml;hrt, darf auf der Datenleitung SDA der Signalpegel
+gewechselt werden.<BR>
+<LI> Wenn die Taktleitung SCLK High-Potential f&uuml;hrt, mu&szlig; der Pegel der Datenleitung SDA stabil bleiben, das empfangende Ger&auml;t liest jetzt diese Daten von der Datenleitung SDA ein.<BR>
+<LI> Um eine &Uuml;bertragung einzuleiten, zieht das sendende Ger&auml;t die Datenleitung SDA ausnahmsweise
+w&auml;hrend SCLK=High auf Low-Potential. Daraufhin generiert das Master-Ger&auml;t das Taktsignal auf der
+Leitung SCLK.<BR>
+<LI> Das erste Byte bei der &Uuml;bertragung gibt immer die Empf&auml;nger-Adresse an, das zweite Byte die Sender-Adresse. Danach folgen beim M&auml;rklin Digital-System je nach Ger&auml;t bzw. je nach Befehlsart noch ein bzw. zwei Datenbytes.<BR>
+<LI> Nach 8 Bit = 1 Byte sendet der Empf&auml;nger jeweils 1 Bit = Low als Quittung. Fehlt diese Quittung, oder
+ist die &Uuml;bertragung beendet, wird ein Bit = Low als Stopp-Signal gesendet. Danach gehen beide
+Leitungen wieder auf Ruhepegel (beide Leitungen High).<BR>
+<LI> Nach dem Empfang eines Schalt- bzw. Steuer-Befehls wird der Befehl von der Zentrale best&auml;tigt.<BR>
+<LI> Nachdem die Zentrale die Ausf&uuml;hrung eines Befehls mit einer Best&auml;tigungsmeldung quittiert hat, gehen beide Leitungen (SDA und SCLK) wieder auf Ruhepegel (beide Leitungen High).<BR>
+</ul>
+<p>
+<H3><A NAME="kenn"><U>Ger&auml;te-Kennungen beim M&auml;rklin Digital-System</U></A></H3>
+Damit das M&auml;rklin Digital-System unterscheiden kann, um welche Art von Schalt- bzw. Steuerbefehlen es
+sich jeweils handelt, verwenden die verschiedenen Ger&auml;te-Typen unterschiedliche Kennungen in der
+jeweiligen Ger&auml;te-Adresse, und zwar in den Bits 5, 6 und 7. Die eigentliche Ger&auml;te-Adresse wird in den Bits
+1, 2, 3 und 4 angegeben. Bit 0 ist immer "0" (Ausnahme: Schaltbefehle f&uuml;r Extra-Funktionen "f1" bis "f4",
+die &uuml;ber das Interface (6050 bzw. 6051) gesendet werden).<BR>
+Die einzelnen Ger&auml;te-Kennungen lauten (XXXX = Ger&auml;tedresse im Bereich 0 bis 15):
+<p>
+Zentrale<BR>
+1111 1110
+<P>
+Lok-Steuerbefehle<BR>
+000X XXX0
+<P>
+Stellbefehle f&uuml;r Magnet-Artikel<BR>
+001X XXX0
+<P>
+Schaltbefehle f&uuml;r Extrafunktionen "f1" bis "f4" von Control 80f (6036)<BR>
+010X XXX0
+<P>Schaltbefehle f&uuml;r Extrafunktionen "f1" bis "f4" von Interface (6050 bzw. 6051)<BR>
+0100 0001
+<P>
+<H3><A NAME="adress"><U>Adressierung der Steuerpulte</U></A></H3>
+Nach dem Einschalten des Digital-Systems bzw. nach einem Reset m&uuml;ssen die rechts an der Zentraleinheit
+angeschlossenen Ger&auml;te wie Control 80 (6035), Control 80f (6036), Infra Control 80f (6070) und Interface
+(6050 bzw. 6051) adressiert werden.<BR>
+Damit sich w&auml;hrend dieser Adressierung immer nur ein Ger&auml;t angesprochen f&uuml;hlen kann, wird eine
+Kettenleitung zwischen den Ger&auml;ten verwendet.<BR>
+Vom Prozessor der Zentrale aus f&uuml;hrt diese Leitung an die Steckerleiste Pin b12 und von dort zum
+Prozessor des ersten angeschlossenen Ger&auml;tes. Vom Prozessor dieses Ger&auml;tes geht wiederum eine
+Leitung &uuml;ber Pin b12 an das n&auml;chste Ger&auml;t.<BR>
+Nach einem Reset f&uuml;hren diese Leitungen zun&auml;chst High-Potential. Zu Beginn der Initialisierungsphase
+zieht die Zentrale diese Ausgangsleitung auf Low-Pegel, generiert einen Startimpuls auf dem I2C-Bus und
+sendet die erste Adresse, Adresse "1" aus. Das erste angeschlossene Ger&auml;t quittiert das empfangene Byte
+mit einem Bit "0" und zieht seinerseits die Ausgangsleitung an Pin b12 auf Low-Potential.<BR>
+Die Zentrale generiert wieder einen Startimpuls und sendet die n&auml;chste Adresse aus. Das wiederholt sich
+so lange, bis entweder alle maximal verf&uuml;gbaren Adressen (15 Adressen bei Central Unit (6020) bzw. 10
+Adressen bei Control Unit (6021)) vergeben wurden oder das Quittungsbit durch ein nicht angeschlossenes
+Ger&auml;t "1" ist.<BR>
+Bei der Zentrale 6021 erh&auml;lt das darin eingebaute Fahrpult die Adresse "1".
+<P>
+Anmerkung:<BR>
+Seit dem dritten Quartal 2000 gibt es von M&auml;rklin ein neues Keyboard (6040).<BR>
+Zu erkennen sind diese Ger&auml;te daran, da&szlig; diese beim Verstellen der r&uuml;ckseitigen DIP-Schalter sofort das
+jeweils entsprechende LED-Bild f&uuml;r die aktuellen Magnetartikel-Adressen anzeigen und dar&uuml;ber hinaus
+auch immer die Stellungen aller m&ouml;glichen 256 Magnetartikel protokollieren.<BR>
+Dabei gilt: Wenn ein oder mehrere dieser neuen Ger&auml;te an eine Zentrale angeschlossen sind, vergibt die
+Zentrale immer alle maximal verf&uuml;gbaren Adressen, unabh&auml;ngig davon, wie viele Ger&auml;te der oben
+genannten Typen tats&auml;chlich angeschlossen sind. Das liegt daran, da&szlig; diese neuen Keyboards (6040)
+jedes Byte, das auf dem I2C-Bus &uuml;bertragen wird, mit einem Quittungsbit best&auml;tigen. Dieses Verhalten st&ouml;rt
+aber keineswegs bei der sonstigen Kommunikation innerhalb des Digital-Systems.
+<P>
+Die links an die Zentraleinheit angeschlossenen Ger&auml;te wie Keyboard (6040), Switchboard (6041) bzw.
+dem Switchboard 2000 der Firma SES brauchen nicht softwarem&auml;&szlig;ig adressiert zu werden. Bei diesen
+Ger&auml;ten erfolgt die Adressierung hardwarem&auml;&szlig;ig &uuml;ber die r&uuml;ckseitigen DIP-Schalter.
+<P>
+Hier ein Beispiel der softwarem&auml;&szlig;igen Adressierung. Dabei sind neben dem in der Control Unit (6021)
+eingebauten Fahrpult noch zwei weitere Ger&auml;te an dieser Seite der Zentrale angeschlossen. Es werden also
+insgesamt vier Adressen vergeben, aber nur drei Ger&auml;te sind vorhanden und quittieren den Empfang einer
+Adresse (Q = Quittungsbit).
+<P>
+Aufbau der Adressierungsbytes:<BR>
+<pre><FONT SIZE=+0>Adresse			Adresse			Adresse			Adresse
+0000 0010	0	0000 0100	0	0000 0110	0	0000 1000	1
+Ger&auml;t 1		Q	Ger&auml;t 2		Q	Ger&auml;t 3		Q	Ger&auml;t 4		Q
+</pre></font>
+<P>
+<H3><A NAME="steuer"><U>Initialisierung der Steuerpulte</U></A></H3>
+Nach dieser Adressierung m&uuml;ssen die Fahrpulte Control 80f (6036) und Infra Control 80f (6070) noch
+initialisiert werden. Dabei wird festgelegt, ob die in den Adre&szlig;-Anzeigen integrierten Fahrtrichtungs-
+Anzeigen betrieben werden oder nicht; und ob die Adre&szlig;-Eingabe f&uuml;r Funktionen den Bereich von "01" bis
+"99" erlaubt oder nur den Bereich von "01" bis "80". Der Adre&szlig;bereich von "01" bis "99" wurde f&uuml;r das
+damalige 2-Leiter-Digital-System (DCC-Format f&uuml;r H0 und Spur 1) verwendet. Bei der Control Unit (6021)
+werden die Adressen &uuml;ber "80" f&uuml;r besondere system-interne Funktionen verwendet (siehe Abschnitt "Nicht
+dokumentierte Funktionen der Control Unit (6021)" am Ende dieses Dokuments).<BR>
+Zur Initialisierung sendet jedes dieser genannten Ger&auml;te einen besonderen, bei allen Ger&auml;ten identischen
+Befehl an die Zentrale. Ist an der Control Unit (6021) das erweiterte Motorola-Format eingestellt (Schalter 2
+an der R&uuml;ckseite der Control Unit (6021) auf "ON"), werden diese Befehle vollst&auml;ndig best&auml;tigt.
+<P>
+Initialisierungsversuch f&uuml;r erweitertes Motorola-Format:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Datenbyte		Stoppbits
+1111 1110	0	1000 0000	0	0110 1111	0	0100 0000	0	10
+Zentrale	Q	Sonder-Adr.	Q	Dez. 111	Q			Q
+</pre></FONT>
+<P>
+Die vollst&auml;ndige Best&auml;tigung lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Datenbyte		Stoppbit
+1000 0000	0	1111 1110	0	0110 1111	0	0100 0000	0	0
+Sonder-Adr.	Q	Zentrale	Q	Dez. 111	Q			Q
+</pre></FONT>
+<P>
+Befindet sich die Control Unit (6021) im H0-Modus (Schalter 2 an der R&uuml;ckseite auf "OFF"), oder sind die
+Fahrpulte Control 80f (6036) bzw. Infra Control 80f (6070) an die Central Unit (6020) angeschlossen, wird
+der erste Initialisierungsversuch durch eine unvollst&auml;ndige Best&auml;tigung nicht anerkannt.
+<P>
+Diese unvollst&auml;ndige Best&auml;tigung lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Stoppbit
+1000 0000	0	0
+Sonder-Adr.	Q
+</pre></font>
+<P>
+Damit wird dieser Betriebsmodus der Fahrpulte von der Zentrale nicht akzeptiert.<BR>
+Die Fahrpulte Control 80f (6036) und Infra Control 80f (6070) senden daraufhin einen anderen
+Initialisierungs-Code an die Zentrale, bei dem als Sendeadresse die jeweilige Ger&auml;teadresse angegeben
+wird.
+<P>
+Initialisierung f&uuml;r H0-Modus:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0110 0011	0	0000 0000	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	Dez. 99		Q			Q
+</pre></font>
+<P>
+Die Best&auml;tigung daf&uuml;r lautet:
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0110 0011	0	1110 0000	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	Dez. 99		Q			Q
+</pre></font>
+<P>
+Damit sind die Ger&auml;te Control 80f (6036) und Infra Control 80f (6070) initialisiert.<BR>
+Durch den Anschlu&szlig; dieser Ger&auml;te sendet die Zentrale zun&auml;chst kontinuierlich einen Loksteuerbefehl mit
+der (echten) Decoder-Adresse "80" (dies entspricht an einem Lokdecoder alle acht Schalter auf "OFF"
+gestellt) und dem Datenbyte "0" ans Gleis (Idle State). Damit wird vermieden, das durch die ansonsten am
+Gleis anliegende negative Gleichspannung die Loks stehenbleiben und infolge dessen beim Schalten von
+Magnetartikeln kurzzeitig rucken.<BR>
+Erst wenn an einem Fahrpult bzw. am Interface eine andere, g&uuml;ltige Lokdecoder-Adresse eingegeben wird,
+wird die echte Decoder-Adresse "80" (Idle State) nicht mehr ans Gleis gesendet.<BR>
+<p>
+<H3><A NAME="lokho"><U>Steuerung von Lokomotiven im H0-Modus</U></A></H3>
+Wenn bei der Control Unit (6021) die auf der R&uuml;ckseite befindlichen Schalter 1 und 2 auf "OFF" gestellt
+sind, befindet sich diese Zentrale im (alten) H0-Modus und verh&auml;lt sich weitestgehend wie die Central Unit
+(6020).<BR>
+F&uuml;r die &Uuml;bertragung von Loksteuer-Befehlen werden vier Byte als Steuerungsanforderung ben&ouml;tigt. Es sind
+dies die Bytes f&uuml;r Empf&auml;nger (Zentrale), Steuerpult-Nr. (1 bis 15 bei Central Unit (6020) bzw. 1 bis 10 bei
+Control Unit (6021)), Decoder-Adresse (Bereich von "00" bis "79", Adresse "80" wird als "00" &uuml;bertragen)
+und Datenbyte.<BR>
+Die Steuerungsanforderung sieht in diesem Betriebsmodus der Zentrale bei allen Steuerger&auml;ten, also
+Control 80 (6035), Control 80f (6036), Infra Control 80f (6070) und Interface (6050 bzw. 6051) identisch
+aus.<BR>
+Die einzelnen Bits im Datenbyte bedeuten dabei:<BR><pre><FONT SIZE=+0>- Bits 0 bis 3	= Fahrstufe (0=Stillstand, 1=Fahrtrichtungswechsel, 2 bis 15=Fahrstufe)
+- Bit  4	= Fahrtrichtungsabh&auml;ngige Zusatzfunktion "function"
+- Bits 5 bis 7	= 000 = Anforderung bzw. positive Best&auml;tigung
+		= 111 = negative Best&auml;tigung, Adresse ung&uuml;ltig bzw. schon belegt.
+</pre></font>
+<P>
+Steueranforderung f&uuml;r Lokomotiven im H0-Modus:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0XXX XXXX	0	000X XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></font>
+<P>
+Wird diese Steueranforderung akzeptiert, dann lautet die Best&auml;tigung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	000X XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></font>
+<P>
+Wird die Steueranforderung z.B. bei belegter Decoderadresse nicht akzeptiert, dann lautet die
+Best&auml;tigungsmeldung von der Zentrale:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	111X XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	111=belegt	Q<P>
+</pre></font>
+<p>
+Hinweis:<BR>
+Auch wenn die Control Unit (6021) auf das erweiterte Motorola-Format eingestellt ist (Schalter 2 an der
+R&uuml;ckseite der Zentrale auf "ON"), sehen die Steueranforderungen von Control 80 (6035) und Interface
+(6050 bzw. 6051) sowie die dazugeh&ouml;rigen Best&auml;tigungsmeldungen bei akzeptierter und nicht akzeptierter
+Steueranforderung genauso aus wie die entsprechenden Meldungen im hier geschilderten H0-Modus.<BR>
+<p>
+<H3><A NAME="lokmot"><U>Steuerung von Lokomotiven bei erweitertem Motorola-Format</U></A></H3>
+Ist die Control Unit (6021) auf das erweiterte Motorola-Datenformat eingestellt (Schalter 2 an der R&uuml;ckseite
+auf "ON"), dann verf&uuml;gen die Steuerpulte Control 80f (6036) und Infra Control 80f (6070) &uuml;ber zus&auml;tzliche
+Anzeigen f&uuml;r die Fahrtrichtung und die M&ouml;glichkeit, belegte (auf einem anderen Steuerger&auml;t aufgerufene)
+Lokadressen zur &Uuml;bernahme auf dieses Steuerger&auml;t zu erzwingen. &Uuml;ber diese M&ouml;glichkeiten verf&uuml;gen aber
+nur diese Steuerger&auml;te und nur in diesem Betriebsmodus der Zentraleinheit. Steuerger&auml;te Control 80
+(6035) und Interface (6050 bzw. 6051) verhalten sich immer wie im H0-Modus.<BR>
+Die einzelnen Bits im Datenbyte bedeuten im erweiterten Motorola-Format:<BR>
+<pre><FONT SIZE=+0>- Bits 0 bis 3	= Fahrstufe (0 = Stillstand, 1 = Fahrtrichtungswechsel, 2 bis 15 = Fahrstufe)
+- Bit  4	= Fahrtrichtungsabh&auml;ngige Zusatzfunktion "function"
+- Bits 5 bis 7	= 001 = Anforderung
+		= 10X = positive Best&auml;tigung, X = 0 Fahrtrichtung r&uuml;ckw&auml;rts, X = 1 vorw&auml;rts
+		= 110 = negative Best&auml;tigung, Adresse ung&uuml;ltig bzw. schon belegt.
+		= 010 = Anforderung "&Uuml;bernahme erzwingen"
+</pre></font>
+<P>
+Daten&uuml;bertragung bei Control 80f im erweiterten Motorola-Format, Steueranforderung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0XXX XXXX	0	001X XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT>
+<P>
+Die Best&auml;tigung daf&uuml;r, wenn die Anforderung akzeptiert wird, lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	10XX XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	Fahrstufe	Q
+									Richtung
+</pre></FONT>
+<P>
+Ist die aufgerufene Adresse bereits von einem anderen Steuerger&auml;t belegt, wird eine besondere
+Best&auml;tigung von der Zentrale zur&uuml;ckgeschickt, bei der im vierten Byte anstelle der gew&auml;hlten Fahrstufe die
+Adresse des Steuerpultes angegeben ist, an dem diese Lokadresse bereits aufgerufen ist. Dabei wird diese
+Ger&auml;te-Adresse so angegeben wie in der Angabe f&uuml;r den Sender bzw. den Empf&auml;nger:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	110X XXX0	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	belegt von	Q
+									Ger&auml;te-Adr.
+</pre></FONT>
+<P>
+Wird jetzt am Steuerpult mit der blinkenden Adressanzeige die gleiche Adresse noch einmal eingegeben,
+wird diese Adresse auf dieses Ger&auml;t &uuml;bernommen und auf dem vorherigen Ger&auml;t als belegt gemeldet.
+<P>
+Diese besondere Steueranforderung lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0XXX XXXX	0	010X XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	Fahrstufe	Q
+									&Uuml;bernahme
+									erzwingen
+</pre></FONT><P>
+Es folgt von der Zentrale eine Best&auml;tigung, die diese Anforderung akzeptiert:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	10XX XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	Fahrstufe	Q
+									Richtung
+</pre></FONT>
+<p>
+<H3><A NAME="funkt"><U>&Uuml;bertragung von Funktionsbefehlen</U></A></H3>
+F&uuml;r die &Uuml;bertragung von Funktionsbefehlen werden vier Byte als Schaltanforderung ben&ouml;tigt. Es sind dies
+die Bytes f&uuml;r Empf&auml;nger (Zentrale), Steuerpult-Nr. (1 bis 15 bei Central Unit (6020) bzw. 1 bis 10 bei
+Control Unit (6021)), Decoder-Adresse (bei Control Unit im H0-Modus im Bereich von "00" bis "79", in den
+anderen Modi und bei Central Unit (6020) im Bereich von "00" bis "99", wobei die eingebene Adresse "80"
+in allen Betriebsmodi als Adresse "00" &uuml;bertragen wird) und dem Byte f&uuml;r den Zustand der Funktionen,
+wobei die Funktionen in den Bits 0 bis 3 angegeben werden ("0" = Aus, "1" = Ein):<BR>
+<ul>
+<li> Bit 0 = Funktion "f1"<BR>
+<li> Bit 1 = Funktion "f2"<BR>
+<li> Bit 2 = Funktion "f3"<BR>
+<li> Bit 3 = Funktion "f4"<BR>
+</ul>
+Die Bits 4 bis 7 werden bislang nicht verwendet und sind immer "0".
+<P>
+Hinweis:<BR>
+Bei der Control Unit (6021) werden Decoder-Adressen ab "81" nicht ans Gleis gesendet sondern dienen
+(teilweise) zum Aufruf von besonderen System-Funktionen der Zentrale. Siehe dazu auch den Abschnitt
+"Nicht dokumentierte Funktionen der Control Unit (6021)" am Ende dieses Dokuments.
+<P>
+Aufbau der Schaltanforderung f&uuml;r Funktionsbefehle:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	010X XXX0	0	0XXX XXXX	0	0000 XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+
+</pre></FONT>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+010X XXX0	0	1111 1110	0	0XXX XXXX	0	0000 XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT>
+<P>
+Da Adressen f&uuml;r Funktions-Decoder auch bei mehreren Ger&auml;ten gleichzeitig aufgerufen sein k&ouml;nnen, kann
+hier keine Best&auml;tigungsmeldung mit z.B. schon belegter Adresse vorkommen.
+<p>
+<H3><A NAME="weich"><U>&Uuml;bertragung von Weichenstellbefehlen</U></A></H3>
+F&uuml;r die &Uuml;bertragung von Weichenstellbefehlen gen&uuml;gen drei Byte als Schaltanforderung.<BR>
+Es sind dies die Bytes f&uuml;r Empf&auml;nger (Zentrale), Keyboard-Nr. (0 bis 15) und das Datenbyte.<BR>
+Das Datenbyte enth&auml;lt die Angabe der Decoder-Ausgangsnummer (Bits 0 bis 3) und der Decoder-
+Teiladresse (Bits 4 und 5).<BR>
+Mit Bit 0 wird die Schaltrichtung bestimmt (0=Rot, 1=Gr&uuml;n), mit Bit 3 wird der Schaltstrom eingeschaltet.<BR>
+Da mit einem Keyboard (6040) vier Decoder angesprochen werden k&ouml;nnen, bestimmen die Bits 4 und 5,
+um welche Vierergruppe von Tastenpaaren und somit f&uuml;r welchen der vier f&uuml;r dieses Keyboard zust&auml;ndigen
+Decoder sich der Schaltbefehl handelt.<BR>
+Bei der Bildung der realen Decoder-Adresse (im bin&auml;ren Zahlenformat) stellen diese zwei Bits die Bits 0
+und 1 dar. Die vier Bits der Keyboard-Adresse bilden dann die Bits 2 bis 5 der Decoder-Adresse. Diese
+Decoder-Adresse wird noch um 1 erh&ouml;ht, da die Decoder-Adressierung im M&auml;rklin Digital-System immer
+mit der Adresse "01" beginnt. Somit k&ouml;nnen maximal 64 Decoder im Bereich von "01" bis "64"
+angesprochen werden.<BR>
+Aufbau des Datenbytes:<BR>
+<ul>
+<li> Bit 0 = Schaltrichtung, 0=Rot, 1=Gr&uuml;n
+<li> Bit 1 = Decoderausgang LSB (Least Significant Bit)
+<li> Bit 2 = Decoderausgang MSB (Most Significant Bit)
+<li> Bit 3 = Schaltstrom, 0=aus, 1=ein
+<li> Bit 4 = Decoder-Teiladresse LSB
+<li> Bit 5 = Decoder-Teiladresse MSB
+</ul>
+<P>
+Aufbau der Schaltanforderung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbits
+1111 1110	0	001X XXX0	0	00XX XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q			Q
+</pre></FONT>
+<P>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbit
+001X XXX0	0	1111 1110	0	00XX XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q			Q
+</pre></FONT>
+<P>
+Befindet sich die Zentrale jedoch im "stop"-Modus, wird der Empfang der Schaltanforderung nur verk&uuml;rzt
+best&auml;tigt:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Stoppbit
+001X XXX0	0	0
+Ger&auml;te-Adr.	Q
+</pre></FONT>
+<P>
+Daraufhin wird vom Keyboard (6040), Switchboard (6041) bzw. Memory (6043) regelm&auml;&szlig;ig eine neue,
+gleiche Schaltanforderung an die Zentrale gesendet, bis diese wieder im "go"-Modus ist und die
+Schaltanforderung vollst&auml;ndig best&auml;tigt wird.<BR>
+Erst wenn die Schaltanforderung vollst&auml;ndig best&auml;tigt wurde, wird die Anzeige im Keyboard (6040)
+aktualisiert.<BR>
+Wenn die entsprechende Taste am Keyboard (6040) wieder losgelassen wird, wird ein Abschaltbefehl vom
+Keyboard (6040) an die Zentrale gesendet. Dabei werden im Datenbyte die vier Bits der Decoder-
+Ausgangsnummer (Bits 0 bis 3) zur&uuml;ckgesetzt. Die zwei Bits f&uuml;r die Decoder-Teiladresse (Bits 4 und 5)
+m&uuml;ssen dabei unver&auml;ndert bleiben.
+<P>
+Schaltanforderung f&uuml;r Abschaltbefehl:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbits
+1111 1110	0	001X XXX0	0	00XX 0000	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q			Q
+</pre></FONT><P>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbit
+001X XXX0	0	1111 1110	0	00XX 0000	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q			Q
+</pre></FONT><P>
+Hinweis:<BR>
+Werden Schaltanforderungen vom Memory (6043) gesendet, wird nicht die Memory-Adresse &uuml;bertragen,
+sondern die entsprechende Keyboard-Adresse und Decoder-Teiladresse f&uuml;r diesen Befehl.<BR>
+Im &uuml;brigen wird in keiner Betriebs-Situation die mit der an der R&uuml;ckseite des Memory (6043) befindlichen
+Schalter 1 und 2 eingestellte "Adresse" &uuml;ber den I2C-Bus &uuml;bertragen. Somit d&uuml;rfte die Anzahl der Memorys
+(6043), die im Digital-System betrieben werden k&ouml;nnen, nicht auf vier Ger&auml;te begrenzt sein.<BR>
+
+<H3><A NAME="interf"><U>Betrieb mit Interface (6050 bzw. 6051)</U></A></H3>
+Beim Betrieb des Digital-Systems mit dem Interface (6050 bzw. 6051) sieht die &Uuml;bertragung auf dem I2C-
+Bus weitgehend genauso aus wie mit den entsprechenden Steuerger&auml;ten, also Control 80 (6035),
+Keyboard (6040) und zum Schalten von Funktionen das Control 80f (6036).<BR>
+Bei Loksteuerbefehlen stehen die erweiterten M&ouml;glichkeiten von Control 80f (6036) und Infra Control 80f
+(6070), also Fahrtrichtungsanzeige und die M&ouml;glichkeit, die &Uuml;bernahme einer bereits auf einem anderen
+Steuerger&auml;t aufgerufenen Lokdecoder-Adresse auf dieses Ger&auml;t zu erzwingen, beim Interface (6050 bzw.
+6051) nicht zur Verf&uuml;gung. Loksteuerbefehle sehen deshalb auch beim Betrieb des Interface (6050 bzw.
+6051) mit der Control Unit (6021) im erweiterten Motorola-Format (Schalter 2 an der R&uuml;ckseite auf "ON")
+wie im H0-Modus bzw. wie beim Control 80 (6035) aus. Beim Aufruf einer bereits auf einem anderen Ger&auml;t
+belegten Lokdecoder-Adresse  wird diese Steueranforderung jedoch nicht zyklisch wiederholt.<BR>
+Nur beim Interface (6050 bzw. 6051) werden die Lokdecoder-Adresse "80" und die Funktionsdecoder-
+Adresse "80" tats&auml;chlich als "80" &uuml;bertragen, bei Control 80 (6035) und Control 80f (6036) jedoch immer
+als "00".
+<P>
+Beim Schalten von Magnetartikeln wird entsprechend der Magnetartikel-Adresse die Adresse des jeweils
+zust&auml;ndigen Keyboards (6040) erzeugt, also ebenso wie beim Memory (6043).<BR>
+Lediglich beim Abschaltbefehl f&uuml;r den Stellstrom gibt es einen kleinen Unterschied:<BR>
+Das Interface (6050 bzw. 6051) setzt im Datenbyte nur das Bit f&uuml;r den Stellstrom (Bit 3) zur&uuml;ck, das
+Keyboard (6040) setzt dagegen beim Abschaltbefehl alle vier Bits (f&uuml;r Decoder-Ausgang und Stellstrom),
+also die Bits 0 bis 3, zur&uuml;ck. Die zwei Bits f&uuml;r die Decoder-Teiladresse (Bits 4 und 5) m&uuml;ssen auch hier
+unver&auml;ndert bleiben.
+<P>
+Nur beim Schalten von Funktionen wird eine besondere Ger&auml;teadresse ausgegeben, n&auml;mlich die Adresse
+0, obwohl bei der softwarem&auml;&szlig;igen Adressierung nur Adressen ab einschlie&szlig;lich 1 vergeben werden.<BR>
+Dar&uuml;ber hinaus ist auch nur bei Schaltanforderungen f&uuml;r Extrafunktionen "f1" bis "f4" &uuml;ber das Interface
+(6050 bzw. 6051) bei der Angabe der Sender-Adresse das Bit 0 gesetzt. Bei der dazugeh&ouml;rigen
+Best&auml;tigungsmeldung von der Zentrale ist dieses Bit 0 wieder zur&uuml;ckgesetzt.<BR>
+Deshalb der Befehlsaufbau f&uuml;r Schaltanforderugen von Funktonen hier im Einzelnen:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	0100 0001	0	0XXX XXXX	0	0000 XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	01 bis 80	Q	f1 bis f4	Q
+						01 bis 99
+</pre></FONT><P>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+0100 0000	0	1111 1110	0	0XXX XXXX	0	0000 XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	01 bis 80	Q	f1 bis f4	Q
+						01 bis 99
+</pre></FONT>
+<p>
+<H3><A NAME="kummu"><U>Unterschiede im Kommunikationsablauf zwischen Central Unit (6020) und Control Unit (6021)</U></A></H3>
+Beim Betrieb der Steuerpulte Control 80 (6035), Control 80f (6036), Infra Control 80f (6070) und Interface
+(6050 bzw. 6051) mit der Central Unit (6020) l&auml;uft der Datenaustausch prinzipiell genauso ab wie beim
+Betrieb mit der Control Unit (6021) im H0-Modus.<BR>
+Ausnahmen hiervon gibt es nur, wenn die Central Unit (6020) im "stop"-Modus ist:<BR>
+Eine Steuer- oder Schaltanforderung wird von der Zentrale zun&auml;chst nur mit einem Byte, der Adresse des
+anfordernden Ger&auml;tes, best&auml;tigt. Danach bleiben die Taktleitung SCLK sowie die Datenleitung SDA
+solange auf Low, bis die Zentrale wieder im "go"-Modus ist. Erst dann wird der Rest der Best&auml;tigung
+&uuml;bertragen.<BR>
+Durch die zeitliche Verz&ouml;gerung zwischen Anforderung und Best&auml;tigung werden die Steuerger&auml;te veanla&szlig;t,
+eine neue Schaltanforderung an die Zentrale zu senden.<BR>
+Die Ger&auml;te Control 80 (6035) und Interface (6050 bzw. 6051) &uuml;bertragen dabei auch gleich die
+Informationen &uuml;ber eine im "stop"-Modus ge&auml;nderte Lokadresse oder Fahrstufe, also die derzeit g&uuml;ltigen
+Informationen.<BR>
+Bei den Ger&auml;ten Control 80f (6036) und Infra Control 80f (6070) werden diese Informationen in einem
+weiteren Datenpaket &uuml;bertragen.
+<P>
+Eine Loksteuer-Anforderung an die Central Unit (6020) im "stop"-Modus lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0XXX XXXX	0	000X XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Die verk&uuml;rzte Best&auml;tigung lautet dann:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger
+000X XXX0	0
+Ger&auml;te-Adr.	Q
+</pre></FONT><P>
+Die Taktleitung SCLK und die Datenleitung SDA bleiben jetzt solange auf Low, bis die Zentraleinheit wieder
+im "go"-Modus ist. Der I2C-Bus ist also blockiert.<BR>
+Bei Control 80 (6035) und Interface vergingen bis hierher 46 Taktzyklen, bei Control 80f (6036) und Infra
+Control 80f (6070) aber 48 Taktzyklen aufgrund der Umschaltung von Slave- auf Master-Betrieb.<BR>
+Nach dem Wechsel in den "go"-Modus wird die Best&auml;tigung an dieser Stelle wieder fortgesetzt.<BR>
+<pre><FONT SIZE=+0>			Sender			Decoder			Datenbyte		Stoppbit
+			1111 1110	0	0XXX XXXX	0	000X XXXX	0	0
+			Zentrale	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Jetzt folgt auf Grund der zeitlichen Verz&ouml;gerung eine neue Steueranforderung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0XXX XXXX	0	000X XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Und dazu die entsprechende Best&auml;tigung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	000X XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Seit dem Wechsel der Central Unit (6020) in den "go"-Modus vergingen bis hierher bei Control 80 (6035)
+und Interface (6050 bzw. 6051) 102 Taktzyklen, bei Control 80f (6036) und Infra Control 80f (6070) 104
+Taktzyklen.<BR>
+Wurde an einem Control 80f (6036) w&auml;hrend des "stop"-Modus eine neue Adresse eingegeben, dann folgt
+jetzt eine weitere Steueranforderung mit 76 Taktzyklen:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	000X XXX0	0	0XXX XXXX	0	000X XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Und die dazugeh&ouml;rige Best&auml;tigung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+000X XXX0	0	1111 1110	0	0XXX XXXX	0	000X XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Auch beim Schalten von Funktionen im "stop"-Modus der Central Unit (6020) wird die Schaltanforderung
+zun&auml;chst nur verk&uuml;rzt von der Zentrale best&auml;tigt und anschliessend die Taktleitung SCLK sowie die
+Datenleitung SDA danach auf Low gehalten, bis die Zentrale wieder im "go"-Modus ist.
+<P>
+Schaltanforderung f&uuml;r Funktionen im "stop"-Modus:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	010X XXX0	0	0XXX XXXX	0	0000 XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT><P>
+Die verk&uuml;rzte Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger
+010X XXX0	0
+Ger&auml;te-Adr.	Q
+</pre></FONT><P>
+Die Taktleitung SCLK und die Datenleitung SDA bleiben jetzt solange auf Low, bis die Zentraleinheit wieder
+im "go"-Modus ist. Der I2C-Bus ist also blockiert.<BR>
+Bei Control 80f (6036) und Infra Control 80f (6070) vergingen bis hierher 48 Taktzyklen.<BR>
+Nach dem Wechsel in den "go"-Modus wird die Best&auml;tigung an dieser Stelle wieder fortgesetzt.<BR>
+<pre><FONT SIZE=+0>			Sender			Decoder			Datenbyte		Stoppbit
+			1111 1110	0	0XXX XXXX	0	0000 XXXX	0	0
+			Zentrale	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT><P>
+Jetzt folgt auf Grund der zeitlichen Verz&ouml;gerung eine neue Schaltanforderung:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	010X XXX0	0	0XXX XXXX	0	0000 XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT><P>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+010X XXX0	0	1111 1110	0	0XXX XXXX	0	0000 XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT><P>
+Seit dem Wechsel der Central Unit (6020) in den "go"-Modus vergingen bis hierher 104 Taktzyklen.<BR>
+Wurde am Control 80f (6036) w&auml;hrend des "stop"-Modus eine weitere Funktion geschaltet oder eine neue
+Funktionsdecoder-Adresse eingegeben, dann folgt jetzt eine weitere Schaltanforderung mit 76
+Taktzyklen:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	010X XXX0	0	0XXX XXXX	0	0000 XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT><P>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+010X XXX0	0	1111 1110	0	0XXX XXXX	0	0000 XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q	00 bis 79	Q	f1 bis f4	Q
+						00 bis 99
+</pre></FONT><p>
+Hinweis:<BR>
+Funktionen, die w&auml;hrend des "stop"-Modus vor einem Adresswechsel geschaltet wurden, werden nach dem
+Wechsel in den "go"-Modus zwar ans Gleis gesendet, aber im aufrufenden Ger&auml;t nicht gespeichert.
+<P>
+Auch beim Schalten von Magnetartikeln im "stop"-Modus der Central Unit (6020) wird die
+Schaltanforderung zun&auml;chst nur verk&uuml;rzt von der Zentrale best&auml;tigt und anschliessend die Taktleitung
+SCLK sowie die Datenleitung SDA danach solange auf Low gehalten, bis die Zentrale wieder im "go"-
+Modus ist.
+<P>
+Schaltanforderung f&uuml;r Magnetartikel im "stop"-Modus:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbits
+1111 1110	0	001X XXX0	0	00XX XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q			Q
+</pre></FONT><P>
+Die verk&uuml;rzte Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger
+001X XXX0	0
+Ger&auml;te-Adr.	Q
+</pre></FONT><P>
+Die Taktleitung SCLK und die Datenleitung SDA bleiben jetzt solange auf Low, bis die Zentraleinheit wieder
+im "go"-Modus ist. Der I2C-Bus ist also blockiert.<BR>
+Bei Keyboard (6040), Memory (6043) und Interface (6050 bzw. 6051) vergingen bis hierher 37
+Taktzyklen.<BR>
+Nach dem Wechsel in den "go"-Modus wird die Best&auml;tigung an dieser Stelle wieder fortgesetzt.<BR>
+<pre><FONT SIZE=+0>			Sender			Datenbyte		Stoppbit
+			1111 1110	0	0000 XXXX	0	0
+			Zentrale	Q			Q
+</pre></FONT><P>
+Falls vor dem Wechsel in den "stop"-Modus durch Dr&uuml;cken einer Keyboard-Taste der Magnetartikel-
+Stellstrom eingeschaltet wurde und w&auml;hrend des "stop"-Modus die Taste wieder losgelassen wurde, dann
+ist die &Uuml;bertragung hiermit beendet.<BR>
+Ansonsten wird jetzt die Schaltanforderung wiederholt:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbits
+1111 1110	0	001X XXX0	0	00XX XXXX	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q			Q
+</pre></FONT><P>
+Die vollst&auml;ndige Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbit
+001X XXX0	0	1111 1110	0	00XX XXXX	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q			Q
+</pre></FONT><P>
+Seit dem Wechsel der Central Unit (6020) in den "go"-Modus vergingen 75 Taktzyklen.<BR>
+Falls w&auml;hrend des "stop"-Modus eine Keyboard-Taste gedr&uuml;ckt und wieder losgelassen wurde, wird jetzt
+auch noch der Abschaltbefehl &uuml;bertragen und best&auml;tigt.
+<P>
+Schaltanforderung f&uuml;r Abschaltbefehl:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbits
+1111 1110	0	001X XXX0	0	00XX 0000	0	10
+Zentrale	Q	Ger&auml;te-Adr.	Q			Q
+</pre></FONT><P>
+Die Best&auml;tigung von der Zentrale lautet:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Datenbyte		Stoppbit
+001X XXX0	0	1111 1110	0	00XX 0000	0	0
+Ger&auml;te-Adr.	Q	Zentrale	Q			Q
+</pre></FONT><P>
+Seit dem Wechsel der Zentrale in den "go"-Modus vergingen 131 Taktzyklen.<BR>
+<p>
+<H3><A NAME="nidok"><U>Nicht dokumentierte Funktionen der Control Unit (6021)</U></A></H3>
+Nur wenn die Control Unit (6021) auf das erweiterte Motorola-Format eingestellt ist (mindestens Schalter 2
+an der R&uuml;ckseite auf "ON" gestellt), dann verf&uuml;gt sie &uuml;ber einige bisher noch nicht dokumentierte
+Funktionen. Dabei ist wohl die Funktion "Herstellen des letzten Betriebszustands" die interessanteste und
+am ehesten zu verwendende Funktion.<BR>
+Hier diese Funktionen im Einzelnen:<BR>
+<p>
+<H3><A NAME="daten"><U>Daten l&ouml;schen (Eingabe "91" und "93")</U></A></H3>
+Mit der Eingabe der Adre&szlig;folge "91" und "93" werden die Daten im Puffer f&uuml;r den Refresh-Zyklus gel&ouml;scht.
+Dabei wird auch die Fahrtrichtung auf "vorw&auml;rts" eingestellt.<BR>
+Dieses L&ouml;schen sollte bei Betriebsbeginn erfolgen, obwohl es von der Funktion her gesehen auch
+irgendwann w&auml;hrend des Betriebs m&ouml;glich ist.<BR>
+Danach werden zwar noch alle bis dahin im Refresh-Zyklus befindlichen Adressen zyklisch wiederholend
+ans Gleis gesendet, die Daten sind aber gel&ouml;scht, also auf "0" gesetzt und die Fahrtrichtung ist auf
+"vorw&auml;rts" eingestellt. Die Daten im Puffer werden durch Aufruf entsprechender Adressen bzw. durch
+Verstellen des Fahrreglers oder Schalten von Funktionen erneut aufgebaut, also wie gewohnt aktualisiert.
+<P>
+Hinweis:<BR>
+Nur neuere Decoder des Typs c90 (60901 bzw. 60902) "verstehen" die Angabe der Fahrtrichtung. Bei
+&auml;lteren Decodern wird nur die Fahrstufe auf "0" (Halt) gesetzt und die fahrtrichtungsabh&auml;ngige
+Zusatzfunktion "function" ausgeschaltet. Die zuletzt eingestellte Fahrtrichtung bleibt im Decoder aber
+erhalten und kann dadurch von der Anzeige im Fahrpult abweichen.<BR>
+<p>
+<H3><A NAME="80adr"><U>Alle 80 Adressen in Refresh-Zyklus aufnehmen (Eingabe "92" und "93")</U></A></H3>
+Die Eingabe der Adressfolge "92" und "93" bewirkt, da&szlig; alle 80 m&ouml;glichen Lokomotiv-Adressen in den
+Refresh-Zyklus aufgenommen werden, auch wenn diese Adressen bislang noch nicht aufgrufen wurden.
+Die Datenbytes f&uuml;r die Fahrstufe und den Zustand der Extra-Funktionen "f1" bis "f4" enthalten bei diesen
+zus&auml;tzlich in den Refresh-Zyklus aufgenommenen Adressen zun&auml;chst den Wert "00". Dieser Wert wird
+beim Aufruf dieser Decoder-Adressen entsprechend aktualisiert.<BR>
+<p>
+<H3><A NAME="versi"><U>Versionstest (Eingabe "94" und "93")</U></A></H3>
+Mit der Eingabe der Adressfolge "94" und "93" kann die Software-Version der Control Unit (6021) angezeigt
+werden. Bei der derzeit aktuellen Version blinkt die LED f&uuml;r die Betriebsanzeige einmal auf, unabh&auml;ngig
+davon, ob sich die Zentrale im "stop"-Modus oder im "go"-Modus befindet.<BR>
+<p>
+<H3><A NAME="betr"><U>Herstellen des letzten Betriebszustands (Eingabe "97" und "93")</U></A></H3>
+Dies ist wohl die interessanteste und wohl auch am h&auml;ufigsten genutzte zus&auml;tzliche Funktion der Control
+Unit (6021). Damit wird der letzte Spielzustand vor dem Ausschalten des Digital-Systems nach dem
+Wiedereinschalten wieder herdestellt. Dazu mu&szlig; nach dem Einschalten bzw. nach einem Reset die
+Adressfolge "97" und "93" am Fahrpult in der Zentraleinheit oder einem beliebigen angeschlossenen
+Control 80f (6036) eingegeben werden.<BR>
+Darauf generiert die Control Unit (6021) f&uuml;r alle Lokdecoder und Funktionsdecoder, bei denen das
+Datenbyte ungleich "00" ist, eine Schalt- bzw. Steueranforderung, wie sie sonst auch von einem Control 80f
+(6036) oder Infra Control 80f (6070) generiert werden w&uuml;rde.<BR>
+Als Sendeadresse wird immer "1" angegeben, auch wenn die Adressfolge "97" und "93" an einem anderen
+Ger&auml;t eingegeben wurde.<BR>
+Da alle angeschlossenen Control 80f (6036) und Infra Control 80f (6070) diese Schalt- bzw.
+Steueranforderungen protokollieren, werden auf diese Weise die Funktionen "function" und "f1" bis "f4" in
+den Fahrpulten zur&uuml;ckgespeichert.<BR>
+Da die Steueranforderungen von der Zentrale generiert werden, erfolgt keine Best&auml;tigung.
+<P>
+Die von der Zentrale generierten Schaltanforderungen f&uuml;r Funktionen lauten:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	0100 0010	0	0XXX XXXX	0	0000 XXXX	0	10
+Zentrale	Q	Ger&auml;t 1		Q	00 bis 99	Q	f1 bis f4	Q
+</pre></FONT><P>
+Steueranforderungen f&uuml;r Lokdaten lauten:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	0000 0010	0	0XXX XXXX	0	01XX XXXX	0	10
+Zentrale	Q	Ger&auml;t 1		Q	00 bis 79	Q	Fahrstufe	Q
+</pre></FONT><P>
+Die Bitfolge 01XX XXXX im Datenbyte wird sonst bei erzwungener Adress&uuml;bernahme verwendet.<BR>
+Bei den Steueranforderungen f&uuml;r Lokdaten wird f&auml;lschlicherweise die Fahrtrichtung mit angegeben
+(normalerweise wird die Fahrtrichtung erst bei der Best&auml;tigungsmeldung von der Zentrale angegeben, nicht
+aber bei der Steueranforderung). Das f&uuml;hrt dazu, da&szlig; bei Fahrtrichtung "vorw&auml;rts" die Daten von den
+angeschlossenen Ger&auml;ten Control 80f (6036) und Infra Control 80f (6070) nicht anerkannt werden und
+beim ersten Aufruf einer Lok die Fahrtrichtungsabh&auml;ngige Zusatzfunktion "function" immer ausgeschaltet
+wird.<BR>
+Die Angabe der Fahrtrichtung wird &uuml;blicherweise in der Best&auml;tigung von der Contral Unit (6021) &uuml;bermittelt.
+<P>
+Nachdem von der Control Unit (6021) alle Schalt- bzw. Steueranforderungen generiert wurden, folgt noch
+eine Steueranforderung f&uuml;r Fahrger&auml;t Nr. 1, bei der als Decoder-Adresse "99" angegeben wird:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbits
+1111 1110	0	0000 0010	0	0110 0011	0	001X XXXX	0	10
+Zentrale	Q	Ger&auml;t 1		Q	Dez. 99		Q	Fahrstufe	Q
+</pre></FONT><P>
+Diese wird als ung&uuml;ltig best&auml;tigt:<BR>
+<pre><FONT SIZE=+0>Empf&auml;nger		Sender			Decoder			Datenbyte		Stoppbit
+0000 0010	0	1111 1110	0	0110 0011	0	111X XXXX	0	0
+Ger&auml;t 1		Q	Zentrale	Q	Dez. 99		Q	111=belegt	Q
+</pre></FONT><P>
+Wenn jetzt an einem beliebigen Eingabeger&auml;t Control 80 (6035), Control 80f (6036), Interface (6050 bzw.
+6051) oder Infra Control 80f (6070) eine g&uuml;ltige Lokdecoder-Adresse im Bereich von "01" bis "80"
+eingegeben wird, beginnt die Control Unit mit dem Refresh-Zyklus.<BR>
+Dabei sind im Refresh-Zyklus jetzt alle Decoder-Adressen enthalten, bei denen vor dem Abschalten bzw.
+vor dem Reset des Digital-Systems das Datenbyte ungleich "00" war.<BR>
+Die Adressen, bei denen sowohl das Datenbyte f&uuml;r Funktionen "f1" bis "f4" sowie das Datenbyte f&uuml;r
+Lokfahrstufe und "function" den Wert "0" enthielten und die Fahrtrichtung auf "vorw&auml;rts" eingestellt war,
+werden nicht in den Refresh-Zyklus aufgenommen.
+<P>
+Hinweis:<BR>
+Nur neuere Decoder des Typs c90 (60901 bzw. 60902) "verstehen" die Angabe der Fahrtrichtung. &Auml;ltere
+Decoder fahren nach einer l&auml;ngeren Betriebspause, also wenn der Lokdecoder die letzten
+Fahrinformationen nicht mehr gespeichert hat, immer in Fahrtrichtung "vorw&auml;rts", auch wenn die
+Fahrtrichtung auf "r&uuml;ckw&auml;rts" eingestellt war. Somit kann es also vorkommen, da&szlig; die in den Steuerger&auml;ten
+Control 80f (6036) und Infra Control 80f (6070) angezeigte Fahrtrichtung nicht mit der tats&auml;chlichen
+Fahrtrichtung &uuml;bereinstimmt.<BR>
+
+<P>
+<center><IMG SRC="bahn8.gif" width=60% BORDER=0></center>
+<p>
+<FONT SIZE=3>
+Die WWW-Adaption wurde von Dr. M. Michael K&ouml;nig vorgenommen. &copy; 2001.
+</font>
+<p>
+<center><IMG SRC="bahn8.gif" width=60% BORDER=0></center>
+<p>
+<center><A HREF="digital.htm"><I>Homepage</I></A> | <A href="ei2c.htm"> <IMG SRC="uk-flag.gif" align=top height=20 width=40 ALT="Deutsch"></a></center>
+<P>
+<center><IMG SRC="bahn6.gif" BORDER=0></center>
+<P>
+</BODY>
+<P>
+<FONT SIZE=3>
+<address>
+<center>&copy; 2001 by Walter Fiedler | Th&uuml;ringer Stra&szlig;e 22 | 63329 Egelsbach |
+06103/44620 |
+Stand: 8.5.2001</center>
+<P>
+</address>
+<FONT SIZE=2>
+<A HREF="http://www.drkoenig.de/digital/i2c.htm">Revisit this page</A>
+</HTML>
