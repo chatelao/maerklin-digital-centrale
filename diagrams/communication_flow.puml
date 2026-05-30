@@ -1,0 +1,20 @@
+@startuml
+participant "Sender (Slave as Master)" as S
+participant "Central Unit (Master as Slave)" as CU
+
+note over S, CU: Idle State (SCL, SDA High)
+S -> S: Pull SDA LOW (Start)
+S -> CU: Byte 1: Recipient Address (CU)
+CU -> S: ACK
+S -> CU: Byte 2: Sender Address (Device)
+CU -> S: ACK
+S -> CU: Byte 3: Data (e.g. Decoder Addr)
+CU -> S: ACK
+S -> CU: Byte 4: Data (e.g. Speed)
+CU -> S: ACK
+S -> S: Stop Bits (Double Stop for Sync)
+
+CU -> CU: Process Instruction
+CU -> S: Acknowledgement Message (4 Bytes)
+note right of CU: Echo or Status Info
+@enduml

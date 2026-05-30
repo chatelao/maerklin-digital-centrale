@@ -1,0 +1,5 @@
+{ "reg": [
+  {"name": "0", "bits": 1, "attr": "Reserved"},
+  {"name": "Address (LSB..MSB)", "bits": 4, "attr": "Device Address 0..15"},
+  {"name": "ID", "bits": 3, "attr": "000 = Addressing"}
+], "config": {"bits": 8, "lanes": 1}}

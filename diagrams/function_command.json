@@ -1,0 +1,7 @@
+{ "reg": [
+  {"name": "f1", "bits": 1},
+  {"name": "f2", "bits": 1},
+  {"name": "f3", "bits": 1},
+  {"name": "f4", "bits": 1},
+  {"name": "Unused", "bits": 4, "attr": "Always 0"}
+], "config": {"bits": 8, "lanes": 1}}

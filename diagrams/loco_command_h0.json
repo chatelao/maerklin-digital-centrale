@@ -1,0 +1,5 @@
+{ "reg": [
+  {"name": "Speed/Pos (LSB..MSB)", "bits": 4, "attr": "0=Stop, 1=Dir, 2..15=Speed"},
+  {"name": "F", "bits": 1, "attr": "Function (Light)"},
+  {"name": "Type", "bits": 3, "attr": "000=Request, 111=Negative Ack"}
+], "config": {"bits": 8, "lanes": 1}}
