@@ -4,7 +4,9 @@ participant "Central Unit (Master as Slave)" as CU
 
 note over S, CU: Idle State (SCL, SDA High)
 S -> S: Pull SDA LOW (Start)
+activate S
 S -> CU: Byte 1: Recipient Address (CU)
+activate CU
 CU -> S: ACK
 S -> CU: Byte 2: Sender Address (Device)
 CU -> S: ACK
@@ -13,8 +15,10 @@ CU -> S: ACK
 S -> CU: Byte 4: Data (e.g. Speed)
 CU -> S: ACK
 S -> S: Stop Bits (Double Stop for Sync)
+deactivate S
 
 CU -> CU: Process Instruction
 CU -> S: Acknowledgement Message (4 Bytes)
+deactivate CU
 note right of CU: Echo or Status Info
 @enduml
