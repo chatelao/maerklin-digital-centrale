@@ -11,8 +11,13 @@ Die Kommunikation erfolgt über die seitlichen Kontaktleisten der Zentraleinheit
 | Signal | Pin (Rechts) | Pin (Links) | Beschreibung |
 | :--- | :--- | :--- | :--- |
 | **SDA** | b2 | b16 | Serielle Datenleitung (bi-direktional) |
-| **SCL** | b4 | b14 | Serieller Takt (gesteuert durch den jeweiligen Master) |
+| **SCL / SCLK** | b4 | b14 | Serieller Takt (gesteuert durch den jeweiligen Master) |
 | **b12** | b12 | - | Adress-Chain-Leitung zur Software-Adressierung |
+
+### Details zur Schnittstelle
+Die seitlichen Stecker dienen dem Anschluss von Erweiterungsgeräten. Je nach Funktion werden unterschiedliche Seiten verwendet:
+* **Rechte Seite:** Anschluss für Fahrpulte (Control 80, Control 80f), Infrarot-Steuerungen (Infra Control 80f) und Computer-Interfaces (6050, 6051). Die Adressierung erfolgt hier per Software über die **b12** Kettenleitung.
+* **Linke Seite:** Anschluss für Keyboards (6040, 6041) und Memorys (6043). Diese Geräte werden hardwareseitig über DIP-Schalter auf der Rückseite adressiert; eine Kettenleitung ist hier nicht erforderlich.
 
 ### Bus-Regeln
 * **Ruhezustand:** Beide Leitungen (SDA, SCL) liegen auf logisch HIGH Potential.
