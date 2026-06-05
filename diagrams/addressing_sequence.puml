@@ -4,25 +4,23 @@ participant "Device 1" as D1
 participant "Device 2" as D2
 participant "Device 3" as D3
 
-CU -> CU: Pull b12 LOW
-activate D1
-CU -> D1: I2C Start + Address "1"
-D1 -> D1: Store Address
-D1 -> CU: I2C ACK
-D1 -> D2: Pull b12 LOW
+activate CU
+CU --> D1++: Pull b12 LOW
+
+CU  -> D1: I2C Start + Address "1"
+D1  -> D1: Store Address
+D1  -> CU: I2C ACK
+D1 --> D2--: Pull b12 LOW
 activate D2
-deactivate D1
 
-CU -> D2: I2C Start + Address "2"
-D2 -> D2: Store Address
-D2 -> CU: I2C ACK
-D2 -> D3: Pull b12 LOW
+CU  -> D2: I2C Start + Address "2"
+D2  -> D2: Store Address
+D2  -> CU: I2C ACK
+D2 --> D3--: Pull b12 LOW
 activate D3
-deactivate D2
 
-CU -> D3: I2C Start + Address "3"
-D3 -> D3: Store Address
-D3 -> CU: I2C ACK
-deactivate D3
+CU  -> D3: I2C Start + Address "3"
+D3  -> D3: Store Address
+D3  -> CU--: I2C ACK
 
 @enduml
