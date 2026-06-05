@@ -17,7 +17,8 @@ Die Pinbelegung ist zwischen der rechten Seite (Stecker/Messerleiste) und der li
 | **STOP** | b6 | b12 | Nothalt-Signal / Power Off |
 | **GO** | b8 | b10 | Betriebs-Signal / Power On |
 | **INIT** | b12 | b6 | Adress-Chain-Leitung (b12) zur Software-Adressierung |
-| **8V** | b14, b16 | b4, b2 | Versorgungsspannung (+8V DC) |
+| **8V** | b14 | b4 | Versorgungsspannung (+8V DC) |
+| **8V** | b16 | b2 | Versorgungsspannung (+8V DC) |
 | **GND** | a2-a16 | a16-a2 | Gemeinsame Masse (alle Pins der Reihe 'a') |
 
 ### Spannungsversorgung und Logikpegel
