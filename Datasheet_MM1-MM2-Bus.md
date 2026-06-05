@@ -6,7 +6,7 @@ Dieses Dokument spezifiziert die Datenkommunikation der Märklin Digital-Eingabe
 ## Physikalische Schicht
 
 ### Schnittstellenbelegung
-Die Kommunikation erfolgt über die seitlichen Kontaktleisten der Zentraleinheiten (6020/6021) und Erweiterungsgeräte. Es handelt sich um 32-polige Steckverbinder nach **DIN 41612 Bauform B/2** (z. B. ept 102-90065).
+Die Kommunikation erfolgt über die seitlichen Kontaktleisten der Zentraleinheiten (6020/6021) und Erweiterungsgeräte. Es handelt sich um 32-polige Steckverbinder nach **DIN 41612 Bauform B/2** (z. B. ept [102-90065](https://www.ept.de/102-90005TH_de), ept [101-90014](https://www.ept.de/101-90014_de)).
 
 Die Pinbelegung ist zwischen der rechten Seite (Stecker/Messerleiste) und der linken Seite (Buchse/Federleiste) gespiegelt. Für die Reihe 'b' gilt die Regel: Pin **n** (Rechts) entspricht Pin **18-n** (Links).
 
