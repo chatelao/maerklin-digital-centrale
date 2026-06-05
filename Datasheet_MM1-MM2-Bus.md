@@ -21,6 +21,12 @@ Die Pinbelegung ist zwischen der rechten Seite (Stecker/Messerleiste) und der li
 | **8V** | b16 | b2 | Versorgungsspannung (+8V DC) |
 | **GND** | a2-a16 | a16-a2 | Gemeinsame Masse (alle Pins der Reihe 'a') |
 
+| Signal | SDA | SCL | STOP | GO | INIT | 8V | 8V | GND |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Pin (Rechts)** | b2 | b4 | b6 | b8 | b12 | b14 | b16 | a2-a16 |
+| **Pin (Links)** | b16 | b14 | b12 | b10 | b6 | b4 | b2 | a16-a2 |
+
+
 ### Spannungsversorgung und Logikpegel
 * **I2C-Logik:** Das System arbeitet mit **5V** Logikpegeln. Die SDA- und SCL-Leitungen sollten mit Pull-up-Widerständen (typisch 10 kΩ) auf 5V gezogen werden.
 * **Stromversorgung:** Die Versorgungsspannung auf den Pins b14/b16 (Rechts) bzw. b4/b2 (Links) beträgt **8V DC**.
