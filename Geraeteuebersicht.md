@@ -16,6 +16,7 @@ Diese Geräte koordinieren die Kommunikation auf dem I2C-Bus, verstärken Signal
 | **6035** | Control 80 | Externes Fahrpult zur Steuerung von Lokomotiven (Adressen 01-80). Anschluss erfolgt auf der rechten Systemseite. | |
 | **6036** | Control 80f | Erweitertes Fahrpult mit Tasten für die Sonderfunktionen f1-f4 und Anzeige der Fahrtrichtung. | |
 | **6040** | Keyboard | Stellpult für bis zu 16 Magnetartikel (Weichen, Signale). Wird auf der linken Systemseite angeschlossen. | |
+| **6041** | Switchboard | Stellpult für bis zu 16 Magnetartikel, das die Steuerung über ein Gleisbildstellpult ermöglicht. | |
 | **6043** | Memory | Fahrstraßenspeicher, der bis zu 24 Schaltfolgen speichern und auf Knopfdruck abrufen kann. | |
 | **6050/6051** | Interface | Computer-Schnittstelle (RS-232), die die Steuerung der Anlage durch einen PC ermöglicht. | ![6050 Layout](images_6050/p0_img0.Im1.png) |
 | **6070** | Infra Control 80f | Infrarot-Steuergerät zur kabellosen Bedienung von Lokomotiven über Infrarot-Handsender. | |
