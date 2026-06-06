@@ -6,13 +6,28 @@ Dieses Dokument spezifiziert die Datenkommunikation der Märklin Digital-Eingabe
 ## Physikalische Schicht
 
 ### Schnittstellenbelegung
-Die Kommunikation erfolgt über die seitlichen Kontaktleisten der Zentraleinheiten (6020/6021).
+Die Kommunikation erfolgt über die seitlichen Kontaktleisten der Zentraleinheiten (6020/6021) und Erweiterungsgeräte. Es handelt sich um 32-polige Steckverbinder nach **DIN 41612 Bauform B/2**/[EN 60603-2](https://webstore.iec.ch/en/publication/2696) (z. B. ept [102-90065](https://www.ept.de/102-90005TH_de), ept [101-90014](https://www.ept.de/101-90014_de)).
+
+Die Pinbelegung ist zwischen der rechten Seite (Stecker/Messerleiste) und der linken Seite (Buchse/Federleiste) gespiegelt. Für die Reihe 'b' gilt die Regel: Pin **n** (Rechts) entspricht Pin **18-n** (Links).
 
 | Signal | Pin (Rechts) | Pin (Links) | Beschreibung |
 | :--- | :--- | :--- | :--- |
-| **SDA** | b2 | b16 | Serielle Datenleitung (bi-direktional) |
-| **SCL / SCLK** | b4 | b14 | Serieller Takt (gesteuert durch den jeweiligen Master) |
-| **b12** | b12 | - | Adress-Chain-Leitung zur Software-Adressierung |
+| **SDA** | b2 | b16 | Serielle Datenleitung (I2C Data) |
+| **SCL** | b4 | b14 | Serieller Takt (I2C Clock) |
+| **STOP** | b6 | b12 | Nothalt-Signal / Power Off |
+| **GO** | b8 | b10 | Betriebs-Signal / Power On |
+| **INIT** | b12 | b6 | Adress-Chain-Leitung (b12) zur Software-Adressierung |
+| **8V** | b14 | b4 | Versorgungsspannung (+8V DC) |
+| **8V** | b16 | b2 | Versorgungsspannung (+8V DC) |
+| **GND** | a2-a16 | a16-a2 | Gemeinsame Masse (alle Pins der Reihe 'a') |
+
+- b = oben, b1 = links, b16 = rechts
+- a = unten
+
+### Spannungsversorgung und Logikpegel
+* **I2C-Logik:** Das System arbeitet mit **5V** Logikpegeln. Die SDA- und SCL-Leitungen sollten mit Pull-up-Widerständen (typisch 10 kΩ) auf 5V gezogen werden.
+* **Stromversorgung:** Die Versorgungsspannung auf den Pins b14/b16 (Rechts) bzw. b4/b2 (Links) beträgt **8V DC**.
+* **Leistungsaufnahme:** Geräte wie das Keyboard 6040 haben eine signifikante Stromaufnahme von ca. **120 mA** pro Gerät.
 
 ### Details zur Schnittstelle
 Die seitlichen Stecker dienen dem Anschluss von Erweiterungsgeräten. Je nach Funktion werden unterschiedliche Seiten verwendet:
@@ -40,6 +55,10 @@ Nach dem Einschalten oder einem RESET müssen Geräte auf der rechten Seite (Con
 
 ### Geräte-Identifikatoren
 Die Identifikation des Befehlstyps erfolgt über die Bits 5, 6 und 7 der Geräteadresse. Die eigentliche Geräteadresse (0-15) liegt in den Bits 1-4. Bit 0 ist meist 0.
+
+**Hinweis zur I2C-Adressierung:** I2C-Adressen sind standardmäßig 7-bit breit. Im Märklin-System werden diese Adressen jedoch oft als 8-bit Werte (links-geschoben) dargestellt, was der tatsächlichen Übertragung auf dem Bus entspricht (7-bit Adresse + R/W-Bit).
+* Die Zentraleinheit nutzt die 7-bit Adresse **0x7F**, was im Protokoll als **0xFE** erscheint.
+* Das Keyboard 0 nutzt die 7-bit Adresse **0x10**, was im Protokoll als **0x20** erscheint.
 
 | Typ | Bit 7 | Bit 6 | Bit 5 | Binär-Format |
 | :--- | :---: | :---: | :---: | :--- |
@@ -95,3 +114,20 @@ Diese Funktionen sind über die Adresseingabe am Steuergerät zugänglich (nur i
 * **92 + 93:** Alle 80 Lokadressen in den Refresh-Zyklus aufnehmen.
 * **94 + 93:** Software-Versionstest (LED blinkt).
 * **97 + 93:** Wiederherstellung des letzten Betriebszustands (Recall).
+
+## Anhang: LocoNet Schnittstelle
+Ergänzend zum I2C-Bus unterstützen einige modernere Komponenten (wie der connect6021 light) auch die LocoNet-Schnittstelle.
+
+### LocoNet Pinbelegung (RJ12)
+Blick von oben auf die Buchse, Pins von 1 bis 6:
+
+| Pin | Signal | Spannung (typ.) | Beschreibung |
+| :--- | :--- | :--- | :--- |
+| 1 | **PWR** | +8V bis +12V | Stromversorgung (RailSync+) |
+| 2 | **GND** | 0V | Masse |
+| 3 | **DATA** | +10V bis +14V | LocoNet Datenleitung |
+| 4 | **DATA** | +10V bis +14V | LocoNet Datenleitung |
+| 5 | **GND** | 0V | Masse |
+| 6 | **PWR** | +8V bis +12V | Stromversorgung (RailSync-) |
+
+*Hinweis: Die Spannungspegel auf den DATA-Leitungen können je nach Zentrale (z.B. Intellibox) variieren.*
