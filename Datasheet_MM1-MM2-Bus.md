@@ -131,3 +131,18 @@ Blick von oben auf die Buchse, Pins von 1 bis 6:
 | 6 | **PWR** | +8V bis +12V | Stromversorgung (RailSync-) |
 
 *Hinweis: Die Spannungspegel auf den DATA-Leitungen können je nach Zentrale (z.B. Intellibox) variieren.*
+
+## Geräteübersicht
+Die folgende Tabelle gibt eine Übersicht über die bekanntesten Geräte des klassischen Märklin Digital-Systems und deren Funktion am I2C-Bus.
+
+| Typ | Name | Beschreibung |
+| :--- | :--- | :--- |
+| **6020** | Zentraleinheit (Central Unit) | Die erste Zentrale des Systems. Sie koordiniert die Kommunikation auf dem Bus und generiert das Gleissignal (MM1). |
+| **6021** | Control Unit | Weiterentwicklung der Zentrale mit integriertem Fahrpult. Unterstützt das MM2-Protokoll und dient als Master für das System. |
+| **6035** | Control 80 | Externes Fahrpult zur Steuerung von Lokomotiven (Adressen 01-80). Anschluss erfolgt auf der rechten Systemseite. |
+| **6036** | Control 80f | Erweitertes Fahrpult mit Tasten für die Sonderfunktionen f1-f4 und Anzeige der Fahrtrichtung. |
+| **6040** | Keyboard | Stellpult für bis zu 16 Magnetartikel (Weichen, Signale). Wird auf der linken Systemseite angeschlossen. |
+| **6043** | Memory | Fahrstraßenspeicher, der bis zu 24 Schaltfolgen speichern und auf Knopfdruck abrufen kann. |
+| **6050/6051** | Interface | Computer-Schnittstelle (RS-232), die die Steuerung der Anlage durch einen PC ermöglicht. |
+| **6070** | Infra Control 80f | Infrarot-Steuergerät zur kabellosen Bedienung von Lokomotiven über Infrarot-Handsender. |
+| **60128** | Connect 6021 | Adapter zum Anschluss der Control Unit 6021 an die Central Station 2/3. Ermöglicht die Weiternutzung alter Fahrpulte. |
