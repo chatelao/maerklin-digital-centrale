@@ -24,5 +24,12 @@ A significant portion of the modern technical insights and hardware pinouts in t
 - **Protocol Formats**: Detailed breakdown of MM1 and MM2 (extended Motorola) formats.
 - **Connector Pinouts**: Standard DIN 41612 B/2 pinouts for the I2C bus and RJ12 for LocoNet.
 
+## Connector Samples
+
+The following DIN 41612 B/2 style 90° THT (Through-Hole Technology) connectors are recommended for custom hardware interfacing with classic Märklin components:
+
+- **Male Connector (Messerleiste)**: ept [101-90014](https://www.ept.de/101-90014_de)
+- **Female Connector (Federleiste)**: ept [120-90064](https://www.ept.de/120-90064_de)
+
 ---
 *Note: This repository is intended for educational and reference purposes for hobbyists working with legacy Märklin Digital equipment.*
