@@ -1,0 +1,36 @@
+name: Compile Examples
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        board:
+          - fqbn: "arduino:avr:nano:cpu=atmega328p"
+            platforms: |
+              - name: "arduino:avr"
+            name: "Arduino Nano"
+          - fqbn: "arduino:mbed_rp2040:pico"
+            platforms: |
+              - name: "arduino:mbed_rp2040"
+            name: "Raspberry Pi Pico"
+    name: ${{ matrix.board.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile Examples
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: ${{ matrix.board.fqbn }}
+          platforms: ${{ matrix.board.platforms }}
+          sketch-paths: |
+            - examples
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          enable-deltas-report: true
+          exit-on-fail: true
