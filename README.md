@@ -8,7 +8,7 @@ A significant portion of the modern technical insights and hardware pinouts in t
 
 ## Documentation Index
 
-- **[Datasheet: Märklin Digital I2C-Bus (MM1 & MM2)](Datasheet_MM1-MM2-Bus.md)**: A modern, structured datasheet covering the physical layer, addressing (including the chain mechanism), and command protocols for locomotives and accessories.
+- **[Datasheet: Märklin Digital I2C-Bus (MM1 & MM2)](Pinout_Bus-Maerklin-Digital-6020.md)**: A modern, structured datasheet covering the physical layer, addressing (including the chain mechanism), and command protocols for locomotives and accessories.
 - **[Geräteübersicht Märklin Digital (60xx Serie)](Geraeteuebersicht.md)**: Eine detaillierte Übersicht der Hardware-Komponenten und Dekoder.
 - **[Data communication on the I2C-Bus (EI2C.md)](EI2C.md)**: An English translation of the classic documentation by Walter Fiedler, originally hosted on Dr. König's Märklin-Digital-Page.
 

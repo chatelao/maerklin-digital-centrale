@@ -90,5 +90,5 @@ Uses a 4-byte I2C packet with a modified sender address:
 
 ## References
 
-- [Datasheet: Märklin Digital I2C-Bus](../../Datasheet_MM1-MM2-Bus.md)
+- [Datasheet: Märklin Digital I2C-Bus](../../Pinout_Bus-Maerklin-Digital-6020.md)
 - [Data communication on the I2C-Bus (EI2C.md)](../../EI2C.md)
