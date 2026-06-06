@@ -6,6 +6,7 @@ This example simulates a Märklin Digital Control 80 locomotive controller using
 
 - **Multi-Master I2C Communication**: Actively sends locomotive commands to the Central Unit (6021/6020).
 - **System Control**: Physical buttons for global STOP and GO signals.
+- **Software Addressing (Enumeration)**: Supports the Märklin I2C "Chain" addressing protocol to dynamically receive a device address from the Central Unit.
 - **Locomotive Control**:
     - Speed control (0, 2-15).
     - Direction change (Speed 1).
@@ -17,16 +18,18 @@ This example simulates a Märklin Digital Control 80 locomotive controller using
 
 ## Connections
 
-### Märklin I2C Bus (Left Side / Federleiste)
+### Märklin I2C Bus
 
-| Signal | Pin (Links) | Arduino Pin |
-| :--- | :--- | :--- |
-| **SDA** | b16 | A4 (SDA) |
-| **SCL** | b14 | A5 (SCL) |
-| **STOP** | b12 | A2 (STOP signal) |
-| **GO** | b10 | A3 (GO signal) |
-| **8V** | b2, b4 | VIN (Ensure 8V compatibility) |
-| **GND** | a2-a16 | GND |
+| Signal | Pin (Right) | Pin (Left) | Arduino Pin |
+| :--- | :--- | :--- | :--- |
+| **SDA** | b2 | b16 | A4 (SDA) |
+| **SCL** | b4 | b14 | A5 (SCL) |
+| **STOP** | b6 | b12 | A2 (STOP signal) |
+| **GO** | b8 | b10 | A3 (GO signal) |
+| **INIT IN** | b12 | b6 | D2 |
+| **INIT OUT** | - | - | D12 (Chain) |
+| **8V** | b14, b16 | b2, b4 | VIN (Ensure 8V compatibility) |
+| **GND** | a2-a16 | a2-a16 | GND |
 
 ### User Interface
 
@@ -38,6 +41,19 @@ This example simulates a Märklin Digital Control 80 locomotive controller using
 | **D6** | Function OFF (Foff) |
 | **D7** | Address UP |
 | **D8** | Address DOWN |
+
+## Software Addressing (Enumeration)
+
+Devices connected to the Right side of a Central Unit (6021/6020) are dynamically addressed during system startup. This simulator handles the process as follows:
+
+1. **Wait for INIT**: The device waits for the `INIT IN` signal (D2) to be pulled LOW by the Central Unit or a preceding device.
+2. **Capture Address**: It bit-bangs the I2C bus (`SDA`/`SCL`) to read the first byte sent by the Central Unit, which contains the assigned device address.
+3. **Acknowledge**: It sends an I2C ACK to the Central Unit.
+4. **Chain Signal**: It pulls `INIT OUT` (D12) LOW to signal the next device in the chain that it can now receive its address.
+
+### Bus Chain Connection
+
+To connect multiple simulated Control 80s, connect the `INIT OUT` (D12) of the first Arduino to the `INIT IN` (D2) of the second Arduino.
 
 #### Variant: V-Analog (`#define V_ANALOG`)
 

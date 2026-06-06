@@ -8,16 +8,18 @@
  * - V_ANALOG: Uses a potentiometer for speed and a button for direction change.
  * - V_DIGITAL: Uses a rotary encoder for speed and direction change (push).
  *
- * Connections (Märklin I2C Bus - Left Side / Federleiste):
- * -------------------------------------------------------
- * Signal | Pin (Links) | Arduino Pin
- * -------|-------------|------------
- * SDA    | b16         | A4 (SDA)
- * SCL    | b14         | A5 (SCL)
- * STOP   | b12         | A2 (STOP signal)
- * GO     | b10         | A3 (GO signal)
- * 8V     | b2, b4      | VIN (Ensure your Arduino can handle 8V on VIN)
- * GND    | a2-a16      | GND
+ * Connections (Märklin I2C Bus):
+ * ------------------------------
+ * Signal   | Pin (Right) | Pin (Left) | Arduino Pin
+ * ---------|-------------|------------|------------
+ * SDA      | b2          | b16        | A4 (SDA)
+ * SCL      | b4          | b14        | A5 (SCL)
+ * STOP     | b6          | b12        | A2 (STOP)
+ * GO       | b8          | b10        | A3 (GO)
+ * INIT IN  | b12         | b6         | D2
+ * INIT OUT | -           | -          | D12 (Chain to next device)
+ * 8V       | b14, b16    | b2, b4     | VIN (Ensure 8V compatibility)
+ * GND      | a2-a16      | a2-a16     | GND
  *
  * User Interface Pins:
  * --------------------
@@ -54,8 +56,11 @@ const int pinFOFF_BTN = 6;
 const int pinADDR_UP  = 7;
 const int pinADDR_DN  = 8;
 
-const int pinBUS_STOP = A2; // Connected to Bus b12 (Links)
-const int pinBUS_GO   = A3; // Connected to Bus b10 (Links)
+const int pinINIT_IN  = 2;  // Connected to Bus b12 (Right) / b6 (Left)
+const int pinINIT_OUT = 12; // Chain to next device's INIT_IN
+
+const int pinBUS_STOP = A2; // Connected to Bus b6 (Right) / b12 (Left)
+const int pinBUS_GO   = A3; // Connected to Bus b8 (Right) / b10 (Left)
 
 #ifdef V_ANALOG
 const int pinPOT      = A0;
@@ -70,9 +75,9 @@ const int pinENC_BTN  = 11;
 
 // --- Constants ---
 const byte CU_ADDR     = 0x7F; // 7-bit address of Central Unit (0xFE >> 1)
-const byte SENDER_ADDR = 0x02; // Simulated Controller Address 1 (0000 0010)
 
 // --- State Variables ---
+byte SENDER_ADDR      = 0x02; // Dynamically assigned (default to 0x02)
 byte currentLocoAddr = 1;
 byte currentSpeed    = 0;     // 0=Stop, 1=Change Dir, 2-15=Speed steps
 bool functionState   = false;
@@ -92,7 +97,15 @@ void setup() {
   while (!Serial); // Wait for Serial on some boards
   Serial.println(F("--- Märklin Control 80 Simulator ---"));
 
-  // Initialize I2C as Master
+  // INIT Pins
+  pinMode(pinINIT_IN,  INPUT_PULLUP);
+  pinMode(pinINIT_OUT, OUTPUT);
+  digitalWrite(pinINIT_OUT, HIGH); // Inactive
+
+  // Perform Software Addressing (Enumeration)
+  performSoftwareAddressing();
+
+  // Initialize I2C
   Wire.begin();
 
   // Button Pins
@@ -160,6 +173,53 @@ void triggerBusSignal(int pin) {
   digitalWrite(pin, LOW);
   delay(100); // Hold for 100ms
   pinMode(pin, INPUT_PULLUP);
+}
+
+/**
+ * Performs software addressing (enumeration) over the I2C bus.
+ * Captures the assigned address from the CU via bit-banging.
+ */
+void performSoftwareAddressing() {
+  Serial.println(F("Waiting for Software Addressing (INIT)..."));
+
+  // Ensure I2C pins are inputs before bit-banging
+  pinMode(SDA, INPUT_PULLUP);
+  pinMode(SCL, INPUT_PULLUP);
+
+  // 1. Wait for INIT IN to go LOW
+  while (digitalRead(pinINIT_IN) == HIGH) {
+    delay(1);
+  }
+
+  // 2. Capture I2C address byte (8 bits)
+  // Wait for START condition: SDA falls while SCL is HIGH
+  while (!(digitalRead(SDA) == LOW && digitalRead(SCL) == HIGH));
+
+  // Wait for SCL to fall for the first bit
+  while (digitalRead(SCL) == HIGH);
+
+  byte assignedAddr = 0;
+  for (int i = 0; i < 8; i++) {
+    while (digitalRead(SCL) == LOW); // Wait for SCL HIGH
+    assignedAddr <<= 1;
+    if (digitalRead(SDA) == HIGH) assignedAddr |= 1;
+    while (digitalRead(SCL) == HIGH); // Wait for SCL LOW
+  }
+
+  // 3. Send ACK: SDA LOW during 9th clock pulse
+  pinMode(SDA, OUTPUT);
+  digitalWrite(SDA, LOW);
+  while (digitalRead(SCL) == LOW); // Wait for SCL HIGH (9th clock)
+  while (digitalRead(SCL) == HIGH); // Wait for SCL LOW
+  pinMode(SDA, INPUT_PULLUP); // Release SDA
+
+  SENDER_ADDR = assignedAddr;
+
+  // 4. Enable next device in chain
+  digitalWrite(pinINIT_OUT, LOW);
+
+  Serial.print(F("Assigned Address: 0x"));
+  Serial.println(SENDER_ADDR, HEX);
 }
 
 void loop() {
