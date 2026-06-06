@@ -12,7 +12,23 @@
 
 #include <Wire.h>
 
-// --- Pin Definitions (XIAO RP2040) ---
+// --- Pin Definitions (XIAO RP2040 / Nano Fallback) ---
+#ifndef D0
+#define D0 0
+#endif
+#ifndef D1
+#define D1 1
+#endif
+#ifndef D2
+#define D2 2
+#endif
+#ifndef D3
+#define D3 3
+#endif
+#ifndef D6
+#define D6 6
+#endif
+
 const int pinIR_RECV  = D0; // IR Sensor Output
 const int pinBUS_STOP = D1; // To Level Shifter -> Bus b6
 const int pinBUS_GO   = D2; // To Level Shifter -> Bus b8

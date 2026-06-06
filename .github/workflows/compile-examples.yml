@@ -9,6 +9,7 @@ jobs:
   compile:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         board:
           - fqbn: "arduino:avr:nano:cpu=atmega328"
