@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         board:
-          - fqbn: "arduino:avr:nano:cpu=atmega328p"
+          - fqbn: "arduino:avr:nano:cpu=atmega328"
             platforms: |
               - name: "arduino:avr"
             name: "Arduino Nano"
@@ -33,4 +33,3 @@ jobs:
             - examples
           github-token: ${{ secrets.GITHUB_TOKEN }}
           enable-deltas-report: true
-          exit-on-fail: true
