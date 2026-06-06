@@ -29,6 +29,11 @@ Die Pinbelegung ist zwischen der rechten Seite (Stecker/Messerleiste) und der li
 * **Stromversorgung:** Die Versorgungsspannung auf den Pins b14/b16 (Rechts) bzw. b4/b2 (Links) beträgt **8V DC**.
 * **Leistungsaufnahme:** Geräte wie das Keyboard 6040 haben eine signifikante Stromaufnahme von ca. **120 mA** pro Gerät.
 
+### Details zur Schnittstelle
+Die seitlichen Stecker dienen dem Anschluss von Erweiterungsgeräten. Je nach Funktion werden unterschiedliche Seiten verwendet:
+* **Rechte Seite:** Anschluss für Fahrpulte (Control 80, Control 80f), Infrarot-Steuerungen (Infra Control 80f) und Computer-Interfaces (6050, 6051). Die Adressierung erfolgt hier per Software über die **b12** Kettenleitung.
+* **Linke Seite:** Anschluss für Keyboards (6040, 6041) und Memorys (6043). Diese Geräte werden hardwareseitig über DIP-Schalter auf der Rückseite adressiert; eine Kettenleitung ist hier nicht erforderlich.
+
 ### Bus-Regeln
 * **Ruhezustand:** Beide Leitungen (SDA, SCL) liegen auf logisch HIGH Potential.
 * **Pegelwechsel:** Daten auf der SDA-Leitung dürfen sich nur ändern, wenn SCL auf LOW liegt.
