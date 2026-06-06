@@ -2,7 +2,7 @@
 
 This document describes the Infrared (IR) protocol used by the Samsung BN59-01199F remote control.
 
-![Samsung BN59-01199F](samsung.png)
+<img src="samsung.png" alt="Samsung BN59-01199F" width="750">
 
 ## Protocol Specification
 
