@@ -49,6 +49,22 @@
 #endif
 
 // --- Pin Definitions ---
+#if defined(ARDUINO_ARCH_RP2040)
+// Raspberry Pi Pico Pinout
+const int pinSTOP_BTN = 10;
+const int pinGO_BTN   = 11;
+const int pinFON_BTN  = 12;
+const int pinFOFF_BTN = 13;
+const int pinADDR_UP  = 14;
+const int pinADDR_DN  = 15;
+
+const int pinINIT_IN  = 2;
+const int pinINIT_OUT = 3;
+
+const int pinBUS_STOP = 6;
+const int pinBUS_GO   = 7;
+#else
+// Default (Arduino Nano) Pinout
 const int pinSTOP_BTN = 3;
 const int pinGO_BTN   = 4;
 const int pinFON_BTN  = 5;
@@ -61,6 +77,7 @@ const int pinINIT_OUT = 12; // Chain to next device's INIT_IN
 
 const int pinBUS_STOP = A2; // Connected to Bus b6 (Right) / b12 (Left)
 const int pinBUS_GO   = A3; // Connected to Bus b8 (Right) / b10 (Left)
+#endif
 
 #ifdef V_ANALOG
 const int pinPOT      = A0;
