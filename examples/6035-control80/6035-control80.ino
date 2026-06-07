@@ -57,7 +57,24 @@
 #endif
 
 // --- Pin Definitions ---
-#if defined(ARDUINO_ARCH_RP2040)
+#if defined(ARDUINO_SEEED_XIAO_RP2040)
+// Seeed Studio XIAO RP2040 Pinout
+const int pinSTOP_BTN = 10;
+const int pinGO_BTN   = 11;
+const int pinFON_BTN  = 12;
+const int pinFOFF_BTN = 13;
+const int pinADDR_UP  = 14;
+const int pinADDR_DN  = 15;
+
+const int pinINIT_IN  = 2;
+const int pinINIT_OUT = 3;
+
+const int pinBUS_STOP = 6;
+const int pinBUS_GO   = 7;
+
+const int pinSDA      = 6; // D4
+const int pinSCL      = 7; // D5
+#elif defined(ARDUINO_ARCH_RP2040)
 // Raspberry Pi Pico Pinout
 const int pinSTOP_BTN = 10;
 const int pinGO_BTN   = 11;
@@ -71,8 +88,14 @@ const int pinINIT_OUT = 3;
 
 const int pinBUS_STOP = 6;
 const int pinBUS_GO   = 7;
+
+const int pinSDA      = 4; // GP4
+const int pinSCL      = 5; // GP5
 #else
 // Default (Arduino Nano) Pinout
+const int pinSDA      = A4;
+const int pinSCL      = A5;
+
 const int pinSTOP_BTN = 3;
 const int pinGO_BTN   = 4;
 const int pinFON_BTN  = 5;
@@ -208,8 +231,8 @@ void performSoftwareAddressing() {
   Serial.println(F("Waiting for Software Addressing (INIT)..."));
 
   // Ensure I2C pins are inputs before bit-banging
-  pinMode(SDA, INPUT_PULLUP);
-  pinMode(SCL, INPUT_PULLUP);
+  pinMode(pinSDA, INPUT_PULLUP);
+  pinMode(pinSCL, INPUT_PULLUP);
 
   // 1. Wait for INIT IN to go LOW
   while (digitalRead(pinINIT_IN) == HIGH) {
@@ -218,25 +241,25 @@ void performSoftwareAddressing() {
 
   // 2. Capture I2C address byte (8 bits)
   // Wait for START condition: SDA falls while SCL is HIGH
-  while (!(digitalRead(SDA) == LOW && digitalRead(SCL) == HIGH));
+  while (!(digitalRead(pinSDA) == LOW && digitalRead(pinSCL) == HIGH));
 
   // Wait for SCL to fall for the first bit
-  while (digitalRead(SCL) == HIGH);
+  while (digitalRead(pinSCL) == HIGH);
 
   byte assignedAddr = 0;
   for (int i = 0; i < 8; i++) {
-    while (digitalRead(SCL) == LOW); // Wait for SCL HIGH
+    while (digitalRead(pinSCL) == LOW); // Wait for SCL HIGH
     assignedAddr <<= 1;
-    if (digitalRead(SDA) == HIGH) assignedAddr |= 1;
-    while (digitalRead(SCL) == HIGH); // Wait for SCL LOW
+    if (digitalRead(pinSDA) == HIGH) assignedAddr |= 1;
+    while (digitalRead(pinSCL) == HIGH); // Wait for SCL LOW
   }
 
   // 3. Send ACK: SDA LOW during 9th clock pulse
-  pinMode(SDA, OUTPUT);
-  digitalWrite(SDA, LOW);
-  while (digitalRead(SCL) == LOW); // Wait for SCL HIGH (9th clock)
-  while (digitalRead(SCL) == HIGH); // Wait for SCL LOW
-  pinMode(SDA, INPUT_PULLUP); // Release SDA
+  pinMode(pinSDA, OUTPUT);
+  digitalWrite(pinSDA, LOW);
+  while (digitalRead(pinSCL) == LOW); // Wait for SCL HIGH (9th clock)
+  while (digitalRead(pinSCL) == HIGH); // Wait for SCL LOW
+  pinMode(pinSDA, INPUT_PULLUP); // Release SDA
 
   SENDER_ADDR = assignedAddr;
 

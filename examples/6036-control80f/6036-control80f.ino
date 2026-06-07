@@ -66,7 +66,42 @@
 #endif
 
 // --- Pin Definitions ---
-#if defined(ARDUINO_ARCH_RP2040)
+#if defined(ARDUINO_SEEED_XIAO_RP2040)
+// Seeed Studio XIAO RP2040 Pinout
+const int pinSTOP_BTN = 10;
+const int pinGO_BTN   = 11;
+const int pinFON_BTN  = 12;
+const int pinFOFF_BTN = 13;
+const int pinADDR_UP  = 14;
+const int pinADDR_DN  = 15;
+
+const int pinF1_BTN   = 0;
+const int pinF2_BTN   = 1;
+
+#ifdef V_ANALOG
+const int pinPOT      = A0;
+const int pinDIR_BTN  = A1;
+const int pinF3_BTN   = 18;
+const int pinF4_BTN   = 19;
+#endif
+
+#ifdef V_DIGITAL
+const int pinENC_A    = 18;
+const int pinENC_B    = 19;
+const int pinENC_BTN  = 20;
+const int pinF3_BTN   = 21;
+const int pinF4_BTN   = 22;
+#endif
+
+const int pinINIT_IN  = 2;
+const int pinINIT_OUT = 3;
+
+const int pinBUS_STOP = 6;
+const int pinBUS_GO   = 7;
+
+const int pinSDA      = 6; // D4
+const int pinSCL      = 7; // D5
+#elif defined(ARDUINO_ARCH_RP2040)
 // Raspberry Pi Pico Pinout
 const int pinSTOP_BTN = 10;
 const int pinGO_BTN   = 11;
@@ -98,8 +133,14 @@ const int pinINIT_OUT = 3;
 
 const int pinBUS_STOP = 6;
 const int pinBUS_GO   = 7;
+
+const int pinSDA      = 4; // GP4
+const int pinSCL      = 5; // GP5
 #else
 // Default (Arduino Nano) Pinout
+const int pinSDA      = A4;
+const int pinSCL      = A5;
+
 const int pinSTOP_BTN = 3;
 const int pinGO_BTN   = 4;
 const int pinFON_BTN  = 5;
@@ -266,26 +307,26 @@ void triggerBusSignal(int pin) {
 }
 
 void performSoftwareAddressing() {
-  pinMode(SDA, INPUT_PULLUP);
-  pinMode(SCL, INPUT_PULLUP);
+  pinMode(pinSDA, INPUT_PULLUP);
+  pinMode(pinSCL, INPUT_PULLUP);
 
   while (digitalRead(pinINIT_IN) == HIGH);
-  while (!(digitalRead(SDA) == LOW && digitalRead(SCL) == HIGH));
-  while (digitalRead(SCL) == HIGH);
+  while (!(digitalRead(pinSDA) == LOW && digitalRead(pinSCL) == HIGH));
+  while (digitalRead(pinSCL) == HIGH);
 
   byte assignedAddr = 0;
   for (int i = 0; i < 8; i++) {
-    while (digitalRead(SCL) == LOW);
+    while (digitalRead(pinSCL) == LOW);
     assignedAddr <<= 1;
-    if (digitalRead(SDA) == HIGH) assignedAddr |= 1;
-    while (digitalRead(SCL) == HIGH);
+    if (digitalRead(pinSDA) == HIGH) assignedAddr |= 1;
+    while (digitalRead(pinSCL) == HIGH);
   }
 
-  pinMode(SDA, OUTPUT);
-  digitalWrite(SDA, LOW);
-  while (digitalRead(SCL) == LOW);
-  while (digitalRead(SCL) == HIGH);
-  pinMode(SDA, INPUT_PULLUP);
+  pinMode(pinSDA, OUTPUT);
+  digitalWrite(pinSDA, LOW);
+  while (digitalRead(pinSCL) == LOW);
+  while (digitalRead(pinSCL) == HIGH);
+  pinMode(pinSDA, INPUT_PULLUP);
 
   SENDER_ADDR = assignedAddr;
   digitalWrite(pinINIT_OUT, LOW);
