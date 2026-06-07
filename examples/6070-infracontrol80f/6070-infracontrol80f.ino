@@ -22,6 +22,7 @@
 #define D5 5
 #define D6 6
 #endif
+
 #ifndef SDA
 #define SDA 4
 #endif
@@ -35,7 +36,6 @@ const int pinBUS_STOP = D1; // To Level Shifter -> Bus b6
 const int pinBUS_GO   = D2; // To Level Shifter -> Bus b8
 const int pinINIT_IN  = D3; // To Level Shifter -> Bus b12
 const int pinINIT_OUT = D6; // To Level Shifter -> next device INIT IN
-// SDA: D4, SCL: D5 (Standard XIAO I2C)
 
 // --- Samsung IR Remote Codes (BN59-01199F) ---
 const uint32_t IR_POWER    = 0xE0E040BF;
