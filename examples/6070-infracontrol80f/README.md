@@ -26,7 +26,13 @@ Use a 38kHz IR receiver (e.g., TSOP38238).
 | **OUT** | D0 | IR Signal Input |
 
 #### Alternative Sensors
-Instead of an integrated IR receiver, a simple **phototransistor** can be used. This requires a basic circuit with a pull-up or pull-down resistor. For detailed wiring of a phototransistor, refer to the [Samsung Remote Protocol](../../remotes/samsung.md#using-a-phototransistor-simple-setup).
+Instead of an integrated IR receiver, a simple **phototransistor** can be used. Common types suited for IR remote decoding include:
+- **BPW42** (NPN, high sensitivity)
+- **BPW85** (NPN, side-looking)
+- **LTR-4206** (NPN, standard 3mm/5mm package)
+- **TEPT5600** (NPN, daylight blocking filter)
+
+This requires a basic circuit with a pull-up or pull-down resistor. For detailed wiring of a phototransistor, refer to the [Samsung Remote Protocol](../../remotes/samsung.md#using-a-phototransistor-simple-setup).
 
 ### 2. Power Supply (8V to XIAO)
 The Märklin I2C bus provides **8V DC**. The XIAO RP2040's `VIN` (or `5V`) pin is designed for 5V input. Connecting 8V directly will likely damage the board.

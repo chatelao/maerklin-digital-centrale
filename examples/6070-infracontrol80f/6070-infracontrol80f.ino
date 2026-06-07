@@ -12,6 +12,23 @@
 
 #include <Wire.h>
 
+// Handle missing pin definitions for some cores (e.g. Raspberry Pi Pico)
+#ifndef D0
+#define D0 0
+#define D1 1
+#define D2 2
+#define D3 3
+#define D4 4
+#define D5 5
+#define D6 6
+#endif
+#ifndef SDA
+#define SDA 4
+#endif
+#ifndef SCL
+#define SCL 5
+#endif
+
 // --- Pin Definitions (XIAO RP2040) ---
 const int pinIR_RECV  = D0; // IR Sensor Output
 const int pinBUS_STOP = D1; // To Level Shifter -> Bus b6
