@@ -52,6 +52,14 @@
 
 #include <Wire.h>
 
+// Handle missing SDA/SCL definitions for some cores (e.g. Raspberry Pi Pico)
+#ifndef SDA
+#define SDA A4
+#endif
+#ifndef SCL
+#define SCL A5
+#endif
+
 // --- Configuration ---
 #if !defined(V_ANALOG) && !defined(V_DIGITAL)
 #define V_ANALOG
