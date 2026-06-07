@@ -10,6 +10,10 @@ This example simulates a Märklin Digital Infra Control 80f (6070) using a Seeed
 - **Extended Motorola Format**: Supports f1-f4 and direction indicators.
 - **System Control**: Global STOP/GO via remote buttons.
 
+## Software Decoding on Pico 2
+
+For more powerful platforms like the **Raspberry Pi Pico 2**, the IR signal can be decoded 100% in software (e.g., using a library like `IRremote` or custom PIO-based decoders). This allows for even more flexible input handling beyond the basic `pulseIn()` method used in this example.
+
 ## Hardware Connections
 
 ### 1. IR Sensor Connection
@@ -20,6 +24,9 @@ Use a 38kHz IR receiver (e.g., TSOP38238).
 | **VCC** | 3V3 | Power from XIAO |
 | **GND** | GND | Common ground |
 | **OUT** | D0 | IR Signal Input |
+
+#### Alternative Sensors
+Instead of an integrated IR receiver, a simple **phototransistor** can be used. This requires a basic circuit with a pull-up or pull-down resistor. For detailed wiring of a phototransistor, refer to the [Samsung Remote Protocol](../../remotes/samsung.md#using-a-phototransistor-simple-setup).
 
 ### 2. Power Supply (8V to XIAO)
 The Märklin I2C bus provides **8V DC**. The XIAO RP2040's `VIN` (or `5V`) pin is designed for 5V input. Connecting 8V directly will likely damage the board.
