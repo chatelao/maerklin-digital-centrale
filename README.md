@@ -23,7 +23,7 @@ A significant portion of the modern technical insights and hardware pinouts in t
 - **Multi-Master Architecture**: Any device on the bus can act as a master to send commands.
 - **Addressing Chain**: Dynamic software addressing using the `b12` pin.
 - **Protocol Formats**: Detailed breakdown of MM1 and MM2 (extended Motorola) formats.
-- **Connector Pinouts**: Standard DIN 41612 B/2 pinouts for the I2C bus and RJ12 for LocoNet.
+- **Connector Pinouts**: Standard DIN 41612 B/2 (1988) / EN 60603-2 (1999) pinouts for the I2C bus and RJ12 for LocoNet.
 
 ## Connector Samples
 
