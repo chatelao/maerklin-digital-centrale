@@ -58,6 +58,40 @@
 #endif
 
 // --- Pin Definitions ---
+#if defined(ARDUINO_ARCH_RP2040)
+// Raspberry Pi Pico Pinout
+const int pinSTOP_BTN = 10;
+const int pinGO_BTN   = 11;
+const int pinFON_BTN  = 12;
+const int pinFOFF_BTN = 13;
+const int pinADDR_UP  = 14;
+const int pinADDR_DN  = 15;
+
+const int pinF1_BTN   = 16;
+const int pinF2_BTN   = 17;
+
+#ifdef V_ANALOG
+const int pinPOT      = A0;
+const int pinDIR_BTN  = A1;
+const int pinF3_BTN   = 18;
+const int pinF4_BTN   = 19;
+#endif
+
+#ifdef V_DIGITAL
+const int pinENC_A    = 18;
+const int pinENC_B    = 19;
+const int pinENC_BTN  = 20;
+const int pinF3_BTN   = 21;
+const int pinF4_BTN   = 22;
+#endif
+
+const int pinINIT_IN  = 2;
+const int pinINIT_OUT = 3;
+
+const int pinBUS_STOP = 6;
+const int pinBUS_GO   = 7;
+#else
+// Default (Arduino Nano) Pinout
 const int pinSTOP_BTN = 3;
 const int pinGO_BTN   = 4;
 const int pinFON_BTN  = 5;
@@ -88,6 +122,7 @@ const int pinINIT_OUT = 12;
 
 const int pinBUS_STOP = A2;
 const int pinBUS_GO   = A3;
+#endif
 
 // --- Constants ---
 const byte CU_ADDR     = 0x7F; // 7-bit address of Central Unit (0xFE >> 1)

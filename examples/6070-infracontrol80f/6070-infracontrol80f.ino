@@ -12,12 +12,28 @@
 
 #include <Wire.h>
 
-// --- Pin Definitions (XIAO RP2040) ---
-const int pinIR_RECV  = D0; // IR Sensor Output
-const int pinBUS_STOP = D1; // To Level Shifter -> Bus b6
-const int pinBUS_GO   = D2; // To Level Shifter -> Bus b8
-const int pinINIT_IN  = D3; // To Level Shifter -> Bus b12
-const int pinINIT_OUT = D6; // To Level Shifter -> next device INIT IN
+// --- Pin Definitions (XIAO RP2040 / Nano / Pico) ---
+#if defined(ARDUINO_SEEED_XIAO_RP2040)
+const int pinIR_RECV  = D0;
+const int pinBUS_STOP = D1;
+const int pinBUS_GO   = D2;
+const int pinINIT_IN  = D3;
+const int pinINIT_OUT = D6;
+#elif defined(ARDUINO_ARCH_RP2040)
+// Standard Raspberry Pi Pico
+const int pinIR_RECV  = 16;
+const int pinBUS_STOP = 17;
+const int pinBUS_GO   = 18;
+const int pinINIT_IN  = 19;
+const int pinINIT_OUT = 20;
+#else
+// Default (Arduino Nano)
+const int pinIR_RECV  = 3;
+const int pinBUS_STOP = 4;
+const int pinBUS_GO   = 5;
+const int pinINIT_IN  = 2;
+const int pinINIT_OUT = 6;
+#endif
 // SDA: D4, SCL: D5 (Standard XIAO I2C)
 
 // --- Samsung IR Remote Codes (BN59-01199F) ---
