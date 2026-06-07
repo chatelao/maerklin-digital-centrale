@@ -14,11 +14,15 @@
 
 // --- Pin Definitions (XIAO RP2040 / Nano / Pico) ---
 #if defined(ARDUINO_SEEED_XIAO_RP2040)
+// Seeed Studio XIAO RP2040 Pinout
 const int pinIR_RECV  = D0;
 const int pinBUS_STOP = D1;
 const int pinBUS_GO   = D2;
 const int pinINIT_IN  = D3;
 const int pinINIT_OUT = D6;
+
+const int pinSDA      = 6; // D4
+const int pinSCL      = 7; // D5
 #elif defined(ARDUINO_ARCH_RP2040)
 // Standard Raspberry Pi Pico
 const int pinIR_RECV  = 16;
@@ -26,6 +30,9 @@ const int pinBUS_STOP = 17;
 const int pinBUS_GO   = 18;
 const int pinINIT_IN  = 19;
 const int pinINIT_OUT = 20;
+
+const int pinSDA      = 4; // GP4
+const int pinSCL      = 5; // GP5
 #else
 // Default (Arduino Nano)
 const int pinIR_RECV  = 3;
@@ -33,8 +40,10 @@ const int pinBUS_STOP = 4;
 const int pinBUS_GO   = 5;
 const int pinINIT_IN  = 2;
 const int pinINIT_OUT = 6;
+
+const int pinSDA      = A4;
+const int pinSCL      = A5;
 #endif
-// SDA: D4, SCL: D5 (Standard XIAO I2C)
 
 // --- Samsung IR Remote Codes (BN59-01199F) ---
 const uint32_t IR_POWER    = 0xE0E040BF;
@@ -133,26 +142,29 @@ void triggerBusSignal(int pin) {
 
 void performSoftwareAddressing() {
   // Simplified version for XIAO, assuming level shifters are transparent
+  pinMode(pinSDA, INPUT_PULLUP);
+  pinMode(pinSCL, INPUT_PULLUP);
+
   while (digitalRead(pinINIT_IN) == HIGH);
 
   // Wait for I2C Start
-  while (!(digitalRead(SDA) == LOW && digitalRead(SCL) == HIGH));
-  while (digitalRead(SCL) == HIGH);
+  while (!(digitalRead(pinSDA) == LOW && digitalRead(pinSCL) == HIGH));
+  while (digitalRead(pinSCL) == HIGH);
 
   byte assignedAddr = 0;
   for (int i = 0; i < 8; i++) {
-    while (digitalRead(SCL) == LOW);
+    while (digitalRead(pinSCL) == LOW);
     assignedAddr <<= 1;
-    if (digitalRead(SDA) == HIGH) assignedAddr |= 1;
-    while (digitalRead(SCL) == HIGH);
+    if (digitalRead(pinSDA) == HIGH) assignedAddr |= 1;
+    while (digitalRead(pinSCL) == HIGH);
   }
 
   // Send ACK
-  pinMode(SDA, OUTPUT);
-  digitalWrite(SDA, LOW);
-  while (digitalRead(SCL) == LOW);
-  while (digitalRead(SCL) == HIGH);
-  pinMode(SDA, INPUT);
+  pinMode(pinSDA, OUTPUT);
+  digitalWrite(pinSDA, LOW);
+  while (digitalRead(pinSCL) == LOW);
+  while (digitalRead(pinSCL) == HIGH);
+  pinMode(pinSDA, INPUT);
 
   SENDER_ADDR = assignedAddr;
   digitalWrite(pinINIT_OUT, LOW);
