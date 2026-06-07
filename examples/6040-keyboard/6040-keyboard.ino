@@ -51,19 +51,6 @@
 #define CENTRAL_UNIT_ADDR 0x7F // 7-bit I2C address of the Central Unit (0xFE >> 1)
 
 // Pin Definitions
-#if defined(ARDUINO_ARCH_RP2040)
-// Raspberry Pi Pico Pinout
-const int pinINIT = 2;
-const int pinGO   = 3;
-const int pinSTOP = 6;
-const int pinETC  = 7;
-
-const int pinADDR[] = {10, 11, 12, 13};
-
-const int pinBUTTONS[] = {14, 15, 16, 17, 18, 19, 20, 21};
-const int pinCommon = 22;
-#else
-// Default (Arduino Nano) Pinout
 const int pinINIT = A0;
 const int pinGO   = A1;
 const int pinSTOP = A2;
@@ -73,7 +60,6 @@ const int pinADDR[] = {9, 10, 11, 12}; // D9=S1, D10=S2, D11=S3, D12=S4
 
 const int pinBUTTONS[] = {0, 1, 2, 3, 4, 5, 6, 7}; // D0-D7
 const int pinCommon = 8; // D8 used as common ground for buttons
-#endif
 
 byte keyboardAddress = 0;
 bool lastButtonState[8];
