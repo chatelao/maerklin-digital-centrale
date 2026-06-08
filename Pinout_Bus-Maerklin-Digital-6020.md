@@ -10,16 +10,16 @@ Die Kommunikation erfolgt über die seitlichen Kontaktleisten der Zentraleinheit
 
 Die Pinbelegung ist zwischen der rechten Seite (Stecker/Messerleiste) und der linken Seite (Buchse/Federleiste) gespiegelt. Für die Reihe 'b' gilt die Regel: Pin **n** (Rechts) entspricht Pin **18-n** (Links).
 
-| Signal | Pin (Rechts) | Pin (Links) | Beschreibung |
+| Signal | Pin (Links) | Pin (Rechts) | Beschreibung |
 | :--- | :--- | :--- | :--- |
-| **SDA** | b2 | b16 | Serielle Datenleitung (I2C Data) |
-| **SCL** | b4 | b14 | Serieller Takt (I2C Clock) |
-| **STOP** | b6 | b12 | Nothalt-Signal / Power Off |
-| **GO** | b8 | b10 | Betriebs-Signal / Power On |
-| **INIT** | b12 | b6 | Adress-Chain-Leitung (b12) zur Software-Adressierung |
-| **8V** | b14 | b4 | Versorgungsspannung (+8V DC) |
-| **8V** | b16 | b2 | Versorgungsspannung (+8V DC) |
-| **GND** | a2-a16 | a16-a2 | Gemeinsame Masse (alle Pins der Reihe 'a') |
+| **SDA** | b16 | b2 | Serielle Datenleitung (I2C Data) |
+| **SCL** | b14 | b4 | Serieller Takt (I2C Clock) |
+| **STOP** | b12 | b6 | Nothalt-Signal / Power Off |
+| **GO** | b10 | b8 | Betriebs-Signal / Power On |
+| **INIT** | b6 | b12 | Adress-Chain-Leitung (b12) zur Software-Adressierung |
+| **8V** | b4 | b14 | Versorgungsspannung (+8V DC) |
+| **8V** | b2 | b16 | Versorgungsspannung (+8V DC) |
+| **GND** | a16-a2 | a2-a16 | Gemeinsame Masse (alle Pins der Reihe 'a') |
 
 - b = oben, b1 = links, b16 = rechts
 - a = unten
