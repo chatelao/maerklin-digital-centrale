@@ -21,6 +21,7 @@ Diese Geräte koordinieren die Kommunikation auf dem I2C-Bus, verstärken Signal
 | **6050/6051** | Interface | Computer-Schnittstelle (RS-232), die die Steuerung der Anlage durch einen PC ermöglicht. | ![6050 Layout](images_6050/p0_img0.Im1.png) |
 | **6070** | Infra Control 80f | Infrarot-Steuergerät zur kabellosen Bedienung von Lokomotiven über Infrarot-Handsender. | |
 | **60128** | Connect 6021 | Adapter zum Anschluss der Control Unit 6021 an die Central Station 2/3. Ermöglicht die Weiternutzung alter Fahrpulte. | |
+| **66045** | Delta Control 4f | Steuergerät für das Delta-System zur Steuerung von bis zu 4 Lokomotiven. Verfügt über eine Taste für die Lichtfunktion (f0) und einen integrierten Verstärker. | |
 
 ## Dekoder
 Diese Bausteine empfangen das Motorola-Protokoll vom Gleis und setzen es in Aktionen (Fahren, Schalten) um.
