@@ -17,6 +17,9 @@ To maintain consistency, all models must reference the following aliases from a 
 | `h_back` | Back edge height | 55 mm |
 | `thick`  | Wall thickness | 2.5 mm |
 | `tol`    | Printing tolerance | 0.2 mm |
+| `screw_size` | ISO Metric Screw Diameter | 3.0 mm (M3) |
+| `inlay_dia` | Heat-set inlay outer diameter | 4.6 mm |
+| `inlay_depth` | Heat-set inlay depth | 5.0 mm |
 
 ## 3. Technical Interfaces
 
@@ -59,3 +62,14 @@ Original units have specific ventilation patterns.
 | **C: Infill-based Vents** | Leave gaps in the top surface for the slicer infill to show. | Easy to print; unique look. | Does not match the historical appearance. |
 
 **Justification for Modeled Geometry**: Since the goal includes both preservation and custom hardware (which might generate heat), physical ventilation slots are necessary.
+
+### Choice 5.3: Fastening Implementation
+How the heat-set inlays and screws are integrated into the geometry.
+
+| Alternative | Description | Pros | Cons |
+| :--- | :--- | :--- | :--- |
+| **A: Recessed Bosses** | Screws are recessed into the bottom plate. | Clean external look; screw heads don't protrude. | Requires thicker bottom plate or specific boss geometry. |
+| **B: Counter-bored Holes** | Simple counter-bores in the bottom plate for machine screws. | **[CHOSEN]** Standard mechanical approach; easy to align. | Counter-bore must be sized for specific screw head type (e.g., DIN 912 or ISO 4762). |
+| **C: Side-mounted Ears** | Fastening points are external "ears" on the shell. | Easiest to print and assemble. | Ruins the aesthetic of the original "wedge" design. |
+
+**Justification for Counter-bored Holes**: Counter-bored holes in the base plate combined with heat-set inlays in the top shell's internal bosses allow for a secure and professional fastening that remains hidden or flush, maintaining the original design language of the 60xx series.

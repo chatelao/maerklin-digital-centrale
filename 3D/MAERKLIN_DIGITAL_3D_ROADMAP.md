@@ -41,6 +41,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [ ] Create base "wedge" templates in FreeCAD for standard and slim widths.
 - [ ] Implement the `Params` spreadsheet logic.
 - [ ] Model the basic two-part shell (Top/Bottom).
+- [ ] Implement screw bosses and inlay cavities for durable fastening.
 
 ### Phase 4: Modular Features
 - [ ] Create the Boolean Tool library for interlocking side-panels (DE 84 27 671 U1).
