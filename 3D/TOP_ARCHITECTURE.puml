@@ -1,0 +1,34 @@
+@startuml
+package "Parameters" {
+    [Spreadsheet (Params)] as Params
+}
+
+package "Base Geometry" {
+    [Wedge Profile Sketch] as Profile
+    [Main Pad] as MainBody
+}
+
+package "Modular Features" {
+    [Interlocking Library] as Interlock
+    [DIN 41612 Cutout] as DIN
+    [Ventilation Patterns] as Vents
+}
+
+package "Device Specifics" {
+    [6020 Dummy] as 6020
+    [Transformer Case] as Trans
+    [Custom RP2040 Case] as RP2040
+}
+
+Params --> Profile : "w_std, h_front, h_back"
+Profile --> MainBody : "Extrude"
+MainBody --> Interlock : "Boolean Apply"
+MainBody --> DIN : "Pocket"
+
+Interlock --> 6020
+DIN --> 6020
+
+Vents --> Trans
+6020 --> RP2040 : "Add standoffs"
+
+@enduml
