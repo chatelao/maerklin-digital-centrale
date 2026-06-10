@@ -46,6 +46,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [ ] Create the Boolean Tool library for interlocking side-panels (DE 84 27 671 U1).
 - [ ] Create the Boolean Tool for DIN 41612 connector cutouts.
 - [ ] Implement a library of common ventilation slot patterns.
+- [ ] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
 - [ ] Model the **Control Unit 6021** (including knob and buttons).
