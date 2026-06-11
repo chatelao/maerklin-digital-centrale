@@ -54,9 +54,49 @@ The Märklin bus operates at **5V logic**, while the XIAO RP2040 uses **3.3V log
 | **SCL** | b4 (Right) | HV2 | LV2 | D5 (SCL) |
 | **STOP** | b6 (Right) | HV3 | LV3 | D1 |
 | **GO** | b8 (Right) | HV4 | LV4 | D2 |
-| **INIT IN** | b12 (Right) | HV (Special) | LV (Special) | D3 |
+| **INIT IN** | b12 (Right) | HV5 | LV5 | D3 |
+| **INIT OUT** | - | HV6 | LV6 | D6 |
 
 > **Note on INIT**: The software addressing (Chain) requires the XIAO to detect and drive the INIT line. Ensure the level shifter supports the bi-directional nature of this protocol.
+
+### 4. Visual Wiring Diagram
+
+```text
+    Märklin Bus (5V Logic, 8V Power)
+    +---------------------------------------+
+    | [b14/b16] 8V DC                       |
+    | [b2] SDA  [b4] SCL                    |
+    | [b6] STOP [b8] GO   [b12] INIT IN     |
+    | [a2-a16] GND                          |
+    +---+-------+-------+-------+-------+---+
+        |       |       |       |       |
+        |   +---v-------v-------v-------v---+
+        |   |   Bi-directional Level        |
+        |   |   Shifter (3.3V <-> 5V)       |
+        |   +---+-------+-------+-------+---+
+        |       |       |       |       |
+  +-----v-----+ |       |       |       |
+  | 5V Voltage| |       |       |       |
+  | Regulator | |       |       |       |
+  +-----+-----+ |       |       |       |
+        |       |       |       |       |
+  +-----v-------v-------v-------v-------v---+
+  |            Seeed XIAO RP2040            |
+  |                                         |
+  | [VIN]  [GND]  [D4/SDA] [D5/SCL] [D1] [D2]|
+  |   |      |       |        |      |    | |
+  |   |      |   [D3] INIT IN        |    | |
+  |   |      |     |                 |    | |
+  |   |      |   [D6] INIT OUT (Chain)      |
+  |   |      |                               |
+  | [D0] IR RECV                             |
+  +---+--------------------------------------+
+      |
+  +---v---+
+  |  IR   |
+  |Sensor |
+  +-------+
+```
 
 ## Samsung Remote Mapping
 
