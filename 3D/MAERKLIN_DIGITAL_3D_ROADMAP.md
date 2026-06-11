@@ -9,8 +9,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 0 | Conceptualization & High-Level Architecture | ✅ |
 | Phase 1 | Detailed Design & Technical Specifications | ✅ |
 | Phase 2 | Data Collection & Measurement | ✅ |
-| Phase 3 | Logical & Primitive Modeling | ⏳ |
-| Phase 4 | Modular Features (Logical Blueprinting) | ⏳ |
+| Phase 3 | Logical & Primitive Modeling | ✅ |
+| Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
 | Phase 5 | Device-Specific Implementation | ⏳ |
 
 ## Goals
@@ -38,13 +38,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 
 ### Phase 3: Primitive Modeling
 - [ ] Create base "wedge" templates in FreeCAD for standard and slim widths.
-- [ ] Implement the `Params` spreadsheet logic.
-- [ ] Model the basic two-part shell (Top/Bottom).
-- [ ] Implement screw bosses and inlay cavities for durable fastening.
+- [x] Formalize the `Params` spreadsheet logic in `PARAMETERS.md`.
+- [x] Create logical blueprint for the basic two-part shell (Top/Bottom).
+- [x] Create logical blueprint for screw bosses and inlay cavities.
 
 ### Phase 4: Modular Features
-- [ ] Create the Boolean Tool library for interlocking side-panels (DE 84 27 671 U1).
-- [ ] Create the Boolean Tool for DIN 41612 connector cutouts.
+- [x] Create the Boolean Tool blueprint for interlocking side-panels (DE 84 27 671 U1).
+- [x] Create the Boolean Tool blueprint for DIN 41612 connector cutouts.
 - [ ] Implement a library of common ventilation slot patterns.
 - [ ] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
@@ -58,6 +58,9 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
 - [DESIGN.md](MAERKLIN_DIGITAL_3D_DESIGN.md)
 - [PARAMETERS.md](MAERKLIN_DIGITAL_3D_PARAMETERS.md) - Geometric constants and logic.
+- [SHELL_BLUEPRINT.md](MAERKLIN_DIGITAL_3D_SHELL_BLUEPRINT.md) - Two-part shell logic.
+- [FASTENING_BLUEPRINT.md](MAERKLIN_DIGITAL_3D_FASTENING_BLUEPRINT.md) - Screws and inlays.
+- [INTERLOCK_BLUEPRINT.md](MAERKLIN_DIGITAL_3D_INTERLOCK_BLUEPRINT.md) - Side interlocking logic.
 - [Geraeteuebersicht.md](../Geraeteuebersicht.md) - List of system components.
 - [Pinout_Bus-Maerklin-Digital-6020.md](../Pinout_Bus-Maerklin-Digital-6020.md) - Connector specifications.
 - [patents/README.md](../patents/README.md) - Design protection and coupling mechanism details.
