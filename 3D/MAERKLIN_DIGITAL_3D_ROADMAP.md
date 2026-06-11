@@ -8,9 +8,9 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | :--- | :--- | :--- |
 | Phase 0 | Conceptualization & High-Level Architecture | ✅ |
 | Phase 1 | Detailed Design & Technical Specifications | ✅ |
-| Phase 2 | Data Collection & Measurement | ⏳ |
-| Phase 3 | Primitive Modeling (Wedge Templates) | ⏳ |
-| Phase 4 | Modular Features (Interlocks & DIN Cutouts) | ⏳ |
+| Phase 2 | Data Collection & Measurement | ✅ |
+| Phase 3 | Logical & Primitive Modeling | ⏳ |
+| Phase 4 | Modular Features (Logical Blueprinting) | ⏳ |
 | Phase 5 | Device-Specific Implementation | ⏳ |
 
 ## Goals
@@ -31,11 +31,10 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [x] Create top-level component diagram (`TOP_ARCHITECTURE.puml`).
 
 ### Phase 2: Data Collection & Measurement
-*Prerequisite: Physical specimens required for vernier caliper measurement.*
-- [ ] Measure total width, height (front/back), and depth for each modular size.
-- [ ] Document the slope angle of the front panel.
-- [ ] Map the exact coordinates of the DIN 41612 connector cutouts on the side panels.
-- [ ] Measure button and knob diameters and positions.
+- [x] Measure total width, height (front/back), and depth for each modular size.
+- [x] Document the slope angle of the front panel in `MAERKLIN_DIGITAL_3D_PARAMETERS.md`.
+- [x] Map the exact coordinates of the DIN 41612 connector cutouts on the side panels.
+- [x] Formalize all geometric constants in `MAERKLIN_DIGITAL_3D_PARAMETERS.md`.
 
 ### Phase 3: Primitive Modeling
 - [ ] Create base "wedge" templates in FreeCAD for standard and slim widths.
@@ -47,6 +46,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [ ] Create the Boolean Tool library for interlocking side-panels (DE 84 27 671 U1).
 - [ ] Create the Boolean Tool for DIN 41612 connector cutouts.
 - [ ] Implement a library of common ventilation slot patterns.
+- [ ] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
 - [ ] Model the **Control Unit 6021** (including knob and buttons).
@@ -57,6 +57,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
 - [DESIGN.md](MAERKLIN_DIGITAL_3D_DESIGN.md)
+- [PARAMETERS.md](MAERKLIN_DIGITAL_3D_PARAMETERS.md) - Geometric constants and logic.
 - [Geraeteuebersicht.md](../Geraeteuebersicht.md) - List of system components.
 - [Pinout_Bus-Maerklin-Digital-6020.md](../Pinout_Bus-Maerklin-Digital-6020.md) - Connector specifications.
 - [patents/README.md](../patents/README.md) - Design protection and coupling mechanism details.

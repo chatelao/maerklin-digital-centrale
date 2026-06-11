@@ -21,6 +21,8 @@ To maintain consistency, all models must reference the following aliases from a 
 | `inlay_dia` | Heat-set inlay outer diameter | 4.6 mm |
 | `inlay_depth` | Heat-set inlay depth | 5.0 mm |
 
+Detailed derived constants and vertex coordinates are maintained in [MAERKLIN_DIGITAL_3D_PARAMETERS.md](MAERKLIN_DIGITAL_3D_PARAMETERS.md).
+
 ## 3. Technical Interfaces
 
 ### 3.1 Side Interlocking (Bus Coupling)
@@ -73,3 +75,16 @@ How the heat-set inlays and screws are integrated into the geometry.
 | **C: Side-mounted Ears** | Fastening points are external "ears" on the shell. | Easiest to print and assemble. | Ruins the aesthetic of the original "wedge" design. |
 
 **Justification for Counter-bored Holes**: Counter-bored holes in the base plate combined with heat-set inlays in the top shell's internal bosses allow for a secure and professional fastening that remains hidden or flush, maintaining the original design language of the 60xx series.
+
+## 6. Multi-Material Optimization
+To enable efficient dual-color printing (e.g., white/black) without excessive filament waste from purge blocks, the design utilizes an inlay-based separation strategy.
+
+### 6.1 Inlay-based Color Separation
+Decorative elements that require a different color (like the front faceplate or the Märklin logo) are not modeled as part of the monolithic top shell. Instead:
+- **Recessed Pockets**: The main top shell features Boolean-subtracted "pockets" where the secondary color should appear.
+- **Separate Inlays**: Decorative elements are modeled as separate thin objects (thickness as defined in the master spreadsheet) that fit exactly into these pockets.
+
+### 6.2 Benefits for 3D Printing
+1. **Filament Efficiency**: Different colors can be printed as separate jobs or as separate objects on the same build plate, eliminating the need for frequent toolhead/color changes during a single layer.
+2. **Post-Processing**: Inlays can be glued or snapped into place after printing, allowing for better surface finish on each part.
+3. **Customization**: Users can easily swap faceplate designs or colors without re-printing the entire housing.

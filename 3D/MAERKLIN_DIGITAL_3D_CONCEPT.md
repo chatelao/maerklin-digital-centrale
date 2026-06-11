@@ -39,8 +39,9 @@ How the 3D model should be divided into printable parts.
 | Alternative | Description | Pros | Cons |
 | :--- | :--- | :--- | :--- |
 | **A: Monolithic Shell** | A single piece for the entire housing. | Maximum structural integrity. | Extremely difficult to print without massive supports; hard to install electronics. |
-| **B: Two-Part (Top/Bottom)** | A top "lid" and a flat base plate. | **[CHOSEN]** Easy to print; reflects the assembly method of the original hardware. | Requires fasteners (screws or snaps) to hold together. |
+| **B: Two-Part (Top/Bottom)** | A top "lid" and a flat base plate. | Easy to print; reflects the assembly method of the original hardware. | Requires fasteners (screws or snaps) to hold together. |
 | **C: Modular Paneling** | Separate side, front, and top panels. | Allows for multi-color printing and easy customization of individual faces. | Assembly is complex and may lack rigidity. |
+| **D: Two-Part with Faceplate Inlays** | A main top shell with recessed areas for separate decorative faceplates. | **[CHOSEN]** Maximizes efficiency for dual-color (white/black) printing; avoids large purge blocks and filament waste. | Slightly more complex assembly (gluing or snapping inlays). |
 
 **Justification for Two-Part**: The 6021 and its relatives were originally designed with a top shell and a metal/plastic base plate. Replicating this ensures compatibility with original mounting logic.
 
