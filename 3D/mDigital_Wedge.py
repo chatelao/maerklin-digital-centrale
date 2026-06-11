@@ -53,10 +53,11 @@ def create_wedge_solid(width, depth, h_front, h_back):
     solid = Part.makeSolid(shell)
     return solid
 
-def generate_top_shell(width):
+def generate_top_shell(width, include_faceplate=False):
     """
     Generates the hollowed Top Shell as per SHELL_BLUEPRINT.md.
     Includes modular features (Interlocks, Cutouts, Vents, Bosses).
+    If include_faceplate=True, subtracts the decorative faceplate pocket.
     """
     outer = create_wedge_solid(width, P.DEPTH, P.H_FRONT, P.H_BACK)
 
@@ -105,7 +106,12 @@ def generate_top_shell(width):
         v_center = F.create_ventilation_bank(P.V_SLIM_C_X, P.V_SLIM_SLOTS)
         shell = shell.cut(v_center)
 
-    # 5. Add Screw Bosses
+    # 5. Add Faceplate Pocket
+    if include_faceplate:
+        fp_tool = F.create_faceplate_pocket_tool(width, P.FP_LENGTH_STD)
+        shell = shell.cut(fp_tool)
+
+    # 6. Add Screw Bosses
     for loc in F.get_fastening_locations(width):
         boss = F.create_screw_boss(is_cavity=False)
         boss.translate(App.Vector(loc[0], loc[1], P.THICK))
@@ -144,8 +150,8 @@ def generate_bottom_plate(width):
 
 if __name__ == "__main__":
     print("Märklin Digital 60xx - Wedge Geometry Generator")
-    print(f"Generating Standard Width Housing ({P.W_STD}mm)...")
-    top = generate_top_shell(P.W_STD)
+    print(f"Generating Standard Width Housing ({P.W_STD}mm) with Faceplate...")
+    top = generate_top_shell(P.W_STD, include_faceplate=True)
     bottom = generate_bottom_plate(P.W_STD)
     print(f"Top Shell Result: {top}")
     print(f"Bottom Plate Result: {bottom}")

@@ -80,6 +80,45 @@ def get_fastening_locations(width):
         (width - P.BOSS_OFFSET, P.DEPTH - P.BOSS_OFFSET)
     ]
 
+def create_faceplate_pocket_tool(width, length):
+    """Creates the tool for subtracting the faceplate pocket."""
+    w = width - 2 * P.FP_INSET
+    # Box from (0,0,0) to (w, length, depth)
+    tool = Part.makeBox(w, length, P.FP_POCKET_DEPTH + 2.0)
+    # Move so top face is at Z=0
+    tool.translate(App.Vector(0, 0, -(P.FP_POCKET_DEPTH + 2.0)))
+    # Move to wedge front corner (with inset)
+    tool.translate(App.Vector(P.FP_INSET, 0, P.H_FRONT))
+    # Rotate around wedge front edge
+    tool.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+    return tool
+
+def create_faceplate_inlay(width, length):
+    """Creates the decorative faceplate inlay."""
+    w = width - 2 * P.FP_INSET - 2 * P.TOL
+    l = length - 2 * P.TOL
+    inlay = Part.makeBox(w, l, P.FP_THICK)
+    # Top face at Z = FP_THICK. Move so top face is at Z=0 before rotation
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    # Move to wedge front corner (with inset + tol)
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    # Rotate
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+    return inlay
+
+def create_speed_knob():
+    """Creates a standard speed control knob."""
+    knob = Part.makeCylinder(P.KNOB_DIA/2.0, P.KNOB_H)
+    shaft_hole = Part.makeCylinder(P.KNOB_SHAFT_DIA/2.0, P.KNOB_H - 2.0)
+    knob = knob.cut(shaft_hole)
+    return knob
+
+def create_square_button():
+    """Creates a standard square push button."""
+    btn = Part.makeBox(P.BTN_SIZE, P.BTN_SIZE, 10.0)
+    btn.translate(App.Vector(-P.BTN_SIZE/2.0, -P.BTN_SIZE/2.0, 0))
+    return btn
+
 if __name__ == "__main__":
     print("Märklin Digital 60xx - Feature Library")
     print(f"Interlock Tool: {create_interlock_tool()}")

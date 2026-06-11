@@ -52,6 +52,19 @@ The mechanical interlock uses asymmetric tabs and slots.
     - **Right Side (Male)**: Protruding tabs (Width = 5.0 mm).
     - **Left Side (Female)**: Inset slots (Depth = 5.2 mm including tolerance).
 
+### 3.3 Faceplate Inlay & Controls
+To support dual-color printing and device-specific layouts.
+
+- **Faceplate Pocket Depth**: 1.0 mm (Boolean subtraction from Top Shell).
+- **Faceplate Thickness**: 0.8 mm (providing 0.2 mm clearance/tolerance).
+- **Speed Control Knob**:
+    - **Diameter**: 30.0 mm
+    - **Height**: 15.0 mm
+    - **Shaft Hole**: 6.0 mm (D-shape or knurled).
+- **Push Buttons (Square)**:
+    - **Size**: 12.0 mm x 12.0 mm
+    - **Bezel Cutout**: 12.4 mm x 12.4 mm
+
 ## 4. Materials & Aesthetics
 
 | Feature | Specification | RAL / Hex |
