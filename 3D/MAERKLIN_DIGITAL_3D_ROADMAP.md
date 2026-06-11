@@ -11,7 +11,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 2 | Data Collection & Measurement | ✅ |
 | Phase 3 | Logical & Primitive Modeling | ✅ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
-| Phase 5 | Device-Specific Implementation | ⏳ |
+| Phase 5 | Device-Specific Implementation | ✅ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ✅
@@ -59,7 +59,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Control 80f (6036)** (Slim housing + throttle knob).
-    - [ ] Model the **6020/Transformer** dummy cases for modern electronics.
+    - [x] Model the **6020/Transformer** dummy cases for modern electronics.
+    - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
