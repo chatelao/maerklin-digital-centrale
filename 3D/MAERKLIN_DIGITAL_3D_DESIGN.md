@@ -18,6 +18,8 @@ To maintain consistency, all models must reference the following aliases from a 
 | `thick`  | Wall thickness | 2.5 mm |
 | `tol`    | Printing tolerance | 0.2 mm |
 
+Detailed derived constants and vertex coordinates are maintained in [MAERKLIN_DIGITAL_3D_PARAMETERS.md](MAERKLIN_DIGITAL_3D_PARAMETERS.md).
+
 ## 3. Technical Interfaces
 
 ### 3.1 Side Interlocking (Bus Coupling)
