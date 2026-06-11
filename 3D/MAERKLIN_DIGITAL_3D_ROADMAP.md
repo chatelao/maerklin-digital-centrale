@@ -54,9 +54,9 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M√
 - [ ] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
-    - [ ] Model the 4-digit 7-segment display bezel.
+    - [x] Model the 4-digit 7-segment display bezel.
 - [ ] **Full Assemblies**:
-    - [ ] Model the **Control Unit 6021** (Main housing + specialized faceplate).
+    - [ ] Model the **Control Unit 6021** (Main housing + specialized faceplate). ‚è≥ *Faceplate modeled.*
     - [ ] Model the **Keyboard 6040** (Key matrix layout).
     - [ ] Model the **Control 80f (6036)** (Slim housing + throttle knob).
     - [ ] Model the **6020/Transformer** dummy cases for modern electronics.
