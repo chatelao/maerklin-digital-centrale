@@ -119,8 +119,75 @@ def create_square_button():
     btn.translate(App.Vector(-P.BTN_SIZE/2.0, -P.BTN_SIZE/2.0, 0))
     return btn
 
+def create_display_bezel_tool():
+    """
+    Creates a Boolean tool for the 4-digit 7-segment display.
+    Includes a recessed area and the through-cutout for the digits.
+    """
+    # Outer recess
+    recess = Part.makeBox(P.DISPLAY_W, P.DISPLAY_H, P.DISPLAY_RECESS)
+
+    # Through-cutout (inner digits window)
+    inner_w = P.DISPLAY_W - 4.0
+    inner_h = P.DISPLAY_H - 4.0
+    cutout = Part.makeBox(inner_w, inner_h, 10.0)
+    cutout.translate(App.Vector(2.0, 2.0, -5.0))
+
+    tool = Part.makeCompound([recess, cutout])
+    return tool
+
+def create_6021_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Control Unit 6021.
+    Includes cutouts for the display, keypad, function buttons, and knob.
+    """
+    width = P.W_STD
+    length = P.FP_LENGTH_STD
+
+    # Create base inlay (unrotated)
+    w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
+    l_inlay = length - 2 * P.TOL
+    inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
+
+    # 1. Display Bezel Cutout
+    display = create_display_bezel_tool()
+    display.translate(App.Vector(P.C6021_DISPLAY_X, P.C6021_DISPLAY_Y, -1.0))
+    inlay = inlay.cut(display)
+
+    # 2. Function Buttons (2x2 grid)
+    for i in range(2):
+        for j in range(2):
+            btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
+            btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
+            btn.translate(App.Vector(P.C6021_FBTN_GRID_X + i*P.C6021_FBTN_PITCH,
+                                     P.C6021_FBTN_GRID_Y + j*P.C6021_FBTN_PITCH, 0.4))
+            inlay = inlay.cut(btn)
+
+    # 3. Numeric Keypad (5x2 grid for 0-9)
+    for i in range(5):
+        for j in range(2):
+            btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
+            btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
+            btn.translate(App.Vector(P.C6021_KPAD_X + i*P.C6021_KPAD_PITCH_X,
+                                     P.C6021_KPAD_Y + j*P.C6021_KPAD_PITCH_Y, 0.4))
+            inlay = inlay.cut(btn)
+
+    # 4. Speed Knob Cutout
+    knob_hole = Part.makeCylinder(P.KNOB_DIA/2.0 + 1.0, 10.0)
+    knob_hole.translate(App.Vector(P.C6021_KNOB_X, P.C6021_KNOB_Y, -5.0))
+    inlay = inlay.cut(knob_hole)
+
+    # Position and Rotate to fit the Wedge
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
+    return inlay
+
 if __name__ == "__main__":
     print("Märklin Digital 60xx - Feature Library")
     print(f"Interlock Tool: {create_interlock_tool()}")
     print(f"DIN Cutout Tool: {create_din_cutout_tool()}")
     print(f"Ventilation Bank (Std Left): {create_ventilation_bank(P.V_STD_L_X, P.V_STD_SLOTS)}")
+    print(f"Display Bezel Tool: {create_display_bezel_tool()}")
+    print(f"6021 Faceplate Inlay: {create_6021_faceplate_inlay()}")
