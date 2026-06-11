@@ -184,6 +184,74 @@ def create_6021_faceplate_inlay():
 
     return inlay
 
+def create_6040_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Keyboard 6040.
+    Includes a 2x8 grid of square button cutouts.
+    """
+    width = P.W_STD
+    length = P.FP_LENGTH_6040
+
+    # Create base inlay (unrotated)
+    w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
+    l_inlay = length - 2 * P.TOL
+    inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
+
+    # Keyboard matrix (2 columns, 8 rows)
+    for i in range(2):
+        for j in range(8):
+            btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
+            btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
+            btn.translate(App.Vector(P.C6040_GRID_X + i*P.C6040_PITCH_X,
+                                     P.C6040_GRID_Y + j*P.C6040_PITCH_Y, 0.4))
+            inlay = inlay.cut(btn)
+
+    # Position and Rotate to fit the Wedge
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
+    return inlay
+
+def create_80f_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Control 80f (6036).
+    Includes cutouts for display, speed knob, and 4 function buttons.
+    """
+    width = P.W_SLIM
+    length = P.FP_LENGTH_STD
+
+    # Create base inlay (unrotated)
+    w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
+    l_inlay = length - 2 * P.TOL
+    inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
+
+    # 1. Display Cutout (Smaller than 6021, but using same bezel tool for now)
+    display = create_display_bezel_tool()
+    display.translate(App.Vector(P.C80F_DISPLAY_X, P.C80F_DISPLAY_Y, -1.0))
+    inlay = inlay.cut(display)
+
+    # 2. Function Buttons (2x2 grid)
+    for i in range(2):
+        for j in range(2):
+            btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
+            btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
+            btn.translate(App.Vector(P.C80F_BTN_X + i*P.C80F_BTN_PITCH_X,
+                                     P.C80F_BTN_Y + j*P.C80F_BTN_PITCH_Y, 0.4))
+            inlay = inlay.cut(btn)
+
+    # 3. Speed Knob Cutout
+    knob_hole = Part.makeCylinder(P.KNOB_DIA/2.0 + 1.0, 10.0)
+    knob_hole.translate(App.Vector(P.C80F_KNOB_X, P.C80F_KNOB_Y, -5.0))
+    inlay = inlay.cut(knob_hole)
+
+    # Position and Rotate to fit the Wedge
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
+    return inlay
+
 if __name__ == "__main__":
     print("Märklin Digital 60xx - Feature Library")
     print(f"Interlock Tool: {create_interlock_tool()}")
@@ -191,3 +259,5 @@ if __name__ == "__main__":
     print(f"Ventilation Bank (Std Left): {create_ventilation_bank(P.V_STD_L_X, P.V_STD_SLOTS)}")
     print(f"Display Bezel Tool: {create_display_bezel_tool()}")
     print(f"6021 Faceplate Inlay: {create_6021_faceplate_inlay()}")
+    print(f"6040 Faceplate Inlay: {create_6040_faceplate_inlay()}")
+    print(f"80f Faceplate Inlay: {create_80f_faceplate_inlay()}")
