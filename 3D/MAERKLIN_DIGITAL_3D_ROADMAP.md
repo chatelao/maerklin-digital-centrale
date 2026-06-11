@@ -37,7 +37,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [x] Formalize all geometric constants in `MAERKLIN_DIGITAL_3D_PARAMETERS.md`.
 
 ### Phase 3: Primitive Modeling
-- [ ] Create base "wedge" templates in FreeCAD for standard and slim widths.
+- [x] Create base "wedge" logic in `mDigital_Wedge.py` for standard and slim widths.
+- [x] Create the parametric constants module `mDigital_Params.py`.
 - [x] Formalize the `Params` spreadsheet logic in `PARAMETERS.md`.
 - [x] Create logical blueprint for the basic two-part shell (Top/Bottom).
 - [x] Create logical blueprint for screw bosses and inlay cavities.
@@ -45,14 +46,20 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 ### Phase 4: Modular Features
 - [x] Create the Boolean Tool blueprint for interlocking side-panels (DE 84 27 671 U1).
 - [x] Create the Boolean Tool blueprint for DIN 41612 connector cutouts.
-- [ ] Implement a library of common ventilation slot patterns.
+- [x] Create the logical blueprint for ventilation slot patterns.
+- [ ] Implement the modular feature library in Python (Interlocks, DIN, Vents).
 - [ ] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] Model the **Control Unit 6021** (including knob and buttons).
-- [ ] Model the **Keyboard 6040** (membrane grid).
-- [ ] Model the **Control 80f (6036)**.
-- [ ] Model the **6020/Transformer** dummy cases for modern electronics.
+- [ ] **Component Library**:
+    - [ ] Model the speed control knob (standard 6021/6035 style).
+    - [ ] Model the square momentary push-buttons (red/gray).
+    - [ ] Model the 4-digit 7-segment display bezel.
+- [ ] **Full Assemblies**:
+    - [ ] Model the **Control Unit 6021** (Main housing + specialized faceplate).
+    - [ ] Model the **Keyboard 6040** (Key matrix layout).
+    - [ ] Model the **Control 80f (6036)** (Slim housing + throttle knob).
+    - [ ] Model the **6020/Transformer** dummy cases for modern electronics.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
