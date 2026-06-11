@@ -1,5 +1,6 @@
 import math
 import mDigital_Params as P
+import mDigital_Features as F
 
 """
 Märklin Digital 60xx Series - Wedge Geometry Generator
@@ -11,24 +12,13 @@ try:
     import FreeCAD as App
     import Part
 except ImportError:
-    class MockApp:
-        def Vector(self, x, y, z): return (x, y, z)
-    class MockPart:
-        def makePolygon(self, pts): return None
-        def Face(self, poly): return None
-        def makeShell(self, faces): return None
-        def makeSolid(self, shell): return None
-        def makeBox(self, w, d, h): return None
-    App = MockApp()
-    Part = MockPart()
+    from mDigital_Mock import App, Part
 
 def create_wedge_solid(width, depth, h_front, h_back):
     """
     Creates a solid truncated wedge primitive using FreeCAD Part API.
     Vertices V0-V7 are mapped as per MAERKLIN_DIGITAL_3D_PARAMETERS.md.
     """
-    # Vertex coordinates from Params
-    # We don't use P.get_vertices directly here to allow custom height/depth for inner hollowing
     v = [App.Vector(x, y, z) for x, y, z in [
         (0, 0, 0),             # 0: V0
         (0, depth, 0),         # 1: V1
@@ -54,7 +44,7 @@ def create_wedge_solid(width, depth, h_front, h_back):
     for idx in faces_idx:
         # Create closed polygon for each face
         pts = [v[i] for i in idx]
-        pts.append(v[idx[0]]) # Close loop
+        pts.append(v[idx[0]]) # Close loop for valid FreeCAD geometry
         polyline = Part.makePolygon(pts)
         face = Part.Face(polyline)
         faces.append(face)
@@ -66,7 +56,7 @@ def create_wedge_solid(width, depth, h_front, h_back):
 def generate_top_shell(width):
     """
     Generates the hollowed Top Shell as per SHELL_BLUEPRINT.md.
-    Uses Boolean subtraction of an inner wedge.
+    Includes modular features (Interlocks, Cutouts, Vents, Bosses).
     """
     outer = create_wedge_solid(width, P.DEPTH, P.H_FRONT, P.H_BACK)
 
@@ -87,10 +77,45 @@ def generate_top_shell(width):
     # We shift Z down by 1.0mm to ensure the bottom face is completely removed during 'cut'
     inner.translate(App.Vector(P.THICK, P.THICK, -1.0))
 
-    top_shell = outer.cut(inner)
+    shell = outer.cut(inner)
 
-    # Note: Filleting (2.0mm) of vertical edges would be performed here in a live session.
-    return top_shell
+    # 1. Add Interlocks (Right side = Male)
+    male_interlock = F.create_interlock_tool(is_female=False)
+    male_interlock.translate(App.Vector(width, 0, 0))
+    shell = shell.fuse(male_interlock)
+
+    # 2. Subtract Interlocks (Left side = Female)
+    female_interlock = F.create_interlock_tool(is_female=True)
+    shell = shell.cut(female_interlock)
+
+    # 3. Subtract DIN Cutouts (Left & Right)
+    din_left = F.create_din_cutout_tool()
+    shell = shell.cut(din_left)
+
+    din_right = F.create_din_cutout_tool()
+    din_right.translate(App.Vector(width, 0, 0))
+    shell = shell.cut(din_right)
+
+    # 4. Add Ventilation
+    if width == P.W_STD:
+        v_left = F.create_ventilation_bank(P.V_STD_L_X, P.V_STD_SLOTS)
+        v_right = F.create_ventilation_bank(P.V_STD_R_X, P.V_STD_SLOTS)
+        shell = shell.cut(v_left).cut(v_right)
+    else:
+        v_center = F.create_ventilation_bank(P.V_SLIM_C_X, P.V_SLIM_SLOTS)
+        shell = shell.cut(v_center)
+
+    # 5. Add Screw Bosses
+    for loc in F.get_fastening_locations(width):
+        boss = F.create_screw_boss(is_cavity=False)
+        boss.translate(App.Vector(loc[0], loc[1], P.THICK))
+        shell = shell.fuse(boss)
+
+        cavity = F.create_screw_boss(is_cavity=True)
+        cavity.translate(App.Vector(loc[0], loc[1], P.THICK))
+        shell = shell.cut(cavity)
+
+    return shell
 
 def generate_bottom_plate(width):
     """
@@ -104,9 +129,23 @@ def generate_bottom_plate(width):
 
     # Center plate within the shell footprint
     plate.translate(App.Vector(P.TOL, P.TOL, 0))
+
+    for loc in F.get_fastening_locations(width):
+        # Create counterbore holes
+        hole = Part.makeCylinder(P.PLATE_HOLE_DIA/2.0, P.THICK + 2.0)
+        hole.translate(App.Vector(loc[0], loc[1], -1.0))
+        plate = plate.cut(hole)
+
+        cb = Part.makeCylinder(P.PLATE_CB_DIA/2.0, P.PLATE_CB_DEPTH)
+        cb.translate(App.Vector(loc[0], loc[1], -0.1))
+        plate = plate.cut(cb)
+
     return plate
 
 if __name__ == "__main__":
     print("Märklin Digital 60xx - Wedge Geometry Generator")
-    print(f"Constants: Width Std={P.W_STD}mm, Slim={P.W_SLIM}mm, Depth={P.DEPTH}mm")
-    print("Status: Geometry logic defined. Scripts ready for FreeCAD environment.")
+    print(f"Generating Standard Width Housing ({P.W_STD}mm)...")
+    top = generate_top_shell(P.W_STD)
+    bottom = generate_bottom_plate(P.W_STD)
+    print(f"Top Shell Result: {top}")
+    print(f"Bottom Plate Result: {bottom}")
