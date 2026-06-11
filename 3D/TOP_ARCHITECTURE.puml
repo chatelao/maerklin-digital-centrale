@@ -6,6 +6,7 @@ package "Parameters" {
 package "Base Geometry" {
     [Wedge Profile Sketch] as Profile
     [Main Pad] as MainBody
+    [Fastening (Screws/Inlays)] as Fastening
 }
 
 package "Modular Features" {
@@ -24,6 +25,7 @@ Params --> Profile : "w_std, h_front, h_back"
 Profile --> MainBody : "Extrude"
 MainBody --> Interlock : "Boolean Apply"
 MainBody --> DIN : "Pocket"
+MainBody --> Fastening : "Bosses & Holes"
 
 Interlock --> 6020
 DIN --> 6020

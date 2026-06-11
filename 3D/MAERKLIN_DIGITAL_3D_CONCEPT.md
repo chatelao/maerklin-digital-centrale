@@ -43,4 +43,15 @@ How the 3D model should be divided into printable parts.
 | **C: Modular Paneling** | Separate side, front, and top panels. | Allows for multi-color printing and easy customization of individual faces. | Assembly is complex and may lack rigidity. |
 | **D: Two-Part with Faceplate Inlays** | A main top shell with recessed areas for separate decorative faceplates. | **[CHOSEN]** Maximizes efficiency for dual-color (white/black) printing; avoids large purge blocks and filament waste. | Slightly more complex assembly (gluing or snapping inlays). |
 
-**Justification for Two-Part with Faceplate Inlays**: The 6021 and its relatives were originally designed with a top shell and a metal/plastic base plate. Replicating this ensures compatibility with original mounting logic. By choosing Alternative D, we further optimize for modern 3D printing; since the original units feature black faceplates on gray/white bodies, using separate inlays allows for efficient dual-color printing without the excessive filament waste associated with frequent color swaps (purge towers) in a single-part multi-material print.
+**Justification for Two-Part**: The 6021 and its relatives were originally designed with a top shell and a metal/plastic base plate. Replicating this ensures compatibility with original mounting logic.
+
+### Choice 5.3: Fastening Mechanism
+To ensure the housing can be easily opened and closed for maintenance or electronics upgrades without wearing out the plastic.
+
+| Alternative | Description | Pros | Cons |
+| :--- | :--- | :--- | :--- |
+| **A: Snap-Fit Joints** | Integrated plastic cantilever snaps. | No hardware needed; tool-less entry. | Prone to breaking after multiple cycles; difficult to print accurately. |
+| **B: Self-Tapping Screws** | Screws driven directly into printed plastic bosses. | Simple; low part count. | Plastic threads wear out after a few openings; risk of splitting the boss. |
+| **C: Metal Screws with Heat-Set Inlays** | **[CHOSEN]** Brass heat-set inserts pressed into the top shell with ISO metric machine screws. | Extremely durable; allows infinite open/close cycles; professional feel. | Requires additional hardware (inserts, screws) and a soldering iron for installation. |
+
+**Justification for Metal Screws with Heat-Set Inlays**: This approach satisfies the requirement for easy and repeatable access to the internal electronics while providing the highest structural reliability, especially important for devices that may be frequently modified or serviced.
