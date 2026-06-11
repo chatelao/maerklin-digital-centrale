@@ -36,17 +36,16 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [x] Map the exact coordinates of the DIN 41612 connector cutouts on the side panels.
 - [x] Formalize all geometric constants in `MAERKLIN_DIGITAL_3D_PARAMETERS.md`.
 
-### Phase 3: Logical & Primitive Modeling
-- [ ] Define shell parting lines (horizontal vs. vertical split).
-- [ ] Calculate 3D vertex coordinates for the truncated wedge (Standard & Slim).
-- [ ] Implement the `Params` spreadsheet logic in a CAD-agnostic format.
-- [ ] Create base "wedge" templates in FreeCAD (pending software availability).
+### Phase 3: Primitive Modeling
+- [ ] Create base "wedge" templates in FreeCAD for standard and slim widths.
+- [ ] Implement the `Params` spreadsheet logic.
+- [ ] Model the basic two-part shell (Top/Bottom).
 
-### Phase 4: Modular Features (Logical Blueprinting)
-- [ ] Specify exact boolean logic (Add/Subtract) for interlocking tabs (DE 84 27 671 U1).
-- [ ] Specify dimensions and offsets for the DIN 41612 connector "Boolean Cutout Tool".
-- [ ] Define standardized ventilation slot patterns (X/Y arrays).
-- [ ] Implement Boolean Tool library in FreeCAD (pending software availability).
+### Phase 4: Modular Features
+- [ ] Create the Boolean Tool library for interlocking side-panels (DE 84 27 671 U1).
+- [ ] Create the Boolean Tool for DIN 41612 connector cutouts.
+- [ ] Implement a library of common ventilation slot patterns.
+- [ ] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
 - [ ] Model the **Control Unit 6021** (including knob and buttons).

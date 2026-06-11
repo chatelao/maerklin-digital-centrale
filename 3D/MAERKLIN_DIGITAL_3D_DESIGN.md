@@ -61,3 +61,16 @@ Original units have specific ventilation patterns.
 | **C: Infill-based Vents** | Leave gaps in the top surface for the slicer infill to show. | Easy to print; unique look. | Does not match the historical appearance. |
 
 **Justification for Modeled Geometry**: Since the goal includes both preservation and custom hardware (which might generate heat), physical ventilation slots are necessary.
+
+## 6. Multi-Material Optimization
+To enable efficient dual-color printing (e.g., white/black) without excessive filament waste from purge blocks, the design utilizes an inlay-based separation strategy.
+
+### 6.1 Inlay-based Color Separation
+Decorative elements that require a different color (like the front faceplate or the Märklin logo) are not modeled as part of the monolithic top shell. Instead:
+- **Recessed Pockets**: The main top shell features Boolean-subtracted "pockets" where the secondary color should appear.
+- **Separate Inlays**: Decorative elements are modeled as separate thin objects (thickness as defined in the master spreadsheet) that fit exactly into these pockets.
+
+### 6.2 Benefits for 3D Printing
+1. **Filament Efficiency**: Different colors can be printed as separate jobs or as separate objects on the same build plate, eliminating the need for frequent toolhead/color changes during a single layer.
+2. **Post-Processing**: Inlays can be glued or snapped into place after printing, allowing for better surface finish on each part.
+3. **Customization**: Users can easily swap faceplate designs or colors without re-printing the entire housing.
