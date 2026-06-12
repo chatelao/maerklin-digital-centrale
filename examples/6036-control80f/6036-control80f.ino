@@ -53,11 +53,20 @@
 #include <Wire.h>
 
 // Handle missing SDA/SCL definitions for some cores (e.g. Raspberry Pi Pico)
-#ifndef SDA
-#define SDA A4
-#endif
-#ifndef SCL
-#define SCL A5
+#if defined(ARDUINO_ARCH_RP2040)
+  #ifndef SDA
+  #define SDA 4
+  #endif
+  #ifndef SCL
+  #define SCL 5
+  #endif
+#else
+  #ifndef SDA
+  #define SDA A4
+  #endif
+  #ifndef SCL
+  #define SCL A5
+  #endif
 #endif
 
 // --- Configuration ---

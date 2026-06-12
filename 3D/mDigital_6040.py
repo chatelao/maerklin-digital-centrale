@@ -10,12 +10,7 @@ Standard housing with specialized faceplate for 16-button matrix.
 def create_6040_assembly():
     # 1. Generate the Top Shell
     # Note: 6040 has a longer faceplate pocket than standard 6021.
-    # We pass the custom length to the pocket tool logic.
-    top_shell = W.generate_top_shell(P.W_STD, include_faceplate=False)
-
-    # Custom faceplate pocket for 6040
-    fp_tool = F.create_faceplate_pocket_tool(P.W_STD, P.FP_LENGTH_6040)
-    top_shell = top_shell.cut(fp_tool)
+    top_shell = W.generate_top_shell(P.W_STD, include_faceplate=True, faceplate_length=P.FP_LENGTH_6040)
 
     # 2. Generate the specialized Faceplate Inlay
     inlay = F.create_6040_faceplate_inlay()

@@ -4,7 +4,8 @@ import glob
 import importlib
 
 # Add current directory to path to import local modules
-sys.path.append(os.path.dirname(__file__))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(SCRIPT_DIR)
 
 try:
     import FreeCAD as App
@@ -13,11 +14,14 @@ try:
     import Mesh
     import Import
     REAL_FREECAD = True
+    # Ensure Gui is initialized for headless rendering once
+    Gui.setupGui()
 except ImportError:
     from mDigital_Mock import App, Part, Mesh, Import
     # Mock Gui if not available
     class MockGui:
         def setupGui(self): pass
+        def getDocument(self, name): return self.ActiveDocument()
         def ActiveDocument(self): # FreeCAD uses case-sensitive names
             class MockDocGui:
                 def __init__(self):
@@ -25,7 +29,9 @@ except ImportError:
             class MockView:
                 def viewAxometric(self): pass
                 def fitAll(self): pass
-                def saveImage(self, filename, w, h, bg): print(f"Mock Save Image: {filename}")
+                def saveImage(self, filename, w, h, bg):
+                    print(f"Mock Save Image: {filename}")
+                    with open(filename, "w") as f: f.write("Mock PNG")
             return MockDocGui()
     Gui = MockGui()
     REAL_FREECAD = False
@@ -77,17 +83,16 @@ def export_assembly(name, assembly_func):
     # 4. Render Screenshot
     try:
         png_path = os.path.join(export_dir, f"{name}.png")
+
+        # In headless/scripted mode, we often need to get the GUI document explicitly
+        gui_doc = None
         if REAL_FREECAD:
-            # Ensure Gui is initialized for headless rendering
-            Gui.setupGui()
+            gui_doc = Gui.getDocument(doc.Name)
+        else:
+            gui_doc = Gui.ActiveDocument()
 
-        # FreeCAD GUI might need to be active
-        if Gui.ActiveDocument() is None:
-            # In some versions/environments, we need to ensure the GUI doc is "active"
-            pass
-
-        view = Gui.ActiveDocument().ActiveView
-        if view:
+        if gui_doc and hasattr(gui_doc, "ActiveView"):
+            view = gui_doc.ActiveView
             view.viewAxometric()
             view.fitAll()
             # Use a high resolution and transparent or white background
@@ -120,20 +125,31 @@ def discover_assemblies():
     return assemblies
 
 if __name__ == "__main__":
+    print(f"Starting 3D Asset Export (Real FreeCAD: {REAL_FREECAD})")
     assemblies = discover_assemblies()
 
     if not assemblies:
         print("No assemblies found!")
         sys.exit(1)
 
+    print(f"Found {len(assemblies)} assemblies: {', '.join(assemblies.keys())}")
+
+    success_count = 0
     for name, func in assemblies.items():
         try:
             export_assembly(name, func)
+            success_count += 1
         except Exception as e:
             print(f"Error exporting {name}: {e}")
 
+    print(f"Export completed: {success_count}/{len(assemblies)} succeeded.")
+
+    if success_count < len(assemblies):
+        sys.exit(1)
+
     # If we are in a real FreeCAD GUI session, we might want to exit
     if REAL_FREECAD:
-        App.closeDocument(App.ActiveDocument.Name) if App.ActiveDocument else None
+        # App.closeDocument(App.ActiveDocument.Name) if App.ActiveDocument else None
         # Do NOT call sys.exit() if running inside FreeCAD as it might crash it
         # but here we are likely running via freecadcmd or FreeCAD -c
+        pass

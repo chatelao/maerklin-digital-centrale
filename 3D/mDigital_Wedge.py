@@ -53,12 +53,15 @@ def create_wedge_solid(width, depth, h_front, h_back):
     solid = Part.makeSolid(shell)
     return solid
 
-def generate_top_shell(width, include_faceplate=False):
+def generate_top_shell(width, include_faceplate=False, faceplate_length=None):
     """
     Generates the hollowed Top Shell as per SHELL_BLUEPRINT.md.
     Includes modular features (Interlocks, Cutouts, Vents, Bosses).
     If include_faceplate=True, subtracts the decorative faceplate pocket.
     """
+    if faceplate_length is None:
+        faceplate_length = P.FP_LENGTH_STD
+
     outer = create_wedge_solid(width, P.DEPTH, P.H_FRONT, P.H_BACK)
 
     # Calculate Z-offset for sloped roof thickness to maintain uniform shell thickness
@@ -108,7 +111,7 @@ def generate_top_shell(width, include_faceplate=False):
 
     # 5. Add Faceplate Pocket
     if include_faceplate:
-        fp_tool = F.create_faceplate_pocket_tool(width, P.FP_LENGTH_STD)
+        fp_tool = F.create_faceplate_pocket_tool(width, faceplate_length)
         shell = shell.cut(fp_tool)
 
     # 6. Add Screw Bosses
