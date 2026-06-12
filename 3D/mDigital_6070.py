@@ -3,16 +3,16 @@ import mDigital_Wedge as W
 import mDigital_Features as F
 
 """
-Märklin Digital 6036 Control 80f - Full Assembly
-Slim housing (67.5mm) with specialized faceplate for display, knob, and buttons.
+Märklin Digital 6070 Infra Control 80f - Full Assembly
+Slim housing (67.5mm) with specialized faceplate for display, knob, buttons and IR window.
 """
 
-def create_6036_assembly():
+def create_6070_assembly():
     # 1. Generate the Top Shell (Slim width)
     top_shell = W.generate_top_shell(P.W_SLIM, include_faceplate=True, faceplate_length=P.FP_LENGTH_80F)
 
     # 2. Generate the specialized Faceplate Inlay
-    inlay = F.create_80f_faceplate_inlay()
+    inlay = F.create_6070_faceplate_inlay()
 
     # 3. Generate the Bottom Plate (Slim width)
     bottom_plate = W.generate_bottom_plate(P.W_SLIM)
@@ -28,7 +28,7 @@ def create_6036_assembly():
     }
 
 if __name__ == "__main__":
-    print("Generating Märklin Digital 6036 Control 80f Assembly...")
-    assembly = create_6036_assembly()
+    print("Generating Märklin Digital 6070 Infra Control 80f Assembly...")
+    assembly = create_6070_assembly()
     for name, part in assembly.items():
         print(f" - {name}: {part}")
