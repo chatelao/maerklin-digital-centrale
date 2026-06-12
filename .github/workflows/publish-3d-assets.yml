@@ -7,12 +7,14 @@ on:
       - '3D/**'
       - '.github/workflows/publish-3d-assets.yml'
   release:
-    types: [ created ]
+    types: [ published, created ]
   workflow_dispatch:
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,7 +23,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:freecad-maintainers/freecad-stable -y
           sudo apt-get update
-          sudo apt-get install -y freecad-common freecad-python3 xvfb imagemagick
+          sudo apt-get install -y freecad freecad-common freecad-python3 xvfb imagemagick
 
       - name: Generate 3D Assets and Screenshots
         run: |
@@ -32,10 +34,9 @@ jobs:
       - name: Organize Artifacts
         run: |
           mkdir -p dist
-          # Use -v for visibility and -L if there were symlinks (though unlikely here)
-          # Use a more robust copy that won't fail if exports is empty but will log it
+          # Flatten the directory structure for release assets
           if [ -d "3D/exports" ] && [ "$(ls -A 3D/exports)" ]; then
-            cp -rv 3D/exports/* dist/
+            find 3D/exports -type f -exec cp -v {} dist/ \;
           else
             echo "Warning: No 3D assets found in 3D/exports"
           fi
