@@ -147,9 +147,5 @@ if __name__ == "__main__":
     if success_count < len(assemblies):
         sys.exit(1)
 
-    # If we are in a real FreeCAD GUI session, we might want to exit
-    if REAL_FREECAD:
-        # App.closeDocument(App.ActiveDocument.Name) if App.ActiveDocument else None
-        # Do NOT call sys.exit() if running inside FreeCAD as it might crash it
-        # but here we are likely running via freecadcmd or FreeCAD -c
-        pass
+    # Explicitly exit to prevent hanging in headless CI environments
+    sys.exit(0)
