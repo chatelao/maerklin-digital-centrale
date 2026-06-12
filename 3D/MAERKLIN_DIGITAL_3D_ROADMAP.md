@@ -58,6 +58,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [ ] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
+    - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
     - [x] Model the **Control 80f (6036)** (Slim housing + throttle knob).
     - [x] Model the **6020/Transformer** dummy cases for modern electronics.
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
