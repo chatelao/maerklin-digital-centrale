@@ -55,6 +55,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
+    - [x] Model the 2-digit 7-segment display bezel.
+    - [x] Model the IR window (for 6070).
 - [ ] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
@@ -64,6 +66,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
     - [x] Model the **Infra Control 80f (6070)** (Slim housing + IR window).
     - [x] Model the **6020/Transformer** dummy cases for modern electronics.
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
+    - [x] Model the **Booster 6017** (Main housing + status LEDs).
+    - [ ] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
