@@ -119,6 +119,12 @@ def create_square_button():
     btn.translate(App.Vector(-P.BTN_SIZE/2.0, -P.BTN_SIZE/2.0, 0))
     return btn
 
+def create_led_hole_tool(diameter=P.LED_DIA):
+    """Creates a tool for a circular LED hole."""
+    hole = Part.makeCylinder(diameter/2.0, 10.0)
+    hole.translate(App.Vector(0, 0, -5.0))
+    return hole
+
 def create_display_bezel_tool():
     """
     Creates a Boolean tool for the 4-digit 7-segment display.
@@ -349,6 +355,36 @@ def create_6070_faceplate_inlay():
     ir_window.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
 
     inlay = inlay.cut(ir_window)
+    return inlay
+
+def create_6017_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Booster 6017.
+    Includes cutouts for two status LEDs.
+    """
+    width = P.W_STD
+    length = P.FP_LENGTH_STD
+
+    # Create base inlay (unrotated)
+    w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
+    l_inlay = length - 2 * P.TOL
+    inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
+
+    # 1. LED Hole 1 (Lower)
+    led1 = create_led_hole_tool()
+    led1.translate(App.Vector(P.C6017_LED_X, P.C6017_LED_Y, 0.4))
+    inlay = inlay.cut(led1)
+
+    # 2. LED Hole 2 (Upper)
+    led2 = create_led_hole_tool()
+    led2.translate(App.Vector(P.C6017_LED_X, P.C6017_LED_Y + P.C6017_LED_PITCH, 0.4))
+    inlay = inlay.cut(led2)
+
+    # Position and Rotate to fit the Wedge
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
     return inlay
 
 if __name__ == "__main__":

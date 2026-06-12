@@ -74,6 +74,9 @@ KNOB_SHAFT_DIA = 6.0
 BTN_SIZE = 12.0
 BTN_CUTOUT = 12.4
 
+# LED (Status Lights)
+LED_DIA = 3.0
+
 # 7-Segment Display (4-Digit)
 DISPLAY_W = 50.0
 DISPLAY_H = 19.0
@@ -131,6 +134,11 @@ C6070_IR_W = 30.0
 C6070_IR_H = 4.0
 C6070_IR_X = 13.55 # Centered on slim inlay
 C6070_IR_Y = 105.0
+
+# 6017 Specific Layout (Booster)
+C6017_LED_X = 15.0
+C6017_LED_Y = 35.0
+C6017_LED_PITCH = 10.0
 
 # Aesthetics (Colors)
 COLOR_MAERKLIN_GREY = (0.694, 0.694, 0.694) # #B1B1B1
