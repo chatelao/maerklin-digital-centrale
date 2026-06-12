@@ -64,6 +64,7 @@ FP_THICK = 0.8
 FP_INSET = 5.0
 FP_LENGTH_STD = 60.0
 FP_LENGTH_6040 = 110.0
+FP_LENGTH_6043 = 115.0
 
 KNOB_DIA = 30.0
 KNOB_H = 15.0
@@ -76,6 +77,10 @@ BTN_CUTOUT = 12.4
 DISPLAY_W = 50.0
 DISPLAY_H = 19.0
 DISPLAY_RECESS = 2.0
+
+# 7-Segment Display (2-Digit)
+DISPLAY_2_W = 28.0
+DISPLAY_2_H = 15.0
 
 # 6021 Specific Layout (Offsets relative to Faceplate Inlay corner)
 C6021_DISPLAY_X = 10.0
@@ -98,6 +103,15 @@ C6040_GRID_X = 25.0
 C6040_GRID_Y = 10.0
 C6040_PITCH_X = 75.0
 C6040_PITCH_Y = 13.0
+
+# 6043 Specific Layout (Memory)
+C6043_DISPLAY_X = 10.0
+C6043_DISPLAY_Y = 96.0
+
+C6043_GRID_X = 22.3
+C6043_GRID_Y = 5.0
+C6043_PITCH_X = 40.0
+C6043_PITCH_Y = 12.5
 
 # 6036 / 80f Specific Layout (Slim Control)
 C80F_DISPLAY_X = 4.0
