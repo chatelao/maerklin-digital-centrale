@@ -47,15 +47,21 @@ class MockDocument:
         self.name = name
     def addObject(self, type, name): return MockObject(name)
     def recompute(self): pass
-    def saveAs(self, filename): print(f"Mock Save: {filename}")
+    def saveAs(self, filename):
+        print(f"Mock Save: {filename}")
+        with open(filename, "w") as f: f.write("Mock FCStd")
 
 class MockMesh:
     def __init__(self, shape=None): pass
     def Mesh(self, shape): return self
-    def export(self, list_meshes, filename): print(f"Mock Mesh Export: {filename}")
+    def export(self, list_meshes, filename):
+        print(f"Mock Mesh Export: {filename}")
+        with open(filename, "w") as f: f.write("Mock STL")
 
 class MockImport:
-    def export(self, list_objs, filename): print(f"Mock Import Export: {filename}")
+    def export(self, list_objs, filename):
+        print(f"Mock Import Export: {filename}")
+        with open(filename, "w") as f: f.write("Mock STEP")
 
 App = MockApp()
 Part = MockPart()

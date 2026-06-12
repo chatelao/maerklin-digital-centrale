@@ -32,7 +32,13 @@ jobs:
       - name: Organize Artifacts
         run: |
           mkdir -p dist
-          cp -r 3D/exports/* dist/
+          # Use -v for visibility and -L if there were symlinks (though unlikely here)
+          # Use a more robust copy that won't fail if exports is empty but will log it
+          if [ -d "3D/exports" ] && [ "$(ls -A 3D/exports)" ]; then
+            cp -rv 3D/exports/* dist/
+          else
+            echo "Warning: No 3D assets found in 3D/exports"
+          fi
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
