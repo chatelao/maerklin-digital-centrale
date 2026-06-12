@@ -1,0 +1,139 @@
+import os
+import sys
+import glob
+import importlib
+
+# Add current directory to path to import local modules
+sys.path.append(os.path.dirname(__file__))
+
+try:
+    import FreeCAD as App
+    import FreeCADGui as Gui
+    import Part
+    import Mesh
+    import Import
+    REAL_FREECAD = True
+except ImportError:
+    from mDigital_Mock import App, Part, Mesh, Import
+    # Mock Gui if not available
+    class MockGui:
+        def setupGui(self): pass
+        def ActiveDocument(self): # FreeCAD uses case-sensitive names
+            class MockDocGui:
+                def __init__(self):
+                    self.ActiveView = MockView()
+            class MockView:
+                def viewAxometric(self): pass
+                def fitAll(self): pass
+                def saveImage(self, filename, w, h, bg): print(f"Mock Save Image: {filename}")
+            return MockDocGui()
+    Gui = MockGui()
+    REAL_FREECAD = False
+
+def export_assembly(name, assembly_func):
+    print(f"Exporting {name}...")
+
+    # Create Document
+    doc = App.newDocument(name)
+
+    # Generate Assembly
+    parts = assembly_func()
+
+    # Add parts to document
+    fc_objs = []
+    for part_name, part_shape in parts.items():
+        obj = doc.addObject("Part::Feature", part_name)
+        obj.Shape = part_shape
+        fc_objs.append(obj)
+
+    doc.recompute()
+
+    # Create export directory
+    export_dir = os.path.join(os.path.dirname(__file__), "exports", name)
+    if not os.path.exists(export_dir):
+        os.makedirs(export_dir)
+
+    # 1. Save .FCStd
+    fcstd_path = os.path.join(export_dir, f"{name}.FCStd")
+    doc.saveAs(fcstd_path)
+    print(f" - Saved {fcstd_path}")
+
+    # 2. Export .step
+    step_path = os.path.join(export_dir, f"{name}.step")
+    Import.export(fc_objs, step_path)
+    print(f" - Exported {step_path}")
+
+    # 3. Export .stl
+    stl_path = os.path.join(export_dir, f"{name}.stl")
+    meshes = []
+    for obj in fc_objs:
+        if hasattr(Mesh, "Mesh"):
+            mesh = Mesh.Mesh(obj.Shape)
+            meshes.append(mesh)
+    if meshes:
+        Mesh.export(meshes, stl_path)
+        print(f" - Exported {stl_path}")
+
+    # 4. Render Screenshot
+    try:
+        png_path = os.path.join(export_dir, f"{name}.png")
+        if REAL_FREECAD:
+            # Ensure Gui is initialized for headless rendering
+            Gui.setupGui()
+
+        # FreeCAD GUI might need to be active
+        if Gui.ActiveDocument() is None:
+            # In some versions/environments, we need to ensure the GUI doc is "active"
+            pass
+
+        view = Gui.ActiveDocument().ActiveView
+        if view:
+            view.viewAxometric()
+            view.fitAll()
+            # Use a high resolution and transparent or white background
+            view.saveImage(png_path, 1600, 1200, "White")
+            print(f" - Rendered {png_path}")
+        else:
+            print(f" - No ActiveView available for {name}")
+    except Exception as e:
+        print(f" - Could not render screenshot for {name}: {e}")
+
+    App.closeDocument(name)
+
+def discover_assemblies():
+    """Dynamically find all modules in the 3D directory that have a create_*_assembly function."""
+    assemblies = {}
+    base_dir = os.path.dirname(__file__)
+    for py_file in glob.glob(os.path.join(base_dir, "mDigital_6*.py")):
+        module_name = os.path.basename(py_file)[:-3]
+        try:
+            module = importlib.import_module(module_name)
+            # Look for functions like 'create_6021_assembly'
+            for attr_name in dir(module):
+                if attr_name.startswith("create_") and attr_name.endswith("_assembly"):
+                    func = getattr(module, attr_name)
+                    if callable(func):
+                        assemblies[module_name] = func
+                        break
+        except Exception as e:
+            print(f"Could not load module {module_name}: {e}")
+    return assemblies
+
+if __name__ == "__main__":
+    assemblies = discover_assemblies()
+
+    if not assemblies:
+        print("No assemblies found!")
+        sys.exit(1)
+
+    for name, func in assemblies.items():
+        try:
+            export_assembly(name, func)
+        except Exception as e:
+            print(f"Error exporting {name}: {e}")
+
+    # If we are in a real FreeCAD GUI session, we might want to exit
+    if REAL_FREECAD:
+        App.closeDocument(App.ActiveDocument.Name) if App.ActiveDocument else None
+        # Do NOT call sys.exit() if running inside FreeCAD as it might crash it
+        # but here we are likely running via freecadcmd or FreeCAD -c
