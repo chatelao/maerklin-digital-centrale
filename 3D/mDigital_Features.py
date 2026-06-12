@@ -263,13 +263,43 @@ def create_6043_faceplate_inlay():
 
     return inlay
 
+def create_6035_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Control 80 (6035).
+    Includes cutouts for display and speed knob (no buttons).
+    """
+    width = P.W_SLIM
+    length = P.FP_LENGTH_80F
+
+    # Create base inlay (unrotated)
+    w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
+    l_inlay = length - 2 * P.TOL
+    inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
+
+    # 1. Display Cutout
+    display = create_display_bezel_tool()
+    display.translate(App.Vector(P.C80F_DISPLAY_X, P.C80F_DISPLAY_Y, -1.0))
+    inlay = inlay.cut(display)
+
+    # 2. Speed Knob Cutout
+    knob_hole = Part.makeCylinder(P.KNOB_DIA/2.0 + 1.0, 10.0)
+    knob_hole.translate(App.Vector(P.C80F_KNOB_X, P.C80F_KNOB_Y, -5.0))
+    inlay = inlay.cut(knob_hole)
+
+    # Position and Rotate to fit the Wedge
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
+    return inlay
+
 def create_80f_faceplate_inlay():
     """
     Creates the specialized faceplate inlay for the Control 80f (6036).
     Includes cutouts for display, speed knob, and 4 function buttons.
     """
     width = P.W_SLIM
-    length = P.FP_LENGTH_STD
+    length = P.FP_LENGTH_80F
 
     # Create base inlay (unrotated)
     w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
@@ -300,6 +330,25 @@ def create_80f_faceplate_inlay():
     inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
     inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
 
+    return inlay
+
+def create_6070_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Infra Control 80f (6070).
+    Same as 6036 but with an additional IR window cutout.
+    """
+    # Reuse 6036 logic and add IR cutout
+    inlay = create_80f_faceplate_inlay()
+
+    # Create IR Window Tool (rotated to match inlay)
+    ir_window = Part.makeBox(P.C6070_IR_W, P.C6070_IR_H, 10.0)
+    ir_window.translate(App.Vector(P.C6070_IR_X, P.C6070_IR_Y, -P.FP_THICK - 1.0))
+
+    # Position and Rotate the window tool to match the inlay's coordinate system
+    ir_window.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    ir_window.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
+    inlay = inlay.cut(ir_window)
     return inlay
 
 if __name__ == "__main__":
