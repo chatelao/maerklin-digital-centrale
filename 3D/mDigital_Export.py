@@ -14,13 +14,10 @@ try:
     import Mesh
     import Import
     REAL_FREECAD = True
-    # Ensure Gui is initialized for headless rendering once
-    Gui.setupGui()
 except ImportError:
     from mDigital_Mock import App, Part, Mesh, Import
     # Mock Gui if not available
     class MockGui:
-        def setupGui(self): pass
         def getDocument(self, name): return self.ActiveDocument()
         def ActiveDocument(self): # FreeCAD uses case-sensitive names
             class MockDocGui:
