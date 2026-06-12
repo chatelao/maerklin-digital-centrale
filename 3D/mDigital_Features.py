@@ -113,10 +113,22 @@ def create_speed_knob():
     knob = knob.cut(shaft_hole)
     return knob
 
+def create_small_knob():
+    """Creates a small selection knob (e.g. for Delta 4f)."""
+    knob = Part.makeCylinder(P.SMALL_KNOB_DIA/2.0, P.SMALL_KNOB_H)
+    shaft_hole = Part.makeCylinder(P.KNOB_SHAFT_DIA/2.0, P.SMALL_KNOB_H - 2.0)
+    knob = knob.cut(shaft_hole)
+    return knob
+
 def create_square_button():
     """Creates a standard square push button."""
     btn = Part.makeBox(P.BTN_SIZE, P.BTN_SIZE, 10.0)
     btn.translate(App.Vector(-P.BTN_SIZE/2.0, -P.BTN_SIZE/2.0, 0))
+    return btn
+
+def create_round_button():
+    """Creates a round push button (e.g. for Delta 4f)."""
+    btn = Part.makeCylinder(P.ROUND_BTN_DIA/2.0, 10.0)
     return btn
 
 def create_led_hole_tool(diameter=P.LED_DIA):
@@ -355,6 +367,41 @@ def create_6070_faceplate_inlay():
     ir_window.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
 
     inlay = inlay.cut(ir_window)
+    return inlay
+
+def create_66045_faceplate_inlay():
+    """
+    Creates the specialized faceplate inlay for the Delta Control 4f (66045).
+    Includes cutouts for the selection knob, function button, and speed knob.
+    """
+    width = P.W_STD
+    length = P.FP_LENGTH_66045
+
+    # Create base inlay (unrotated)
+    w_inlay = width - 2 * P.FP_INSET - 2 * P.TOL
+    l_inlay = length - 2 * P.TOL
+    inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
+
+    # 1. Selection Knob Cutout (Using slightly larger diameter for clearance)
+    sel_knob_hole = Part.makeCylinder(P.SMALL_KNOB_DIA/2.0 + 0.5, 10.0)
+    sel_knob_hole.translate(App.Vector(P.C66045_SEL_KNOB_X, P.C66045_SEL_KNOB_Y, -5.0))
+    inlay = inlay.cut(sel_knob_hole)
+
+    # 2. Function Button Cutout (Round)
+    btn_hole = Part.makeCylinder(P.ROUND_BTN_CUTOUT/2.0, 10.0)
+    btn_hole.translate(App.Vector(P.C66045_BTN_X, P.C66045_BTN_Y, -5.0))
+    inlay = inlay.cut(btn_hole)
+
+    # 3. Speed Knob Cutout
+    knob_hole = Part.makeCylinder(P.KNOB_DIA/2.0 + 0.5, 10.0)
+    knob_hole.translate(App.Vector(P.C66045_MAIN_KNOB_X, P.C66045_MAIN_KNOB_Y, -5.0))
+    inlay = inlay.cut(knob_hole)
+
+    # Position and Rotate to fit the Wedge
+    inlay.translate(App.Vector(0, 0, -P.FP_THICK))
+    inlay.translate(App.Vector(P.FP_INSET + P.TOL, P.TOL, P.H_FRONT))
+    inlay.rotate(App.Vector(1,0,0), App.Vector(0, 0, P.H_FRONT), P.SLOPE_ANGLE)
+
     return inlay
 
 def create_6017_faceplate_inlay():
