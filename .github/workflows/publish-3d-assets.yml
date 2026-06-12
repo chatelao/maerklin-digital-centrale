@@ -1,0 +1,53 @@
+name: Publish 3D Assets
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '3D/**'
+      - '.github/workflows/publish-3d-assets.yml'
+  release:
+    types: [ created ]
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install FreeCAD
+        run: |
+          sudo add-apt-repository ppa:freecad-maintainers/freecad-stable -y
+          sudo apt-get update
+          sudo apt-get install -y freecad-common freecad-python3 xvfb imagemagick
+
+      - name: Generate 3D Assets and Screenshots
+        run: |
+          # Use xvfb to run FreeCAD (full binary) with a virtual display for rendering
+          # We use the full 'freecad' binary instead of 'freecadcmd' to support FreeCADGui
+          xvfb-run freecad -c 3D/mDigital_Export.py
+
+      - name: Organize Artifacts
+        run: |
+          mkdir -p dist
+          cp -r 3D/exports/* dist/
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mDigital-3D-Assets
+          path: dist/
+
+      - name: Upload to Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/**/*.FCStd
+            dist/**/*.step
+            dist/**/*.stl
+            dist/**/*.png
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -16,6 +16,7 @@ class MockVector:
 class MockObject:
     def __init__(self, name="Object"):
         self.name = name
+        self.Shape = self
     def translate(self, vector):
         return self
     def rotate(self, axis, center, angle):
@@ -38,6 +39,25 @@ class MockPart:
 
 class MockApp:
     def Vector(self, x, y, z): return MockVector(x, y, z)
+    def newDocument(self, name): return MockDocument(name)
+    def closeDocument(self, name): pass
+
+class MockDocument:
+    def __init__(self, name):
+        self.name = name
+    def addObject(self, type, name): return MockObject(name)
+    def recompute(self): pass
+    def saveAs(self, filename): print(f"Mock Save: {filename}")
+
+class MockMesh:
+    def __init__(self, shape=None): pass
+    def Mesh(self, shape): return self
+    def export(self, list_meshes, filename): print(f"Mock Mesh Export: {filename}")
+
+class MockImport:
+    def export(self, list_objs, filename): print(f"Mock Import Export: {filename}")
 
 App = MockApp()
 Part = MockPart()
+Mesh = MockMesh()
+Import = MockImport()
