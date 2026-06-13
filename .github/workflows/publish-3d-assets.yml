@@ -26,10 +26,11 @@ jobs:
           sudo apt-get install -y freecad freecad-common freecad-python3 xvfb imagemagick
 
       - name: Generate 3D Assets and Screenshots
+        timeout-minutes: 15
         run: |
           # Use xvfb to run FreeCAD (full binary) with a virtual display for rendering
           # We use the full 'freecad' binary instead of 'freecadcmd' to support FreeCADGui
-          xvfb-run freecad -c 3D/mDigital_Export.py
+          xvfb-run freecad 3D/mDigital_Export.py
 
       - name: Organize Artifacts
         run: |
