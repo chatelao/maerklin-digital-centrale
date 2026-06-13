@@ -1,10 +1,22 @@
 import os
 import sys
+
+print("Initializing mDigital_Export.py...")
+
 import glob
 import importlib
 
 # Add current directory to path to import local modules
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# In FreeCAD's embedded interpreter, __file__ may not be defined.
+try:
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+except NameError:
+    # Fallback to sys.argv[0] or current working directory
+    if len(sys.argv) > 0 and sys.argv[0]:
+        SCRIPT_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
+    else:
+        SCRIPT_DIR = os.getcwd()
+
 sys.path.append(SCRIPT_DIR)
 
 try:
@@ -52,7 +64,7 @@ def export_assembly(name, assembly_func):
     doc.recompute()
 
     # Create export directory
-    export_dir = os.path.join(os.path.dirname(__file__), "exports", name)
+    export_dir = os.path.join(SCRIPT_DIR, "exports", name)
     if not os.path.exists(export_dir):
         os.makedirs(export_dir)
 
@@ -105,7 +117,7 @@ def export_assembly(name, assembly_func):
 def discover_assemblies():
     """Dynamically find all modules in the 3D directory that have a create_*_assembly function."""
     assemblies = {}
-    base_dir = os.path.dirname(__file__)
+    base_dir = SCRIPT_DIR
     for py_file in glob.glob(os.path.join(base_dir, "mDigital_6*.py")):
         module_name = os.path.basename(py_file)[:-3]
         try:
@@ -122,6 +134,7 @@ def discover_assemblies():
     return assemblies
 
 if __name__ == "__main__":
+    print("Main execution started.")
     print(f"Starting 3D Asset Export (Real FreeCAD: {REAL_FREECAD})")
     assemblies = discover_assemblies()
 
