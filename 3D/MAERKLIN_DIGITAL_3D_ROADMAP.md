@@ -67,7 +67,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
     - [x] Model the **6020/Transformer** dummy cases for modern electronics.
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
-    - [ ] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+    - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
