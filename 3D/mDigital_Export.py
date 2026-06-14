@@ -2,6 +2,7 @@ import os
 import sys
 import glob
 import importlib
+import mDigital_Projection as Projection
 
 # Add current directory to path to import local modules
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -15,22 +16,7 @@ try:
     import Import
     REAL_FREECAD = True
 except ImportError:
-    from mDigital_Mock import App, Part, Mesh, Import
-    # Mock Gui if not available
-    class MockGui:
-        def getDocument(self, name): return self.ActiveDocument()
-        def ActiveDocument(self): # FreeCAD uses case-sensitive names
-            class MockDocGui:
-                def __init__(self):
-                    self.ActiveView = MockView()
-            class MockView:
-                def viewAxometric(self): pass
-                def fitAll(self): pass
-                def saveImage(self, filename, w, h, bg):
-                    print(f"Mock Save Image: {filename}")
-                    with open(filename, "w") as f: f.write("Mock PNG")
-            return MockDocGui()
-    Gui = MockGui()
+    from mDigital_Mock import App, Part, Mesh, Import, Gui
     REAL_FREECAD = False
 
 def export_assembly(name, assembly_func):
@@ -77,10 +63,8 @@ def export_assembly(name, assembly_func):
         Mesh.export(meshes, stl_path)
         print(f" - Exported {stl_path}")
 
-    # 4. Render Screenshot
+    # 4. Render Screenshots & Projection
     try:
-        png_path = os.path.join(export_dir, f"{name}.png")
-
         # In headless/scripted mode, we often need to get the GUI document explicitly
         gui_doc = None
         if REAL_FREECAD:
@@ -90,15 +74,43 @@ def export_assembly(name, assembly_func):
 
         if gui_doc and hasattr(gui_doc, "ActiveView"):
             view = gui_doc.ActiveView
+
+            # A. Axometric View
+            png_path = os.path.join(export_dir, f"{name}.png")
             view.viewAxometric()
             view.fitAll()
-            # Use a high resolution and transparent or white background
             view.saveImage(png_path, 1600, 1200, "White")
             print(f" - Rendered {png_path}")
+
+            # B. Orthographic Views for Projection
+            view.setCameraType("Orthographic")
+
+            top_png = os.path.join(export_dir, f"{name}_top.png")
+            view.viewTop()
+            view.fitAll()
+            view.saveImage(top_png, 1600, 1200, "White")
+
+            front_png = os.path.join(export_dir, f"{name}_front.png")
+            view.viewFront()
+            view.fitAll()
+            view.saveImage(front_png, 1600, 1200, "White")
+
+            left_png = os.path.join(export_dir, f"{name}_left.png")
+            view.viewLeft()
+            view.fitAll()
+            view.saveImage(left_png, 1600, 1200, "White")
+
+            # C. Create Combined Projection
+            projection_path = os.path.join(export_dir, f"{name}_projection.png")
+            Projection.create_projection(top_png, front_png, left_png, projection_path)
+
+            # Clean up intermediate orthographic views if desired,
+            # but keeping them for now as individual assets.
+
         else:
             print(f" - No ActiveView available for {name}")
     except Exception as e:
-        print(f" - Could not render screenshot for {name}: {e}")
+        print(f" - Could not render screenshots/projection for {name}: {e}")
 
     App.closeDocument(name)
 
