@@ -63,7 +63,32 @@ class MockImport:
         print(f"Mock Import Export: {filename}")
         with open(filename, "w") as f: f.write("Mock STEP")
 
+class MockView:
+    def viewAxometric(self): pass
+    def viewTop(self): pass
+    def viewFront(self): pass
+    def viewLeft(self): pass
+    def setCameraType(self, cam_type): pass
+    def fitAll(self): pass
+    def saveImage(self, filename, w, h, bg):
+        print(f"Mock Save Image: {filename}")
+        try:
+            from PIL import Image
+            img = Image.new("RGB", (w, h), "white")
+            img.save(filename)
+        except ImportError:
+            with open(filename, "w") as f: f.write("Mock PNG")
+
+class MockDocGui:
+    def __init__(self):
+        self.ActiveView = MockView()
+
+class MockGui:
+    def getDocument(self, name): return self.ActiveDocument()
+    def ActiveDocument(self): return MockDocGui()
+
 App = MockApp()
 Part = MockPart()
 Mesh = MockMesh()
 Import = MockImport()
+Gui = MockGui()
