@@ -12,6 +12,49 @@
 
 #include <Wire.h>
 
+// Handle missing D-prefixed and I2C pin definitions for some RP2040 cores
+#if defined(ARDUINO_ARCH_RP2040)
+  #ifndef D0
+  #define D0 0
+  #endif
+  #ifndef D1
+  #define D1 1
+  #endif
+  #ifndef D2
+  #define D2 2
+  #endif
+  #ifndef D3
+  #define D3 3
+  #endif
+  #ifndef D4
+  #define D4 4
+  #endif
+  #ifndef D5
+  #define D5 5
+  #endif
+  #ifndef D6
+  #define D6 6
+  #endif
+  #ifndef D7
+  #define D7 7
+  #endif
+  #ifndef D8
+  #define D8 8
+  #endif
+  #ifndef D9
+  #define D9 9
+  #endif
+  #ifndef D10
+  #define D10 10
+  #endif
+  #ifndef SDA
+  #define SDA 4
+  #endif
+  #ifndef SCL
+  #define SCL 5
+  #endif
+#endif
+
 // --- Pin Definitions (XIAO RP2040 / Nano / Pico) ---
 #if defined(ARDUINO_SEEED_XIAO_RP2040)
 // Seeed Studio XIAO RP2040 Pinout
@@ -21,8 +64,8 @@ const int pinBUS_GO   = D2;
 const int pinINIT_IN  = D3;
 const int pinINIT_OUT = D6;
 
-const int pinSDA      = 6; // D4
-const int pinSCL      = 7; // D5
+const int pinSDA      = D4; // SDA
+const int pinSCL      = D5; // SCL
 #elif defined(ARDUINO_ARCH_RP2040)
 // Standard Raspberry Pi Pico
 const int pinIR_RECV  = 16;
@@ -92,7 +135,12 @@ void setup() {
   // during the performSoftwareAddressing() phase due to 3.3V/5V differences.
   performSoftwareAddressing();
 
-  Wire.begin(); // Standard XIAO D4 (SDA), D5 (SCL)
+  #if defined(ARDUINO_ARCH_RP2040)
+  Wire.begin(pinSDA, pinSCL);
+  #else
+  Wire.begin();
+  #endif
+
   initialize6036();
 }
 

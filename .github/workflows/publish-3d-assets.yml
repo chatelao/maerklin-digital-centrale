@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:freecad-maintainers/freecad-stable -y
           sudo apt-get update
-          sudo apt-get install -y freecad freecad-common freecad-python3 xvfb imagemagick
+          sudo apt-get install -y freecad freecad-common freecad-python3 xvfb imagemagick python3-pil
 
       - name: Generate 3D Assets and Screenshots
         timeout-minutes: 15

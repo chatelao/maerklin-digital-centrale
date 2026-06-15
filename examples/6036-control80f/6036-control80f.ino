@@ -52,8 +52,41 @@
 
 #include <Wire.h>
 
-// Handle missing SDA/SCL definitions for some cores (e.g. Raspberry Pi Pico)
+// Handle missing D-prefixed and I2C pin definitions for some RP2040 cores
 #if defined(ARDUINO_ARCH_RP2040)
+  #ifndef D0
+  #define D0 0
+  #endif
+  #ifndef D1
+  #define D1 1
+  #endif
+  #ifndef D2
+  #define D2 2
+  #endif
+  #ifndef D3
+  #define D3 3
+  #endif
+  #ifndef D4
+  #define D4 4
+  #endif
+  #ifndef D5
+  #define D5 5
+  #endif
+  #ifndef D6
+  #define D6 6
+  #endif
+  #ifndef D7
+  #define D7 7
+  #endif
+  #ifndef D8
+  #define D8 8
+  #endif
+  #ifndef D9
+  #define D9 9
+  #endif
+  #ifndef D10
+  #define D10 10
+  #endif
   #ifndef SDA
   #define SDA 4
   #endif
@@ -77,39 +110,39 @@
 // --- Pin Definitions ---
 #if defined(ARDUINO_SEEED_XIAO_RP2040)
 // Seeed Studio XIAO RP2040 Pinout
-const int pinSTOP_BTN = 10;
-const int pinGO_BTN   = 11;
-const int pinFON_BTN  = 12;
-const int pinFOFF_BTN = 13;
-const int pinADDR_UP  = 14;
-const int pinADDR_DN  = 15;
+const int pinSTOP_BTN = D10;
+const int pinGO_BTN   = -1;
+const int pinFON_BTN  = -1;
+const int pinFOFF_BTN = -1;
+const int pinADDR_UP  = -1;
+const int pinADDR_DN  = -1;
 
-const int pinF1_BTN   = 0;
-const int pinF2_BTN   = 1;
+const int pinF1_BTN   = D0;
+const int pinF2_BTN   = D7;
 
 #ifdef V_ANALOG
 const int pinPOT      = A0;
 const int pinDIR_BTN  = A1;
-const int pinF3_BTN   = 18;
-const int pinF4_BTN   = 19;
+const int pinF3_BTN   = D8;
+const int pinF4_BTN   = D9;
 #endif
 
 #ifdef V_DIGITAL
-const int pinENC_A    = 18;
-const int pinENC_B    = 19;
-const int pinENC_BTN  = 20;
-const int pinF3_BTN   = 21;
-const int pinF4_BTN   = 22;
+const int pinENC_A    = D8;
+const int pinENC_B    = D9;
+const int pinENC_BTN  = -1;
+const int pinF3_BTN   = -1;
+const int pinF4_BTN   = -1;
 #endif
 
-const int pinINIT_IN  = 2;
-const int pinINIT_OUT = 3;
+const int pinINIT_IN  = D3;
+const int pinINIT_OUT = D6;
 
-const int pinBUS_STOP = 6;
-const int pinBUS_GO   = 7;
+const int pinBUS_STOP = D1;
+const int pinBUS_GO   = D2;
 
-const int pinSDA      = 6; // D4
-const int pinSCL      = 7; // D5
+const int pinSDA      = D4; // SDA
+const int pinSCL      = D5; // SCL
 #elif defined(ARDUINO_ARCH_RP2040)
 // Raspberry Pi Pico Pinout
 const int pinSTOP_BTN = 10;
@@ -219,22 +252,26 @@ void setup() {
   performSoftwareAddressing();
 
   // Initialize I2C
+  #if defined(ARDUINO_ARCH_RP2040)
+  Wire.begin(pinSDA, pinSCL);
+  #else
   Wire.begin();
+  #endif
 
   // 6036 Initialization (Extended Motorola Format)
   initialize6036();
 
   // Button Pins
-  pinMode(pinSTOP_BTN, INPUT_PULLUP);
-  pinMode(pinGO_BTN,   INPUT_PULLUP);
-  pinMode(pinFON_BTN,  INPUT_PULLUP);
-  pinMode(pinFOFF_BTN, INPUT_PULLUP);
-  pinMode(pinADDR_UP,  INPUT_PULLUP);
-  pinMode(pinADDR_DN,  INPUT_PULLUP);
-  pinMode(pinF1_BTN,   INPUT_PULLUP);
-  pinMode(pinF2_BTN,   INPUT_PULLUP);
-  pinMode(pinF3_BTN,   INPUT_PULLUP);
-  pinMode(pinF4_BTN,   INPUT_PULLUP);
+  if (pinSTOP_BTN != -1) pinMode(pinSTOP_BTN, INPUT_PULLUP);
+  if (pinGO_BTN   != -1) pinMode(pinGO_BTN,   INPUT_PULLUP);
+  if (pinFON_BTN  != -1) pinMode(pinFON_BTN,  INPUT_PULLUP);
+  if (pinFOFF_BTN != -1) pinMode(pinFOFF_BTN, INPUT_PULLUP);
+  if (pinADDR_UP  != -1) pinMode(pinADDR_UP,  INPUT_PULLUP);
+  if (pinADDR_DN  != -1) pinMode(pinADDR_DN,  INPUT_PULLUP);
+  if (pinF1_BTN   != -1) pinMode(pinF1_BTN,   INPUT_PULLUP);
+  if (pinF2_BTN   != -1) pinMode(pinF2_BTN,   INPUT_PULLUP);
+  if (pinF3_BTN   != -1) pinMode(pinF3_BTN,   INPUT_PULLUP);
+  if (pinF4_BTN   != -1) pinMode(pinF4_BTN,   INPUT_PULLUP);
 
   // Bus Signals
   pinMode(pinBUS_STOP, INPUT_PULLUP);
@@ -350,37 +387,37 @@ void loop() {
   }
 
   // 2. System Buttons
-  if (digitalRead(pinSTOP_BTN) == LOW) {
+  if (pinSTOP_BTN != -1 && digitalRead(pinSTOP_BTN) == LOW) {
     triggerBusSignal(pinBUS_STOP);
     delay(200);
   }
-  if (digitalRead(pinGO_BTN) == LOW) {
+  if (pinGO_BTN != -1 && digitalRead(pinGO_BTN) == LOW) {
     triggerBusSignal(pinBUS_GO);
     delay(200);
   }
 
   // 3. Address Selection
-  if (digitalRead(pinADDR_UP) == LOW) {
+  if (pinADDR_UP != -1 && digitalRead(pinADDR_UP) == LOW) {
     if (currentLocoAddr < 80) currentLocoAddr++;
     else currentLocoAddr = 1;
     delay(250);
   }
-  if (digitalRead(pinADDR_DN) == LOW) {
+  if (pinADDR_DN != -1 && digitalRead(pinADDR_DN) == LOW) {
     if (currentLocoAddr > 1) currentLocoAddr--;
     else currentLocoAddr = 80;
     delay(250);
   }
 
   // 4. Function Buttons (f0, f1-f4)
-  if (digitalRead(pinFON_BTN) == LOW)  f0State = true;
-  if (digitalRead(pinFOFF_BTN) == LOW) f0State = false;
+  if (pinFON_BTN != -1 && digitalRead(pinFON_BTN) == LOW)  f0State = true;
+  if (pinFOFF_BTN != -1 && digitalRead(pinFOFF_BTN) == LOW) f0State = false;
 
   // Toggle f1-f4 on press (simple toggle implementation)
   static bool lastF1 = HIGH, lastF2 = HIGH, lastF3 = HIGH, lastF4 = HIGH;
-  bool currF1 = digitalRead(pinF1_BTN);
-  bool currF2 = digitalRead(pinF2_BTN);
-  bool currF3 = digitalRead(pinF3_BTN);
-  bool currF4 = digitalRead(pinF4_BTN);
+  bool currF1 = (pinF1_BTN != -1) ? digitalRead(pinF1_BTN) : HIGH;
+  bool currF2 = (pinF2_BTN != -1) ? digitalRead(pinF2_BTN) : HIGH;
+  bool currF3 = (pinF3_BTN != -1) ? digitalRead(pinF3_BTN) : HIGH;
+  bool currF4 = (pinF4_BTN != -1) ? digitalRead(pinF4_BTN) : HIGH;
 
   if (currF1 == LOW && lastF1 == HIGH) { f1State = !f1State; delay(100); }
   if (currF2 == LOW && lastF2 == HIGH) { f2State = !f2State; delay(100); }

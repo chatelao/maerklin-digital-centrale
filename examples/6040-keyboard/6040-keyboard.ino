@@ -47,16 +47,83 @@
 
 #include <Wire.h>
 
+// Handle missing D-prefixed and I2C pin definitions for some RP2040 cores
+#if defined(ARDUINO_ARCH_RP2040)
+  #ifndef D0
+  #define D0 0
+  #endif
+  #ifndef D1
+  #define D1 1
+  #endif
+  #ifndef D2
+  #define D2 2
+  #endif
+  #ifndef D3
+  #define D3 3
+  #endif
+  #ifndef D4
+  #define D4 4
+  #endif
+  #ifndef D5
+  #define D5 5
+  #endif
+  #ifndef D6
+  #define D6 6
+  #endif
+  #ifndef D7
+  #define D7 7
+  #endif
+  #ifndef D8
+  #define D8 8
+  #endif
+  #ifndef D9
+  #define D9 9
+  #endif
+  #ifndef D10
+  #define D10 10
+  #endif
+  #ifndef SDA
+  #define SDA 4
+  #endif
+  #ifndef SCL
+  #define SCL 5
+  #endif
+#else
+  #ifndef SDA
+  #define SDA A4
+  #endif
+  #ifndef SCL
+  #define SCL A5
+  #endif
+#endif
+
 // Märklin I2C Constants
 #define CENTRAL_UNIT_ADDR 0x7F // 7-bit I2C address of the Central Unit (0xFE >> 1)
 
 // Pin Definitions
-#if defined(ARDUINO_ARCH_RP2040)
+#if defined(ARDUINO_SEEED_XIAO_RP2040)
+// Seeed Studio XIAO RP2040 Pinout
+const int pinINIT = D3;
+const int pinGO   = D2;
+const int pinSTOP = D1;
+const int pinETC  = D6;
+
+const int pinSDA  = D4; // SDA
+const int pinSCL  = D5; // SCL
+
+const int pinADDR[] = {D7, D8, D9, D10};
+
+const int pinBUTTONS[] = {D0}; // Only one turnout Red Red on XIAO due to pin limits
+const int pinCommon = -1; // Not enough pins for common ground section
+#elif defined(ARDUINO_ARCH_RP2040)
 // Raspberry Pi Pico Pinout
 const int pinINIT = 2;
 const int pinGO   = 3;
 const int pinSTOP = 6;
 const int pinETC  = 7;
+
+const int pinSDA  = 4; // GP4
+const int pinSCL  = 5; // GP5
 
 const int pinADDR[] = {10, 11, 12, 13};
 
@@ -68,6 +135,9 @@ const int pinINIT = A0;
 const int pinGO   = A1;
 const int pinSTOP = A2;
 const int pinETC  = A3;
+
+const int pinSDA  = A4;
+const int pinSCL  = A5;
 
 const int pinADDR[] = {9, 10, 11, 12}; // D9=S1, D10=S2, D11=S3, D12=S4
 
@@ -81,19 +151,23 @@ bool isPowerOn = true;
 
 void setup() {
   // Initialize Address Pins with Pull-ups
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < (int)(sizeof(pinADDR) / sizeof(pinADDR[0])); i++) {
     pinMode(pinADDR[i], INPUT_PULLUP);
   }
 
   // Initialize Button Pins with Pull-ups
-  for (int i = 0; i < 8; i++) {
-    pinMode(pinBUTTONS[i], INPUT_PULLUP);
-    lastButtonState[i] = HIGH; // Pull-up means HIGH is unpressed
+  for (int i = 0; i < (int)(sizeof(pinBUTTONS) / sizeof(pinBUTTONS[0])); i++) {
+    if (i < 8) {
+      pinMode(pinBUTTONS[i], INPUT_PULLUP);
+      lastButtonState[i] = HIGH; // Pull-up means HIGH is unpressed
+    }
   }
 
   // D8 as common ground for the buttons
-  pinMode(pinCommon, OUTPUT);
-  digitalWrite(pinCommon, LOW);
+  if (pinCommon != -1) {
+    pinMode(pinCommon, OUTPUT);
+    digitalWrite(pinCommon, LOW);
+  }
 
   // Initialize Control Signal Pins
   pinMode(pinINIT, INPUT_PULLUP);
@@ -102,7 +176,11 @@ void setup() {
   pinMode(pinETC, INPUT_PULLUP);
 
   // Initialize I2C (Arduino as Master)
+  #if defined(ARDUINO_ARCH_RP2040)
+  Wire.begin(pinSDA, pinSCL);
+  #else
   Wire.begin();
+  #endif
 
   // Wait a bit for power to stabilize
   delay(100);
@@ -110,8 +188,8 @@ void setup() {
   // Read Keyboard Address from D9-D12
   // Logic: Switch ON = Low, Switch OFF = High
   keyboardAddress = 0;
-  for (int i = 0; i < 4; i++) {
-    if (digitalRead(pinADDR[i]) == LOW) {
+  for (int i = 0; i < (int)(sizeof(pinADDR) / sizeof(pinADDR[0])); i++) {
+    if (i < 4 && digitalRead(pinADDR[i]) == LOW) {
       keyboardAddress |= (1 << i);
     }
   }
@@ -155,7 +233,8 @@ void loop() {
   }
 
   // Scan buttons
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < (int)(sizeof(pinBUTTONS) / sizeof(pinBUTTONS[0])); i++) {
+    if (i >= 8) break;
     bool currentState = digitalRead(pinBUTTONS[i]);
 
     if (currentState != lastButtonState[i]) {
