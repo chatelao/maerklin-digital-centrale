@@ -135,11 +135,7 @@ void setup() {
   // during the performSoftwareAddressing() phase due to 3.3V/5V differences.
   performSoftwareAddressing();
 
-  #if defined(ARDUINO_ARCH_RP2040)
-  Wire.begin(pinSDA, pinSCL);
-  #else
   Wire.begin();
-  #endif
 
   initialize6036();
 }

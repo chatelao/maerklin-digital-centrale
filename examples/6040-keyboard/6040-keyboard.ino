@@ -176,11 +176,7 @@ void setup() {
   pinMode(pinETC, INPUT_PULLUP);
 
   // Initialize I2C (Arduino as Master)
-  #if defined(ARDUINO_ARCH_RP2040)
-  Wire.begin(pinSDA, pinSCL);
-  #else
   Wire.begin();
-  #endif
 
   // Wait a bit for power to stabilize
   delay(100);

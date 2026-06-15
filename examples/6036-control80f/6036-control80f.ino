@@ -252,11 +252,7 @@ void setup() {
   performSoftwareAddressing();
 
   // Initialize I2C
-  #if defined(ARDUINO_ARCH_RP2040)
-  Wire.begin(pinSDA, pinSCL);
-  #else
   Wire.begin();
-  #endif
 
   // 6036 Initialization (Extended Motorola Format)
   initialize6036();
