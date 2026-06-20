@@ -115,14 +115,21 @@ def generate_top_shell(width, include_faceplate=False, faceplate_length=None):
         shell = shell.cut(fp_tool)
 
     # 6. Add Screw Bosses
+    bosses = []
+    cavities = []
     for loc in F.get_fastening_locations(width):
         boss = F.create_screw_boss(is_cavity=False)
         boss.translate(App.Vector(loc[0], loc[1], P.THICK))
-        shell = shell.fuse(boss)
+        bosses.append(boss)
 
         cavity = F.create_screw_boss(is_cavity=True)
         cavity.translate(App.Vector(loc[0], loc[1], P.THICK))
-        shell = shell.cut(cavity)
+        cavities.append(cavity)
+
+    if bosses:
+        shell = shell.fuse(Part.makeCompound(bosses))
+    if cavities:
+        shell = shell.cut(Part.makeCompound(cavities))
 
     return shell
 
