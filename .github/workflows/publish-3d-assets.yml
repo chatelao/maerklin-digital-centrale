@@ -26,7 +26,7 @@ jobs:
           sudo apt-get install -y freecad freecad-common freecad-python3 xvfb imagemagick python3-pil
 
       - name: Generate 3D Assets and Screenshots
-        timeout-minutes: 15
+        timeout-minutes: 60
         run: |
           # Use xvfb to run FreeCAD (full binary) with a virtual display for rendering
           # We use the full 'freecad' binary instead of 'freecadcmd' to support FreeCADGui

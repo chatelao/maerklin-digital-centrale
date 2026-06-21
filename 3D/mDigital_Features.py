@@ -189,13 +189,14 @@ def create_6021_faceplate_inlay():
     inlay = inlay.cut(display)
 
     # 2. Function Buttons (2x2 grid)
+    buttons = []
     for i in range(2):
         for j in range(2):
             btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
             btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
             btn.translate(App.Vector(P.C6021_FBTN_GRID_X + i*P.C6021_FBTN_PITCH,
                                      P.C6021_FBTN_GRID_Y + j*P.C6021_FBTN_PITCH, 0.4))
-            inlay = inlay.cut(btn)
+            buttons.append(btn)
 
     # 3. Numeric Keypad (5x2 grid for 0-9)
     for i in range(5):
@@ -204,7 +205,10 @@ def create_6021_faceplate_inlay():
             btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
             btn.translate(App.Vector(P.C6021_KPAD_X + i*P.C6021_KPAD_PITCH_X,
                                      P.C6021_KPAD_Y + j*P.C6021_KPAD_PITCH_Y, 0.4))
-            inlay = inlay.cut(btn)
+            buttons.append(btn)
+
+    if buttons:
+        inlay = inlay.cut(Part.makeCompound(buttons))
 
     # 4. Speed Knob Cutout
     knob_hole = Part.makeCylinder(P.KNOB_DIA/2.0 + 1.0, 10.0)
@@ -232,13 +236,17 @@ def create_6040_faceplate_inlay():
     inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
 
     # Keyboard matrix (2 columns, 8 rows)
+    buttons = []
     for i in range(2):
         for j in range(8):
             btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
             btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
             btn.translate(App.Vector(P.C6040_GRID_X + i*P.C6040_PITCH_X,
                                      P.C6040_GRID_Y + j*P.C6040_PITCH_Y, 0.4))
-            inlay = inlay.cut(btn)
+            buttons.append(btn)
+
+    if buttons:
+        inlay = inlay.cut(Part.makeCompound(buttons))
 
     # Position and Rotate to fit the Wedge
     inlay.translate(App.Vector(0, 0, -P.FP_THICK))
@@ -266,13 +274,17 @@ def create_6043_faceplate_inlay():
     inlay = inlay.cut(display)
 
     # 2. Keyboard matrix (3 columns, 8 rows)
+    buttons = []
     for i in range(3):
         for j in range(8):
             btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
             btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
             btn.translate(App.Vector(P.C6043_GRID_X + i*P.C6043_PITCH_X,
                                      P.C6043_GRID_Y + j*P.C6043_PITCH_Y, 0.4))
-            inlay = inlay.cut(btn)
+            buttons.append(btn)
+
+    if buttons:
+        inlay = inlay.cut(Part.makeCompound(buttons))
 
     # Position and Rotate to fit the Wedge
     inlay.translate(App.Vector(0, 0, -P.FP_THICK))
@@ -330,13 +342,17 @@ def create_80f_faceplate_inlay():
     inlay = inlay.cut(display)
 
     # 2. Function Buttons (2x2 grid)
+    buttons = []
     for i in range(2):
         for j in range(2):
             btn = Part.makeBox(P.BTN_CUTOUT, P.BTN_CUTOUT, 10.0)
             btn.translate(App.Vector(-P.BTN_CUTOUT/2.0, -P.BTN_CUTOUT/2.0, -5.0))
             btn.translate(App.Vector(P.C80F_BTN_X + i*P.C80F_BTN_PITCH_X,
                                      P.C80F_BTN_Y + j*P.C80F_BTN_PITCH_Y, 0.4))
-            inlay = inlay.cut(btn)
+            buttons.append(btn)
+
+    if buttons:
+        inlay = inlay.cut(Part.makeCompound(buttons))
 
     # 3. Speed Knob Cutout
     knob_hole = Part.makeCylinder(P.KNOB_DIA/2.0 + 1.0, 10.0)
@@ -417,15 +433,20 @@ def create_6017_faceplate_inlay():
     l_inlay = length - 2 * P.TOL
     inlay = Part.makeBox(w_inlay, l_inlay, P.FP_THICK)
 
+    # LED Holes
+    leds = []
     # 1. LED Hole 1 (Lower)
     led1 = create_led_hole_tool()
     led1.translate(App.Vector(P.C6017_LED_X, P.C6017_LED_Y, 0.4))
-    inlay = inlay.cut(led1)
+    leds.append(led1)
 
     # 2. LED Hole 2 (Upper)
     led2 = create_led_hole_tool()
     led2.translate(App.Vector(P.C6017_LED_X, P.C6017_LED_Y + P.C6017_LED_PITCH, 0.4))
-    inlay = inlay.cut(led2)
+    leds.append(led2)
+
+    if leds:
+        inlay = inlay.cut(Part.makeCompound(leds))
 
     # Position and Rotate to fit the Wedge
     inlay.translate(App.Vector(0, 0, -P.FP_THICK))
