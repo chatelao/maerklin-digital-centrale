@@ -82,10 +82,15 @@ class MockView:
 class MockDocGui:
     def __init__(self):
         self.ActiveView = MockView()
+    def createView(self, view_type):
+        print(f"Mock Create View: {view_type}")
+        self.ActiveView = MockView()
 
 class MockGui:
     def getDocument(self, name): return self.ActiveDocument()
     def ActiveDocument(self): return MockDocGui()
+    def activateDocument(self, name):
+        print(f"Mock Activate Document: {name}")
 
 App = MockApp()
 Part = MockPart()

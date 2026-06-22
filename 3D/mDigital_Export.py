@@ -77,44 +77,58 @@ def export_assembly(name, assembly_func):
 
     # 4. Render Screenshots & Projection
     try:
+        print(f" - Rendering screenshots for {name}...")
         # In headless/scripted mode, we often need to get the GUI document explicitly
         gui_doc = None
         if REAL_FREECAD:
+            # Ensure the document is active in the GUI
+            if hasattr(Gui, "activateDocument"):
+                Gui.activateDocument(doc.Name)
             gui_doc = Gui.getDocument(doc.Name)
         else:
             gui_doc = Gui.ActiveDocument()
 
-        if gui_doc and hasattr(gui_doc, "ActiveView"):
-            view = gui_doc.ActiveView
+        if gui_doc:
+            # In headless mode, the ActiveView is often None.
+            # We check and create one if necessary.
+            view = getattr(gui_doc, "ActiveView", None)
+            if view is None:
+                print(f" - No ActiveView found for {name}, creating new 3D view...")
+                if hasattr(gui_doc, "createView"):
+                    gui_doc.createView("Gui::View3DInventor")
+                    view = gui_doc.ActiveView
+                else:
+                    print(f" - gui_doc does not support createView")
 
-            # A. Axometric View
-            png_path = os.path.join(export_dir, f"{name}.png")
-            view.viewAxometric()
-            view.fitAll()
-            view.saveImage(png_path, 1600, 1200, "White")
-            print(f" - Rendered {png_path}")
+            if view:
+                # A. Axometric View
+                png_path = os.path.join(export_dir, f"{name}.png")
+                view.viewAxometric()
+                view.fitAll()
+                view.saveImage(png_path, 1600, 1200, "White")
+                print(f" - Rendered {png_path}")
 
-            # B. Orthographic Views for Projection
-            view.setCameraType("Orthographic")
+                # B. Orthographic Views for Projection
+                view.setCameraType("Orthographic")
 
-            top_png = os.path.join(export_dir, f"{name}_top.png")
-            view.viewTop()
-            view.fitAll()
-            view.saveImage(top_png, 1600, 1200, "White")
+                top_png = os.path.join(export_dir, f"{name}_top.png")
+                view.viewTop()
+                view.fitAll()
+                view.saveImage(top_png, 1600, 1200, "White")
 
-            front_png = os.path.join(export_dir, f"{name}_front.png")
-            view.viewFront()
-            view.fitAll()
-            view.saveImage(front_png, 1600, 1200, "White")
+                front_png = os.path.join(export_dir, f"{name}_front.png")
+                view.viewFront()
+                view.fitAll()
+                view.saveImage(front_png, 1600, 1200, "White")
 
-            left_png = os.path.join(export_dir, f"{name}_left.png")
-            view.viewLeft()
-            view.fitAll()
-            view.saveImage(left_png, 1600, 1200, "White")
+                left_png = os.path.join(export_dir, f"{name}_left.png")
+                view.viewLeft()
+                view.fitAll()
+                view.saveImage(left_png, 1600, 1200, "White")
 
-            # C. Create Combined Projection
-            projection_path = os.path.join(export_dir, f"{name}_projection.png")
-            Projection.create_projection(top_png, front_png, left_png, projection_path)
+                # C. Create Combined Projection
+                projection_path = os.path.join(export_dir, f"{name}_projection.png")
+                Projection.create_projection(top_png, front_png, left_png, projection_path)
 
             # Clean up intermediate orthographic views if desired,
             # but keeping them for now as individual assets.
