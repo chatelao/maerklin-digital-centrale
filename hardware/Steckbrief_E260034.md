@@ -38,6 +38,8 @@ Die Platine folgt der standardmäßigen 21-poligen Belegung für mtc-Schnittstel
 
 Diese spezifische Ausführung der E260034 zeichnet sich durch zusätzliche Steckverbinder und eine klare Beschriftung der Lötpads aus.
 
+![Märklin E260034 SE150602A](https://github.com/user-attachments/assets/7669dbc4-10a3-449d-ac80-4da6803cfa5e)
+
 ### Steckverbinder
 *   **Lautsprecher (Lautsprecher-Symbol):** 2-poliger Miniatur-Steckverbinder (JST SH 1.0mm oder ähnlich) oben links.
 *   **SUSI:** 4-poliger Miniatur-Steckverbinder (oben mittig) für Sound-Erweiterungsmodule.
