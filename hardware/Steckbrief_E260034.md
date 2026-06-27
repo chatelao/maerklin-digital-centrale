@@ -25,14 +25,19 @@ Die Platine folgt der standardmäßigen 21-poligen Belegung für mtc-Schnittstel
 6.  **Licht hinten** (AUX 0 r)
 7.  **AUX 1** (Zusatzfunktion 1)
 8.  **AUX 2** (Zusatzfunktion 2)
-9.  **V+ (Decoder)** (Gemeinsamer Rückleiter für Funktionen)
-10. **GND (Decoder)**
-11. **Hall-Sensor / Index-Pin** (Meist zur mechanischen Kodierung)
-12. **Speaker +** (Lautsprecheranschluss)
-13. **Speaker -** (Lautsprecheranschluss)
-14. **AUX 3** (Verstärkt oder unverstärkt, modellabhängig)
-15. **AUX 4** (Verstärkt oder unverstärkt, modellabhängig)
-... (weitere Pins gemäß NEM 660)
+9.  **V+ (Decoder)** (Gemeinsamer Rückleiter / U+)
+10. **GND (Decoder)** (Masse)
+11. **Index-Pin** (Mechanische Kodierung)
+12. **AUX 4** (Logikpegel / SUSI Clock)
+13. **AUX 3** (Logikpegel / SUSI Data)
+14. **AUX 3** (Verstärkt, falls vom Decoder unterstützt)
+15. **AUX 4** (Verstärkt, falls vom Decoder unterstützt)
+16. **AUX 5**
+17. **AUX 6**
+18. **AUX 7**
+19. **Speaker +** (Lautsprecheranschluss)
+20. **Speaker -** (Lautsprecheranschluss)
+21. **Gleis rechts / Mittelschleifer**
 
 ## Details zur Variante SE150602A
 
@@ -64,6 +69,26 @@ Die folgende Tabelle beschreibt die Lötpads und die standardmäßig verwendeten
 | **GND** | Braun | Masse (Decoder) | Gemeinsames Bezugspotenzial (Elektronik-Masse) |
 | **+5V** | - | 5V DC | Niederspannungsversorgung für Peripherie |
 | **IN1, IN2, IN3** | - | Eingänge | Sensor-Eingänge (z.B. Radsynchroner Sound), oben rechts |
+
+### Belegung SUSI-Schnittstelle (4-polig)
+
+Die SUSI-Schnittstelle folgt dem Standard gemäß NEM 670 und ist auf dieser Platine mit den Logikausgängen AUX3/4 der mtc21-Schnittstelle verbunden:
+
+| Pin | Funktion | mtc21-Pin | Kabelfarbe (typisch) | Beschreibung |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | **GND** | 10 | Schwarz | Gemeinsames Bezugspotenzial |
+| 2 | **Takt (Clock)** | 12 (AUX4) | Grau | Synchronisation |
+| 3 | **Daten (Data)** | 13 (AUX3) | Blau | Bidirektionale Datenübertragung |
+| 4 | **V+ (U+)** | 9 | Orange | Versorgungsspannung vom Decoder |
+
+### Belegung Lautsprecher-Schnittstelle (2-polig)
+
+Der Lautsprecher-Steckverbinder ist direkt mit den entsprechenden Pins der mtc21-Schnittstelle verbunden (gemäß modernem Standard NEM 660 / mSD3):
+
+| Pin | Funktion | mtc21-Pin | Beschreibung |
+| :--- | :--- | :--- | :--- |
+| 1 | **Speaker +** | 19 | Lautsprecher-Ausgang (+) |
+| 2 | **Speaker -** | 20 | Lautsprecher-Ausgang (-) |
 
 ## Besonderheiten der E260034
 
