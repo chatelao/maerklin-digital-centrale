@@ -12,6 +12,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 | Phase 3 | Logical & Primitive Modeling | âœ… |
 | Phase 4 | Modular Features (Logical Blueprinting) | âœ… |
 | Phase 5 | Device-Specific Implementation | âœ… |
+| Phase 6 | Validation, Slicing & Custom Integration | ðŸ“‹ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. âœ…
@@ -51,13 +52,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +69,17 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & Custom Integration
+- [ ] **Slicing & Printability Guidelines**:
+    - [ ] Document recommended FDM layer height, infill pattern, and support structure configurations in `MAERKLIN_DIGITAL_3D_PRINTING.md`.
+    - [ ] Define dimensional tolerance verification matrix for FDM vs SLA printed interlocking tabs.
+- [ ] **Internal MCU Mounting Frameworks**:
+    - [ ] Create parametric mounting stand-offs for Raspberry Pi Pico in standard wedge housing.
+    - [ ] Create parametric mounting stand-offs for Seeed Studio XIAO RP2040 in slim wedge housing.
+- [ ] **Assembly & Hardware Guides**:
+    - [ ] Document heat-set M3 insert installation steps and screw BOM in `MAERKLIN_DIGITAL_3D_FASTENING_BLUEPRINT.md`.
+    - [ ] Create multi-material dual-color printing guide for faceplate inlays.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
