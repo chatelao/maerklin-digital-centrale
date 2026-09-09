@@ -12,6 +12,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 | Phase 3 | Logical & Primitive Modeling | âœ… |
 | Phase 4 | Modular Features (Logical Blueprinting) | âœ… |
 | Phase 5 | Device-Specific Implementation | âœ… |
+| Phase 6 | Validation, Slicing & Custom Integration | ðŸš§ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. âœ…
@@ -51,13 +52,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +69,16 @@ This roadmap outlines the plan for creating accurate 3D models of the classic MÃ
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & Custom Integration
+- [ ] **Slicing & 3D Printing Guidelines**:
+    - [ ] Document recommended print orientations, layer heights, and infill settings for housing top shell and base plate.
+    - [ ] Provide multi-material dual-color print profiles/instructions for faceplate inlays.
+- [ ] **MCU & Custom Hardware Mounting Frameworks**:
+    - [ ] Define standardized mounting grid/standoff patterns for Raspberry Pi Pico in 60xx housings.
+    - [ ] Define standardized mounting grid/standoff patterns for Seeed Studio XIAO RP2040 in slim 60xx housings.
+- [ ] **Assembly & Slicing Guides**:
+    - [ ] Document mechanical heat-set inlay insertion and M3 screw assembly procedures.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
