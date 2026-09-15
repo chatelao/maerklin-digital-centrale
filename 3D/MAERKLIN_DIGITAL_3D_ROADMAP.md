@@ -12,12 +12,14 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 3 | Logical & Primitive Modeling | ✅ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
 | Phase 5 | Device-Specific Implementation | ✅ |
+| Phase 6 | Validation, Slicing & MCU Integration | ⏳ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ✅
 - Document precise physical dimensions and geometric features. ✅
 - Model the physical interlocking and electrical coupling interfaces. ✅
 - Specify material properties and visual styles (colors, textures). ✅
+- Establish automated export validation, slicing guidelines, and MCU mounting frameworks. ⏳
 
 ## Phases
 
@@ -51,13 +53,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +70,20 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & MCU Integration
+- [ ] **Automated Asset Validation**:
+    - [ ] Verify 3D mesh manifoldness (watertightness) for STL exports.
+    - [ ] Implement STEP and STL geometry export automated verification script.
+- [ ] **MCU Mounting & Internal Brackets**:
+    - [ ] Create parametric mounting post adapter for Seeed Studio XIAO RP2040.
+    - [ ] Create parametric mounting post adapter for Raspberry Pi Pico.
+    - [ ] Create internal PCB slide rails for standard 135mm wedge shell.
+- [ ] **Slicing & 3D Printing Preparation**:
+    - [ ] Define FDM print orientation guidelines and support structures in documentation.
+    - [ ] Define recommended layer height, infill density, and wall thickness parameters.
+- [ ] **Assembly & Hardware Documentation**:
+    - [ ] Document assembly steps and screw hardware fasteners (M2.5/M3) in a dedicated guide.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
