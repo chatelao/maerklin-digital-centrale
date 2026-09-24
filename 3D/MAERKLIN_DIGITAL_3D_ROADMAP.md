@@ -12,6 +12,7 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M√
 | Phase 3 | Logical & Primitive Modeling | ‚úÖ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ‚úÖ |
 | Phase 5 | Device-Specific Implementation | ‚úÖ |
+| Phase 6 | Validation, Slicing & MCU Integration | ‚è≥ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ‚úÖ
@@ -51,13 +52,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M√
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +69,20 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M√
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & MCU Integration
+- [ ] **Validation & Quality Assurance**:
+    - [ ] Verify STEP/STL export pipeline compatibility across all assemblies.
+    - [ ] Create automated test suite for validating 3D assembly generation.
+- [ ] **3D Printing & Slicing Optimization**:
+    - [ ] Define slicing guidelines (layer height, wall thickness, infill pattern) for PLA/PETG printing.
+    - [ ] Document print orientation and support structure strategies for wedge shells and interlocking side rails.
+- [ ] **Microcontroller Mounting Framework**:
+    - [ ] Design mounting boss patterns for Raspberry Pi Pico / RP2040.
+    - [ ] Design mounting boss patterns for Seeed Studio XIAO RP2040.
+- [ ] **Assembly & Hardware Guide**:
+    - [ ] Document hardware procurement specs (heat-set insert sizes, M3/M2.5 screws).
+    - [ ] Provide assembly and post-processing instructions.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
