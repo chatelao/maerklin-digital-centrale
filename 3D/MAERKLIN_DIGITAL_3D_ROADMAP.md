@@ -12,6 +12,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 3 | Logical & Primitive Modeling | ✅ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
 | Phase 5 | Device-Specific Implementation | ✅ |
+| Phase 6 | Validation, Slicing & Export Verification | ⏳ |
+| Phase 7 | Hardware & MCU Integration Frameworks | ⏳ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ✅
@@ -51,13 +53,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +70,23 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & Export Verification
+- [ ] **Automated Export Pipeline**:
+    - [ ] Verify headful and headless FreeCAD rendering pipelines (`mDigital_Export.py`).
+    - [ ] Validate generated STEP and STL assets for manifold topology and watertight meshes.
+    - [ ] Automated generation and verification of 2D technical projections (Dreitafelprojektion).
+- [ ] **Slicing & Printability**:
+    - [ ] Create Print Settings Guidelines (layer height, wall loops, infill density for FDM printing).
+    - [ ] Validate print orientations and support structures for the wedge shell overhangs and heat-set inserts.
+
+### Phase 7: Hardware & MCU Integration Frameworks
+- [ ] **Internal Mounting Brackets**:
+    - [ ] Model mounting brackets for Seeed Studio XIAO RP2040 and Raspberry Pi Pico.
+    - [ ] Model standardized mounting bosses for custom carrier boards (e.g., Märklin E260034 carrier).
+- [ ] **Assembly & Hardware Manual**:
+    - [ ] Create detailed step-by-step assembly guide for brass heat-set insert installation (M2.5 / M3).
+    - [ ] Document bill of materials (BOM) for fasteners, connectors (DIN 41612), and decorative inlays.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
