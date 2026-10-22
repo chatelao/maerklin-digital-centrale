@@ -12,6 +12,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 3 | Logical & Primitive Modeling | ✅ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
 | Phase 5 | Device-Specific Implementation | ✅ |
+| Phase 6 | Validation, Slicing & Export Verification | ⏳ |
+| Phase 7 | Hardware & MCU Integration Frameworks | ⏳ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ✅
@@ -51,13 +53,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +70,31 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & Export Verification
+- [ ] **Export Pipeline Verification**:
+    - [ ] Verify headful and headless FreeCAD script execution for all assemblies.
+    - [ ] Validate STEP file geometry integrity for CAD software compatibility.
+    - [ ] Validate STL mesh wall thickness and manifold checks (watertight mesh).
+- [ ] **3D Printing & Slicing Specifications**:
+    - [ ] Define recommended slicer settings (layer height, wall loops, infill density/pattern) for FDM printing.
+    - [ ] Specify print orientation recommendations for top shell and bottom plate to minimize support structures.
+    - [ ] Document material requirements (PLA, PETG, ABS) and shrinkage tolerances for snap-fit interlocks.
+- [ ] **Rendering & Visual Documentation**:
+    - [ ] Validate Dreitafelprojektion (3-view ortho projection) PNG asset generation for all assemblies.
+    - [ ] Ensure color-accurate RAL rendering (RAL 7032 Grau, RAL 9005 Black, RAL 3001 Red) in preview outputs.
+
+### Phase 7: Hardware & MCU Integration Frameworks
+- [ ] **Internal Mounting Brackets**:
+    - [ ] Design mounting standoff templates for Seeed Studio XIAO RP2040 board.
+    - [ ] Design mounting standoff templates for standard Raspberry Pi Pico / RP2040 boards.
+    - [ ] Model internal PCB retention rails for custom Märklin bus interface adapter boards.
+- [ ] **Connector & Cable Routing Cutouts**:
+    - [ ] Define standardized pass-through channels for internal wiring harnesses.
+    - [ ] Design rear-panel access ports for USB-C and power jack extensions.
+- [ ] **Assembly & Fastening Documentation**:
+    - [ ] Document screw types and torque requirements for self-tapping thermoplastic screws (M2.5/M3).
+    - [ ] Create step-by-step physical housing assembly guide including heat-set insert installation.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
