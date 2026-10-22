@@ -12,12 +12,16 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 3 | Logical & Primitive Modeling | ✅ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
 | Phase 5 | Device-Specific Implementation | ✅ |
+| Phase 6 | Validation, Slicing & Export Verification | ⏳ |
+| Phase 7 | Hardware & MCU Integration Frameworks | ⏳ |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ✅
 - Document precise physical dimensions and geometric features. ✅
 - Model the physical interlocking and electrical coupling interfaces. ✅
 - Specify material properties and visual styles (colors, textures). ✅
+- Validate export pipeline and 3D printing parameters for custom shells. ⏳
+- Define modular mounting frameworks for modern microcontrollers (Pico, XIAO RP2040). ⏳
 
 ## Phases
 
@@ -51,13 +55,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +72,23 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & Export Verification
+- [ ] **Export Verification & Pipeline Integration**:
+    - [ ] Validate automated STEP/STL generation across all 10 device assemblies in `mDigital_Export.py`.
+    - [ ] Verify composite technical projection images (Dreitafelprojektion) output formatting.
+- [ ] **3D Printing & Slicing Optimization**:
+    - [ ] Document recommended slicer orientation, infill patterns, and support settings for wedge shells.
+    - [ ] Define dimensional tolerance test guidelines for snap-fit faceplate inlays and M3 heat-set insert bosses.
+    - [ ] Document multi-material / dual-color printing process for inlaid faceplates.
+
+### Phase 7: Hardware & MCU Integration Frameworks
+- [ ] **Internal Mounting Bosses & Carrier Adapters**:
+    - [ ] Design parametric mounting grid for Raspberry Pi Pico and Seeed Studio XIAO RP2040 microcontrollers.
+    - [ ] Create printable internal bracket blueprints for retrofitting legacy Märklin circuit boards.
+- [ ] **Assembly & Hardware Documentation**:
+    - [ ] Draft physical assembly guide for heat-set insert installation and bottom plate M3 screw fastening.
+    - [ ] Map DIN 41612 connector breakout board positioning and internal ribbon cabling paths.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
