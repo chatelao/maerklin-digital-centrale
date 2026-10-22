@@ -12,6 +12,8 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 | Phase 3 | Logical & Primitive Modeling | ✅ |
 | Phase 4 | Modular Features (Logical Blueprinting) | ✅ |
 | Phase 5 | Device-Specific Implementation | ✅ |
+| Phase 6 | Validation, Slicing & Export Verification | 🚧 |
+| Phase 7 | Hardware & MCU Integration Frameworks | 🚧 |
 
 ## Goals
 - Create high-fidelity 3D CAD models of the modular housing system. ✅
@@ -51,13 +53,13 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
 - [x] Develop template for faceplate inlays and dual-color accents for printing efficiency.
 
 ### Phase 5: Device-Specific Implementation
-- [ ] **Component Library**:
+- [x] **Component Library**:
     - [x] Model the speed control knob (standard 6021/6035 style).
     - [x] Model the square momentary push-buttons (red/gray).
     - [x] Model the 4-digit 7-segment display bezel.
     - [x] Model the 2-digit 7-segment display bezel.
     - [x] Model the IR window (for 6070).
-- [ ] **Full Assemblies**:
+- [x] **Full Assemblies**:
     - [x] Model the **Control Unit 6021** (Main housing + specialized faceplate).
     - [x] Model the **Keyboard 6040** (Key matrix layout).
     - [x] Model the **Memory 6043** (3x8 matrix + 2-digit display).
@@ -68,6 +70,23 @@ This roadmap outlines the plan for creating accurate 3D models of the classic M�
     - [x] Model the **6050/6051 Interface** (Slim housing + plain faceplate).
     - [x] Model the **Booster 6017** (Main housing + status LEDs).
     - [x] Model the **Delta Control 4f (66045)** (Main housing + knob + button).
+
+### Phase 6: Validation, Slicing & Export Verification
+- [ ] **Mesh & Topology Validation**:
+    - [ ] Audit STEP and STL exports for watertight geometry (manifold check).
+    - [ ] Verify orientation and origin alignments across all export formats (FCStd, STEP, STL).
+- [ ] **Slicing & 3D Printing Guidelines**:
+    - [ ] Define recommended FDM print orientations (e.g. standard wedge housing vs. top inlay).
+    - [ ] Document print settings (layer height, infill percentage, support placement for connector cutouts).
+    - [ ] Establish tolerance guidelines for physical interlocking side-panel slider joints (DE 84 27 671 U1).
+
+### Phase 7: Hardware & MCU Integration Frameworks
+- [ ] **Internal Mounts & Brackets**:
+    - [ ] Design modular mounting posts/standoffs for standard microcontroller breakout boards (RP2040 / Seeed XIAO).
+    - [ ] Specify wire routing channels and strain relief bosses near the DIN 41612 cutouts.
+- [ ] **Assembly & Hardware Documentation**:
+    - [ ] Document M3 heat-set insert and self-tapping screw mounting procedures for the housing base.
+    - [ ] Create exploded-view assembly diagrams for faceplate inlays and dual-color prints.
 
 ## Reference Documentation
 - [CONCEPT.md](MAERKLIN_DIGITAL_3D_CONCEPT.md)
